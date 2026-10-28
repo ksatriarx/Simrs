@@ -36,27 +36,54 @@
         .user-role { font-size: 11px; color: var(--text-muted); }
         .avatar { width: 40px; height: 40px; border-radius: 50%; background: #ef4444; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-        /* DASHBOARD */
+        /* DASHBOARD AREA */
         .dashboard { padding: 30px; }
-        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 10px; }
         .page-title { font-size: 24px; font-weight: 700; }
+        
+        /* LAYOUT KASIR (2 KOLOM) */
+        .billing-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 20px;}
+        
+        /* KARTU RINCIAN BIAYA */
+        .bill-card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 24px; }
+        .bill-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px dashed var(--border); padding-bottom: 15px; margin-bottom: 15px; }
+        .patient-info h2 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+        .patient-info p { font-size: 12px; color: var(--text-muted); }
+        
+        .bill-items { margin-bottom: 20px; }
+        .bill-item { display: flex; justify-content: space-between; font-size: 13px; padding: 8px 0; }
+        .bill-item span:first-child { color: var(--text-muted); }
+        
+        .bill-total { border-top: 2px solid var(--text-main); padding-top: 15px; display: flex; justify-content: space-between; align-items: center; font-size: 18px; font-weight: 800; }
+        
+        /* KARTU PEMBAYARAN (KANAN) */
+        .payment-card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 24px; height: fit-content; }
+        .payment-title { font-size: 16px; font-weight: 700; margin-bottom: 15px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; background: #f9fafb;}
+        .form-group input:focus { border-color: var(--primary); background:#fff; }
+        
+        .btn-pay { background: var(--success); color: white; border: none; padding: 14px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; transition: background 0.2s; }
+        .btn-pay:hover { background: #059669; }
 
-        .card-table { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
-        .card-header { padding: 20px; border-bottom: 1px solid var(--border); }
+        /* TABEL RIWAYAT */
+        .card-table { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin-top: 20px; }
+        .card-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .card-title { font-size: 16px; font-weight: 700; }
         .table-responsive { overflow-x: auto; width: 100%; }
         table { width: 100%; border-collapse: collapse; text-align: left; min-width: 600px; }
         th, td { padding: 16px 20px; font-size: 13px; border-bottom: 1px solid var(--border); }
-        th { background: #f9fafb; color: var(--text-muted); font-weight: 600; font-size: 11px; }
+        th { background: #f9fafb; color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; }
         tr:hover { background: #f9fafb; }
         
         .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
         .badge-waiting { background: #fef3c7; color: #d97706; }
-        
-        .btn-action { background: var(--success); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
-        .btn-action:hover { background: #059669; }
+        .badge-paid { background: #dcfce7; color: #16a34a; }
 
-        @media (max-width: 768px) {
+        .empty-state { text-align: center; padding: 40px; color: var(--text-muted); background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); }
+
+        @media (max-width: 900px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.show { transform: translateX(0); }
             .main-content { margin-left: 0; width: 100%; }
@@ -64,6 +91,7 @@
             .dashboard { padding: 15px; }
             .topbar { padding: 0 15px; }
             .page-title { font-size: 20px; }
+            .billing-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -107,25 +135,32 @@
             <div class="page-header">
                 <div>
                     <h1 class="page-title">Kasir & Pembayaran</h1>
-                    <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">Proses pelunasan tagihan pasien (Selesai Obat).</p>
+                    <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">Proses pelunasan tagihan pasien.</p>
                 </div>
             </div>
 
+            <!-- TEMPAT MENAMPILKAN TAGIHAN (AKAN DIISI OLEH JAVASCRIPT) -->
+            <div id="area-tagihan">
+                <div class="empty-state">Menarik data antrean pembayaran...</div>
+            </div>
+
+            <!-- RIWAYAT TRANSAKSI (LUNAS) -->
             <div class="card-table">
                 <div class="card-header">
-                    <h2 class="card-title">Antrean Pembayaran</h2>
+                    <h2 class="card-title">Riwayat Pembayaran Hari Ini</h2>
                 </div>
                 <div class="table-responsive">
                     <table>
                         <thead>
-                            <tr><th>Nama Pasien</th><th>Poli</th><th>Status</th><th>Aksi</th></tr>
+                            <tr><th>Nama Pasien</th><th>Poli</th><th>Total</th><th>Status</th></tr>
                         </thead>
-                        <tbody id="tabel-kasir">
-                            <tr><td colspan="4" style="text-align:center;">Menarik data dari database...</td></tr>
+                        <tbody id="tabel-riwayat">
+                            <tr><td colspan="4" style="text-align:center;">Belum ada riwayat.</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+
         </div>
     </main>
 
@@ -146,45 +181,146 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         
-        // Hanya ambil pasien yang statusnya "Selesai" (sudah ambil obat di Farmasi)
-        const q = query(collection(db, "pendaftaran"), where("status", "==", "Selesai"));
-        
-        const tbody = document.getElementById('tabel-kasir');
+        const areaTagihan = document.getElementById('area-tagihan');
+        const tabelRiwayat = document.getElementById('tabel-riwayat');
 
-        onSnapshot(q, (snapshot) => {
-            tbody.innerHTML = '';
+        // Tarif Simulasi (Bisa diubah nanti)
+        const BIAYA_ADMIN = 15000;
+        const BIAYA_DOKTER = 50000;
+        const BIAYA_TINDAKAN = 25000;
+        const BIAYA_OBAT = 35000;
+        const TOTAL_TAGIHAN = BIAYA_ADMIN + BIAYA_DOKTER + BIAYA_TINDAKAN + BIAYA_OBAT;
+
+        // 1. TARIK DATA PASIEN YANG BELUM DIBAYAR (Status: Selesai)
+        const qBelumBayar = query(collection(db, "pendaftaran"), where("status", "==", "Selesai"));
+        
+        onSnapshot(qBelumBayar, (snapshot) => {
+            areaTagihan.innerHTML = '';
             
             if (snapshot.empty) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Belum ada pasien yang siap dibayar.</td></tr>';
+                areaTagihan.innerHTML = '<div class="empty-state"><i class="fa-solid fa-check-circle" style="font-size:40px; color:#10b981; margin-bottom:10px;"></i><br>Tidak ada antrean pembayaran saat ini.</div>';
                 return;
             }
 
-            snapshot.forEach((docSnap) => {
-                const data = docSnap.data();
-                const idDokumen = docSnap.id;
+            // Kita ambil 1 pasien pertama yang siap dibayar
+            const docSnap = snapshot.docs[0]; 
+            const data = docSnap.data();
+            const idDokumen = docSnap.id;
 
-                tbody.innerHTML += `
+            // Tampilkan UI Kasir persis seperti aslinya
+            areaTagihan.innerHTML = `
+                <div class="billing-grid">
+                    <!-- KIRI: RINCIAN TAGIHAN -->
+                    <div class="bill-card">
+                        <div class="bill-header">
+                            <div class="patient-info">
+                                <h2>${data.nama}</h2>
+                                <p>NIK: ${data.nik} • ${data.poli}</p>
+                            </div>
+                            <span class="badge badge-waiting">Belum Lunas</span>
+                        </div>
+
+                        <div class="bill-items">
+                            <div class="bill-item"><span>Biaya Pendaftaran & Admin</span><span>Rp ${BIAYA_ADMIN.toLocaleString('id-ID')}</span></div>
+                            <div class="bill-item"><span>Jasa Konsultasi Dokter</span><span>Rp ${BIAYA_DOKTER.toLocaleString('id-ID')}</span></div>
+                            <div class="bill-item"><span>Tindakan / Pemeriksaan</span><span>Rp ${BIAYA_TINDAKAN.toLocaleString('id-ID')}</span></div>
+                            <div class="bill-item"><span>Obat & Farmasi</span><span>Rp ${BIAYA_OBAT.toLocaleString('id-ID')}</span></div>
+                        </div>
+
+                        <div class="bill-total">
+                            <span>Total Tagihan</span>
+                            <span>Rp ${TOTAL_TAGIHAN.toLocaleString('id-ID')}</span>
+                        </div>
+                    </div>
+
+                    <!-- KANAN: PROSES PEMBAYARAN -->
+                    <div class="payment-card">
+                        <h3 class="payment-title">Metode Pembayaran</h3>
+                        
+                        <div class="form-group">
+                            <label>Jenis Penjamin</label>
+                            <select id="pilih-penjamin">
+                                <option value="umum">Umum / Mandiri</option>
+                                <option value="bpjs">BPJS Kesehatan</option>
+                                <option value="asuransi">Asuransi Swasta</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Metode Bayar</label>
+                            <select id="pilih-metode">
+                                <option value="Tunai">Tunai (Cash)</option>
+                                <option value="QRIS">QRIS / Transfer</option>
+                                <option value="Debit">Kartu Debit/Kredit</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Uang Diterima</label>
+                            <input type="number" id="uang-diterima" placeholder="Contoh: 150000">
+                        </div>
+
+                        <button class="btn-pay" onclick="prosesPembayaran('${idDokumen}')">
+                            <i class="fa-solid fa-check-circle"></i> Proses Pembayaran
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+
+        // 2. TARIK DATA RIWAYAT (Status: Lunas)
+        const qLunas = query(collection(db, "pendaftaran"), where("status", "==", "Lunas"));
+        
+        onSnapshot(qLunas, (snapshot) => {
+            tabelRiwayat.innerHTML = '';
+            
+            if (snapshot.empty) {
+                tabelRiwayat.innerHTML = '<tr><td colspan="4" style="text-align:center;">Belum ada riwayat lunas.</td></tr>';
+                return;
+            }
+
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                const total = data.totalBayar || 0;
+                tabelRiwayat.innerHTML += `
                     <tr>
                         <td><strong>${data.nama}</strong></td>
                         <td>${data.poli}</td>
-                        <td><span class="badge badge-waiting">Siap Dibayar</span></td>
-                        <td><button class="btn-action" onclick="prosesBayar('${idDokumen}')">Bayar</button></td>
+                        <td>Rp ${total.toLocaleString('id-ID')}</td>
+                        <td><span class="badge badge-paid">Lunas</span></td>
                     </tr>
                 `;
             });
         });
 
-        // Fungsi untuk mengubah status pasien menjadi "Lunas"
-        window.prosesBayar = async (idDokumen) => {
-            const yakin = confirm("Proses pembayaran pasien ini?");
+        // 3. FUNGSI PROSES PEMBAYARAN
+        window.prosesPembayaran = async (idDokumen) => {
+            const metode = document.getElementById('pilih-metode').value;
+            const uangDiterima = document.getElementById('uang-diterima').value;
+
+            if (!uangDiterima) {
+                alert("Masukkan nominal uang yang diterima terlebih dahulu!");
+                return;
+            }
+            if (parseInt(uangDiterima) < TOTAL_TAGIHAN) {
+                alert("Uang yang diterima kurang dari total tagihan!");
+                return;
+            }
+
+            const yakin = confirm(`Proses pembayaran sebesar Rp ${TOTAL_TAGIHAN.toLocaleString('id-ID')} dengan metode ${metode}?`);
             if (!yakin) return;
 
             try {
                 const pasienRef = doc(db, "pendaftaran", idDokumen);
                 await updateDoc(pasienRef, {
-                    status: "Lunas" // Status akhir
+                    status: "Lunas",
+                    totalBayar: TOTAL_TAGIHAN,
+                    metodeBayar: metode
                 });
-                alert("✅ Pembayaran Berhasil! Pasien telah lunas.");
+                
+                // Setelah lunas, form akan otomatis hilang dan masuk ke tabel riwayat (karena onSnapshot)
+                alert("✅ Pembayaran Berhasil!");
+                
             } catch (error) {
                 alert("❌ Gagal memproses: " + error.message);
             }
