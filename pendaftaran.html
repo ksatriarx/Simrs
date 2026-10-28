@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* CSS SAMA SEPERTI SEBELUMNYA (Tidak diubah) */
         :root {
             --bg-body: #f3f4f6; --bg-sidebar: #ffffff; --bg-card: #ffffff;
             --text-main: #111827; --text-muted: #6b7280;
@@ -82,7 +81,7 @@
     <aside class="sidebar" id="sidebar">
         <div class="brand"><i class="fa-solid fa-hospital"></i> SIMRS<span style="color:var(--text-main)">Pro</span></div>
         <div class="nav-menu">
-            <a href="javascript:void(0)" onclick="navigasiKe('simrs.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('index.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
             <a href="javascript:void(0)" onclick="navigasiKe('pendaftaran.html')" class="nav-item active"><i class="fa-solid fa-users"></i> Pendaftaran</a>
             <a href="javascript:void(0)" onclick="navigasiKe('antrean.html')" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
             
@@ -118,7 +117,6 @@
 
             <div class="form-card">
                 <h2 class="form-title">Formulir Data Diri</h2>
-                <!-- FORM SUDAH DIBERI ID AGAR BISA DIBACA JAVASCRIPT -->
                 <form id="formPendaftaran">
                     <div class="form-grid">
                         <div class="form-group">
@@ -172,7 +170,7 @@
 
             <div class="card-table">
                 <div class="card-header">
-                    <h2 class="card-title">Pendaftaran Hari Ini</h2>
+                    <h2 class="card-title">Pendaftaran Hari Ini (Firebase)</h2>
                 </div>
                 <div class="table-responsive">
                     <table>
@@ -180,7 +178,6 @@
                             <tr><th>Waktu</th><th>Nama Pasien</th><th>Poli</th><th>Status</th></tr>
                         </thead>
                         <tbody id="tabel-pendaftaran">
-                            <!-- Data dari Firebase akan muncul di sini -->
                             <tr><td colspan="4" style="text-align:center;">Memuat data...</td></tr>
                         </tbody>
                     </table>
@@ -189,28 +186,26 @@
         </div>
     </main>
 
-    <!-- SCRIPT FIREBASE UNTUK MENYIMPAN DATA -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Konfigurasi Firebase milikmu
+        // KONFIGURASI FIREBASE SIMRS-PRO
         const firebaseConfig = {
-            apiKey: "AIzaSyCceiYONY_sx9ivD0CDDQGoB9OXm05h4CY",
-            authDomain: "kebab-idi.firebaseapp.com",
-            projectId: "kebab-idi",
-            storageBucket: "kebab-idi.firebasestorage.app",
-            messagingSenderId: "303997052314",
-            appId: "1:303997052314:web:1db122bc5911297b710623"
+            apiKey: "AIzaSyB5u4UAw9JAmXA6vsuSwuexO5ASR-0Kjn0",
+            authDomain: "simrs-pro.firebaseapp.com",
+            projectId: "simrs-pro",
+            storageBucket: "simrs-pro.firebasestorage.app",
+            messagingSenderId: "745412639051",
+            appId: "1:745412639051:web:e434bc2a118ca2c67750ce"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const pendaftaranRef = collection(db, "pendaftaran");
 
-        // 1. FUNGSI UNTUK MENYIMPAN DATA KE FIREBASE
         document.getElementById('formPendaftaran').addEventListener('submit', async (e) => {
-            e.preventDefault(); // Mencegah halaman refresh
+            e.preventDefault();
             const btn = document.getElementById('btn-simpan');
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
             btn.disabled = true;
@@ -229,10 +224,9 @@
                     waktu: new Date().toISOString()
                 });
                 
-                alert("✅ Berhasil! Data pasien tersimpan di Firebase.");
-                document.getElementById('formPendaftaran').reset(); // Kosongkan form
+                alert("✅ Berhasil! Data pasien tersimpan.");
+                document.getElementById('formPendaftaran').reset();
             } catch (error) {
-                console.error("Error: ", error);
                 alert("❌ Gagal menyimpan data: " + error.message);
             } finally {
                 btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan & Daftarkan';
@@ -240,22 +234,19 @@
             }
         });
 
-        // 2. FUNGSI UNTUK MENAMPILKAN DATA REAL-TIME DI TABEL
         const q = query(pendaftaranRef, orderBy("waktu", "desc"));
         onSnapshot(q, (snapshot) => {
             const tbody = document.getElementById('tabel-pendaftaran');
-            tbody.innerHTML = ''; // Kosongkan tabel dulu
+            tbody.innerHTML = '';
             
             if (snapshot.empty) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Belum ada pendaftaran hari ini.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Belum ada pendaftaran.</td></tr>';
                 return;
             }
 
             snapshot.forEach((doc) => {
                 const data = doc.data();
-                // Format jam dari timestamp
                 const jam = new Date(data.waktu).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
-                
                 tbody.innerHTML += `
                     <tr>
                         <td>${jam}</td>
