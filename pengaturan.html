@@ -12,20 +12,20 @@
             --text-main: #111827; --text-muted: #6b7280;
             --primary: #0ea5e9; --primary-hover: #0284c7;
             --border: #e5e7eb; --sidebar-width: 260px;
+            --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        /* SIDEBAR & TOPBAR */
         .sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000; transition: transform 0.3s ease; }
-        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
-        .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
-        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; }
-        .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; }
+        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; flex-shrink: 0; }
+        .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; position: relative; z-index: 10; }
+        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; pointer-events: none; }
+        .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; position: relative; z-index: 11; pointer-events: auto; }
         .nav-item:hover, .nav-item.active { background: #e0f2fe; color: var(--primary); }
         .nav-item i { width: 20px; text-align: center; }
-        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
-        .sidebar-overlay.show { display: block; opacity: 1; }
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .sidebar-overlay.show { display: block; opacity: 1; pointer-events: auto; }
         .main-content { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - var(--sidebar-width)); transition: margin 0.3s ease; }
         .topbar { height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 90; }
         .menu-toggle { display: none; background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; }
@@ -35,26 +35,24 @@
         .user-role { font-size: 11px; color: var(--text-muted); }
         .avatar { width: 40px; height: 40px; border-radius: 50%; background: #64748b; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-        /* DASHBOARD AREA */
         .dashboard { padding: 30px; }
-        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 10px; }
+        .page-header { margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .page-title { font-size: 24px; font-weight: 700; }
-        
-        /* CARD PENGATURAN */
+        .page-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
         .setting-card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 20px; }
         .setting-header { padding: 20px; border-bottom: 1px solid var(--border); }
         .setting-header h2 { font-size: 18px; font-weight: 700; }
         .setting-header p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
-        
+
         .setting-list { padding: 0; }
         .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border); }
         .setting-item:last-child { border-bottom: none; }
-        
+
         .setting-info { flex-grow: 1; padding-right: 20px; }
         .setting-info h3 { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
         .setting-info p { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
-        
-        /* TOGGLE SWITCH (Tombol Geser) */
+
         .switch { position: relative; display: inline-block; width: 46px; height: 24px; flex-shrink: 0; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
@@ -62,9 +60,16 @@
         input:checked + .slider { background-color: var(--primary); }
         input:checked + .slider:before { transform: translateX(22px); }
 
-        /* Tombol Simpan */
         .btn-save { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; transition: background 0.2s; }
         .btn-save:hover { background: var(--primary-hover); }
+
+        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { padding: 14px 20px; border-radius: 8px; color: white; font-size: 13px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease; min-width: 280px; }
+        .toast.success { background: var(--success); }
+        .toast.error { background: var(--danger); }
+        .toast.warning { background: var(--warning); }
+        .toast.info { background: var(--primary); }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
@@ -86,21 +91,20 @@
     <aside class="sidebar" id="sidebar">
         <div class="brand"><i class="fa-solid fa-hospital"></i> SIMRS<span style="color:var(--text-main)">Pro</span></div>
         <div class="nav-menu">
-            <a href="javascript:void(0)" onclick="navigasiKe('index.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('pendaftaran.html')" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('antrean.html')" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
+            <a href="#" data-page="index.html" onclick="event.preventDefault(); navigasiKe('index.html');" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="#" data-page="pendaftaran.html" onclick="event.preventDefault(); navigasiKe('pendaftaran.html');" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
+            <a href="#" data-page="antrean.html" onclick="event.preventDefault(); navigasiKe('antrean.html');" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
             
             <div class="nav-label">Data & Pelayanan</div>
-            <a href="javascript:void(0)" onclick="navigasiKe('pasien.html')" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('rekam-medis.html')" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('farmasi.html')" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('lab.html')" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
+            <a href="#" data-page="pasien.html" onclick="event.preventDefault(); navigasiKe('pasien.html');" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
+            <a href="#" data-page="rekam-medis.html" onclick="event.preventDefault(); navigasiKe('rekam-medis.html');" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
+            <a href="#" data-page="farmasi.html" onclick="event.preventDefault(); navigasiKe('farmasi.html');" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
+            <a href="#" data-page="lab.html" onclick="event.preventDefault(); navigasiKe('lab.html');" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
 
             <div class="nav-label">Keuangan & Sistem</div>
-            <a href="javascript:void(0)" onclick="navigasiKe('kasir.html')" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('laporan.html')" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
-            <!-- AKTIF DI PENGATURAN -->
-            <a href="javascript:void(0)" onclick="navigasiKe('pengaturan.html')" class="nav-item active"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
+            <a href="#" data-page="kasir.html" onclick="event.preventDefault(); navigasiKe('kasir.html');" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
+            <a href="#" data-page="laporan.html" onclick="event.preventDefault(); navigasiKe('laporan.html');" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
+            <a href="#" data-page="pengaturan.html" onclick="event.preventDefault(); navigasiKe('pengaturan.html');" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
         </div>
     </aside>
 
@@ -120,61 +124,57 @@
             <div class="page-header">
                 <div>
                     <h1 class="page-title">Pengaturan Modul</h1>
-                    <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">Aktifkan atau matikan fitur sesuai kebutuhan klinik Anda.</p>
+                    <p class="page-subtitle">Aktifkan atau matikan fitur sesuai kebutuhan klinik Anda.</p>
                 </div>
             </div>
 
             <div class="setting-card">
                 <div class="setting-header">
                     <h2>Modul Pelayanan</h2>
-                    <p>Jika dimatikan, menu terkait tidak akan muncul di sidebar (Fitur ini butuh logika Backend tambahan).</p>
+                    <p>Status toggle disimpan di localStorage browser ini. Fitur hide menu akan tersedia di Fase 2D.</p>
                 </div>
                 <div class="setting-list">
                     
-                    <!-- TOGGLE 1: REKAM MEDIS -->
                     <div class="setting-item">
                         <div class="setting-info">
                             <h3><i class="fa-solid fa-stethoscope" style="color:var(--primary)"></i> Rekam Medis Elektronik</h3>
                             <p>Catatan SOAP, diagnosa dokter, dan riwayat penyakit pasien.</p>
                         </div>
                         <label class="switch">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" data-module="rekam_medis" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
 
-                    <!-- TOGGLE 2: FARMASI -->
                     <div class="setting-item">
                         <div class="setting-info">
                             <h3><i class="fa-solid fa-pills" style="color:var(--primary)"></i> Farmasi & Apotek</h3>
                             <p>Manajemen resep dokter dan stok gudang obat.</p>
                         </div>
                         <label class="switch">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" data-module="farmasi" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
 
-                    <!-- TOGGLE 3: LABORATORIUM -->
                     <div class="setting-item">
                         <div class="setting-info">
                             <h3><i class="fa-solid fa-flask" style="color:var(--primary)"></i> Laboratorium</h3>
                             <p>Pemeriksaan darah, urine, dan hasil penunjang lainnya.</p>
                         </div>
                         <label class="switch">
-                            <input type="checkbox">
+                            <input type="checkbox" data-module="lab">
                             <span class="slider"></span>
                         </label>
                     </div>
 
-                    <!-- TOGGLE 4: KASIR -->
                     <div class="setting-item">
                         <div class="setting-info">
                             <h3><i class="fa-solid fa-file-invoice-dollar" style="color:var(--primary)"></i> Kasir & Billing</h3>
                             <p>Proses pembayaran pasien dan cetak struk.</p>
                         </div>
                         <label class="switch">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" data-module="kasir" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
@@ -182,25 +182,84 @@
                 </div>
             </div>
 
-            <button class="btn-save" onclick="alert('Simulasi: Pengaturan berhasil disimpan!')">
+            <button class="btn-save" onclick="simpanPengaturan()">
                 <i class="fa-solid fa-floppy-disk"></i> Simpan Pengaturan
             </button>
 
         </div>
     </main>
 
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="firebase-config.js"></script>
+
+    <script>
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', warning: 'fa-triangle-exclamation', info: 'fa-circle-info' };
+            toast.innerHTML = `<i class="fa-solid ${icons[type]}"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.transition = 'opacity 0.3s, transform 0.3s';
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // ============ LOAD PENGATURAN DARI LOCALSTORAGE ============
+        function loadPengaturan() {
+            const saved = localStorage.getItem('simrs_modul');
+            if (!saved) return;
+            try {
+                const modul = JSON.parse(saved);
+                document.querySelectorAll('.switch input[data-module]').forEach(input => {
+                    const key = input.getAttribute('data-module');
+                    if (modul[key] !== undefined) input.checked = modul[key];
+                });
+            } catch (e) { console.warn('Gagal parse pengaturan:', e); }
+        }
+
+        // ============ SIMPAN PENGATURAN ============
+        function simpanPengaturan() {
+            const modul = {};
+            document.querySelectorAll('.switch input[data-module]').forEach(input => {
+                modul[input.getAttribute('data-module')] = input.checked;
+            });
+            localStorage.setItem('simrs_modul', JSON.stringify(modul));
+            showToast('✅ Pengaturan berhasil disimpan!', 'success');
+        }
+
+        // ============ INIT ============
+        loadPengaturan();
+    </script>
+
     <script>
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('show');
-            document.getElementById('sidebarOverlay').classList.toggle('show');
-        }
-        function navigasiKe(url) {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
-            if (sidebar && overlay) { sidebar.classList.remove('show'); overlay.classList.remove('show'); }
+            if (sidebar) sidebar.classList.toggle('show');
+            if (overlay) overlay.classList.toggle('show');
+        }
+        function navigasiKe(url) {
+            try {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebarOverlay');
+                if (sidebar) sidebar.classList.remove('show');
+                if (overlay) overlay.classList.remove('show');
+            } catch (e) { console.warn(e); }
             window.scrollTo(0, 0);
             window.location.href = url;
         }
+        (function autoActiveMenu() {
+            const current = window.getCurrentPage ? window.getCurrentPage() : (window.location.pathname.split('/').pop() || 'index.html');
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-page') === current) item.classList.add('active');
+            });
+        })();
     </script>
 </body>
 </html>
