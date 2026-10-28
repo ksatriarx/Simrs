@@ -17,16 +17,17 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        /* SIDEBAR & TOPBAR */
         .sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000; transition: transform 0.3s ease; }
-        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
-        .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
-        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; }
-        .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; }
+        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; flex-shrink: 0; }
+        .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; position: relative; z-index: 10; }
+        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; pointer-events: none; }
+        .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; position: relative; z-index: 11; pointer-events: auto; }
         .nav-item:hover, .nav-item.active { background: #e0f2fe; color: var(--primary); }
         .nav-item i { width: 20px; text-align: center; }
-        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
-        .sidebar-overlay.show { display: block; opacity: 1; }
+
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .sidebar-overlay.show { display: block; opacity: 1; pointer-events: auto; }
+
         .main-content { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - var(--sidebar-width)); transition: margin 0.3s ease; }
         .topbar { height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 90; }
         .menu-toggle { display: none; background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; }
@@ -36,7 +37,6 @@
         .user-role { font-size: 11px; color: var(--text-muted); }
         .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--success); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-        /* FORM */
         .dashboard { padding: 30px; }
         .page-header { margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .page-title { font-size: 24px; font-weight: 700; }
@@ -56,7 +56,6 @@
         .form-group small.error-msg { font-size: 11px; color: var(--danger); display: none; }
         .form-group.has-error small.error-msg { display: block; }
 
-        /* INFO BIAYA */
         .biaya-info { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 12px 16px; margin-top: 10px; grid-column: 1 / -1; }
         .biaya-info h4 { font-size: 13px; font-weight: 700; color: #0369a1; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
         .biaya-list { display: flex; gap: 20px; flex-wrap: wrap; font-size: 12px; color: #075985; }
@@ -66,7 +65,6 @@
         .btn-submit:hover { background: var(--primary-hover); }
         .btn-submit:disabled { background: #9ca3af; cursor: not-allowed; }
 
-        /* TABEL */
         .card-table { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
         .card-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .card-title { font-size: 16px; font-weight: 700; }
@@ -83,7 +81,6 @@
         .badge-selesai { background: #dcfce7; color: #16a34a; }
         .badge-lunas { background: #bbf7d0; color: #15803d; }
 
-        /* TOAST */
         .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
         .toast { padding: 14px 20px; border-radius: 8px; color: white; font-size: 13px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease; min-width: 280px; }
         .toast.success { background: var(--success); }
@@ -112,20 +109,20 @@
     <aside class="sidebar" id="sidebar">
         <div class="brand"><i class="fa-solid fa-hospital"></i> SIMRS<span style="color:var(--text-main)">Pro</span></div>
         <div class="nav-menu">
-            <a href="javascript:void(0)" onclick="navigasiKe('index.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('pendaftaran.html')" class="nav-item active"><i class="fa-solid fa-users"></i> Pendaftaran</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('antrean.html')" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
+            <a href="#" data-page="index.html" onclick="event.preventDefault(); navigasiKe('index.html');" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="#" data-page="pendaftaran.html" onclick="event.preventDefault(); navigasiKe('pendaftaran.html');" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
+            <a href="#" data-page="antrean.html" onclick="event.preventDefault(); navigasiKe('antrean.html');" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
             
             <div class="nav-label">Data & Pelayanan</div>
-            <a href="javascript:void(0)" onclick="navigasiKe('pasien.html')" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('rekam-medis.html')" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('farmasi.html')" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('lab.html')" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
+            <a href="#" data-page="pasien.html" onclick="event.preventDefault(); navigasiKe('pasien.html');" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
+            <a href="#" data-page="rekam-medis.html" onclick="event.preventDefault(); navigasiKe('rekam-medis.html');" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
+            <a href="#" data-page="farmasi.html" onclick="event.preventDefault(); navigasiKe('farmasi.html');" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
+            <a href="#" data-page="lab.html" onclick="event.preventDefault(); navigasiKe('lab.html');" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
 
             <div class="nav-label">Keuangan & Sistem</div>
-            <a href="javascript:void(0)" onclick="navigasiKe('kasir.html')" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('laporan.html')" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('pengaturan.html')" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
+            <a href="#" data-page="kasir.html" onclick="event.preventDefault(); navigasiKe('kasir.html');" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
+            <a href="#" data-page="laporan.html" onclick="event.preventDefault(); navigasiKe('laporan.html');" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
+            <a href="#" data-page="pengaturan.html" onclick="event.preventDefault(); navigasiKe('pengaturan.html');" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
         </div>
     </aside>
 
@@ -245,34 +242,19 @@
 
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- SCRIPT FIREBASE -->
+    <!-- Firebase config terpusat -->
+    <script src="firebase-config.js"></script>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyB5u4UAw9JAmXA6vsuSwuexO5ASR-0Kjn0",
-            authDomain: "simrs-pro.firebaseapp.com",
-            projectId: "simrs-pro",
-            storageBucket: "simrs-pro.firebasestorage.app",
-            messagingSenderId: "745412639051",
-            appId: "1:745412639051:web:e434bc2a118ca2c67750ce"
-        };
-
-        const app = initializeApp(firebaseConfig);
+        const app = initializeApp(window.FIREBASE_CONFIG);
         const db = getFirestore(app);
         const pendaftaranRef = collection(db, "pendaftaran");
 
-        // ============ BIAYA DEFAULT ============
-        const BIAYA_DEFAULT = {
-            admin: 15000,
-            dokter: 50000,
-            tindakan: 25000,
-            obat: 0,
-            lab: 0
-        };
+        const BIAYA_DEFAULT = { admin: 15000, dokter: 50000, tindakan: 25000, obat: 0, lab: 0 };
 
-        // ============ TOAST ============
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -289,43 +271,34 @@
         }
         window.showToast = showToast;
 
-        // ============ GENERATE No. REKAM MEDIS ============
-        // Format: RM-YYYYMMDD-XXX (XXX = urutan hari itu, 3 digit)
         async function generateNoRM() {
             const now = new Date();
             const yyyy = now.getFullYear();
             const mm = String(now.getMonth() + 1).padStart(2, '0');
             const dd = String(now.getDate()).padStart(2, '0');
             const prefix = `RM-${yyyy}${mm}${dd}-`;
-            
-            // Hitung berapa pasien hari ini (query ke Firestore)
             const startOfDay = new Date(yyyy, now.getMonth(), now.getDate()).toISOString();
             const q = query(pendaftaranRef, where("waktu", ">=", startOfDay));
             const snapshot = await getDocs(q);
-            const urutan = snapshot.size + 1;
-            return `${prefix}${String(urutan).padStart(3, '0')}`;
+            return `${prefix}${String(snapshot.size + 1).padStart(3, '0')}`;
         }
 
-        // ============ CEK NIK UNIK ============
         async function isNikExists(nik) {
             const q = query(pendaftaranRef, where("nik", "==", nik));
             const snapshot = await getDocs(q);
             return !snapshot.empty;
         }
 
-        // ============ TOGGLE FIELD BPJS ============
         const inpPenjamin = document.getElementById('inp-penjamin');
         const grpBpjs = document.getElementById('grp-bpjs');
         inpPenjamin.addEventListener('change', () => {
-            if (inpPenjamin.value === 'BPJS') {
-                grpBpjs.style.display = 'flex';
-            } else {
+            if (inpPenjamin.value === 'BPJS') grpBpjs.style.display = 'flex';
+            else {
                 grpBpjs.style.display = 'none';
                 document.getElementById('inp-bpjs').value = '';
             }
         });
 
-        // ============ VALIDASI ============
         function validateForm() {
             let valid = true;
             const nik = document.getElementById('inp-nik');
@@ -334,7 +307,6 @@
             const jk = document.getElementById('inp-jk');
             const poli = document.getElementById('inp-poli');
 
-            // NIK: 16 digit angka
             const grpNik = document.getElementById('grp-nik');
             const msgNik = document.getElementById('msg-nik');
             if (!/^\d{16}$/.test(nik.value)) {
@@ -346,52 +318,31 @@
                 nik.classList.remove('error');
                 grpNik.classList.remove('has-error');
             }
+            if (!nama.value.trim()) { nama.classList.add('error'); valid = false; } else nama.classList.remove('error');
+            if (!tgl.value) { tgl.classList.add('error'); valid = false; } else tgl.classList.remove('error');
+            if (!jk.value) { jk.classList.add('error'); valid = false; } else jk.classList.remove('error');
+            if (!poli.value) { poli.classList.add('error'); valid = false; } else poli.classList.remove('error');
 
-            // Nama
-            if (!nama.value.trim()) { nama.classList.add('error'); valid = false; }
-            else nama.classList.remove('error');
-
-            // Tanggal
-            if (!tgl.value) { tgl.classList.add('error'); valid = false; }
-            else tgl.classList.remove('error');
-
-            // JK
-            if (!jk.value) { jk.classList.add('error'); valid = false; }
-            else jk.classList.remove('error');
-
-            // Poli
-            if (!poli.value) { poli.classList.add('error'); valid = false; }
-            else poli.classList.remove('error');
-
-            // BPJS wajib jika penjamin BPJS
             if (inpPenjamin.value === 'BPJS') {
                 const bpjs = document.getElementById('inp-bpjs');
-                if (!/^\d{13}$/.test(bpjs.value)) {
-                    bpjs.classList.add('error');
-                    valid = false;
-                } else bpjs.classList.remove('error');
+                if (!/^\d{13}$/.test(bpjs.value)) { bpjs.classList.add('error'); valid = false; }
+                else bpjs.classList.remove('error');
             }
-
             return valid;
         }
 
-        // ============ SUBMIT ============
         document.getElementById('formPendaftaran').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
             if (!validateForm()) {
                 showToast('Periksa kembali form Anda!', 'warning');
                 return;
             }
-
             const btn = document.getElementById('btn-simpan');
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
             btn.disabled = true;
-
             const nikValue = document.getElementById('inp-nik').value.trim();
 
             try {
-                // Cek NIK unik
                 const exists = await isNikExists(nikValue);
                 if (exists) {
                     document.getElementById('inp-nik').classList.add('error');
@@ -403,10 +354,7 @@
                     return;
                 }
 
-                // Generate no. RM
                 const noRM = await generateNoRM();
-
-                // Simpan
                 await addDoc(pendaftaranRef, {
                     noRM: noRM,
                     nik: nikValue,
@@ -426,11 +374,8 @@
                 showToast(`✅ ${noRM} berhasil didaftarkan!`, 'success');
                 document.getElementById('formPendaftaran').reset();
                 grpBpjs.style.display = 'none';
-                
-                // Reset error states
                 document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
                 document.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
-
             } catch (error) {
                 console.error(error);
                 showToast('Gagal menyimpan: ' + error.message, 'error');
@@ -440,26 +385,19 @@
             }
         });
 
-        // ============ REALTIME TABEL ============
         let semuaPendaftaran = [];
         const q = query(pendaftaranRef, orderBy("waktu", "desc"));
-        
         onSnapshot(q, (snapshot) => {
             semuaPendaftaran = [];
-            snapshot.forEach((doc) => {
-                semuaPendaftaran.push({ id: doc.id, ...doc.data() });
-            });
+            snapshot.forEach((doc) => semuaPendaftaran.push({ id: doc.id, ...doc.data() }));
             renderTabel(semuaPendaftaran);
         });
 
         function badgeClass(status) {
             const map = {
-                "Menunggu": "badge-menunggu",
-                "Menunggu Lab": "badge-lab",
-                "Hasil Lab Selesai": "badge-hasillab",
-                "Diperiksa": "badge-diperiksa",
-                "Selesai": "badge-selesai",
-                "Lunas": "badge-lunas"
+                "Menunggu": "badge-menunggu", "Menunggu Lab": "badge-lab",
+                "Hasil Lab Selesai": "badge-hasillab", "Diperiksa": "badge-diperiksa",
+                "Selesai": "badge-selesai", "Lunas": "badge-lunas"
             };
             return map[status] || "badge-menunggu";
         }
@@ -467,12 +405,10 @@
         function renderTabel(dataArray) {
             const tbody = document.getElementById('tabel-pendaftaran');
             tbody.innerHTML = '';
-            
             if (dataArray.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Belum ada pendaftaran.</td></tr>';
                 return;
             }
-
             dataArray.slice(0, 20).forEach((data) => {
                 const jam = new Date(data.waktu).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
                 const noRM = data.noRM || '(lama)';
@@ -492,24 +428,35 @@
             const key = document.getElementById('cari-pendaftaran').value.toLowerCase();
             const filtered = semuaPendaftaran.filter(p => 
                 (p.nama || '').toLowerCase().includes(key) || 
-                (p.noRM || '').toLowerCase().includes(key)
-            );
+                (p.noRM || '').toLowerCase().includes(key));
             renderTabel(filtered);
         };
     </script>
 
     <script>
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('show');
-            document.getElementById('sidebarOverlay').classList.toggle('show');
-        }
-        function navigasiKe(url) {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
-            if (sidebar && overlay) { sidebar.classList.remove('show'); overlay.classList.remove('show'); }
+            if (sidebar) sidebar.classList.toggle('show');
+            if (overlay) overlay.classList.toggle('show');
+        }
+        function navigasiKe(url) {
+            try {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebarOverlay');
+                if (sidebar) sidebar.classList.remove('show');
+                if (overlay) overlay.classList.remove('show');
+            } catch (e) { console.warn(e); }
             window.scrollTo(0, 0);
             window.location.href = url;
         }
+        (function autoActiveMenu() {
+            const current = window.getCurrentPage ? window.getCurrentPage() : (window.location.pathname.split('/').pop() || 'index.html');
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-page') === current) item.classList.add('active');
+            });
+        })();
     </script>
 </body>
 </html>
