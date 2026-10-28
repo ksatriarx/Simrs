@@ -12,11 +12,13 @@
             --text-main: #111827; --text-muted: #6b7280;
             --primary: #0ea5e9; --primary-hover: #0284c7;
             --border: #e5e7eb; --sidebar-width: 260px;
+            --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
+            --purple: #9333ea;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        /* SIDEBAR & TOPBAR (Sama seperti sebelumnya) */
+        /* SIDEBAR & TOPBAR */
         .sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000; transition: transform 0.3s ease; }
         .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
         .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
@@ -37,16 +39,34 @@
 
         /* AREA REKAM MEDIS */
         .dashboard { padding: 30px; }
+        .page-header { margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .page-title { font-size: 24px; font-weight: 700; }
+        .page-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
         .patient-selector { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 20px; margin-bottom: 20px; }
         .patient-selector label { font-size: 13px; font-weight: 600; display: block; margin-bottom: 8px; }
-        .patient-selector select { width: 100%; padding: 12px; border: 2px solid var(--primary); border-radius: 8px; font-size: 14px; outline: none; font-weight: 600; color: var(--primary); }
+        .patient-selector select { width: 100%; padding: 12px; border: 2px solid var(--primary); border-radius: 8px; font-size: 14px; outline: none; font-weight: 600; color: var(--primary); background: #f0f9ff; }
+        .patient-selector .hint { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
 
-        .patient-card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .patient-card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
         .patient-info h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
         .patient-info p { font-size: 13px; color: var(--text-muted); }
-        .patient-meta { display: flex; gap: 20px; text-align: right; }
+        .patient-meta { display: flex; gap: 20px; text-align: right; flex-wrap: wrap; }
         .meta-item span { display: block; font-size: 11px; color: var(--text-muted); }
         .meta-item strong { font-size: 14px; }
+
+        /* STATUS BANNER */
+        .status-banner { border-radius: 12px; padding: 14px 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; }
+        .status-banner.mode-pertama { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+        .status-banner.mode-konfirmasi { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
+        .status-banner.mode-readonly { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+        .status-banner i { font-size: 20px; }
+
+        /* HASIL LAB */
+        .hasil-lab-card { background: #f0fdf4; border: 2px solid #86efac; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .hasil-lab-card h3 { font-size: 16px; font-weight: 700; color: #166534; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .hasil-lab-card .lab-content { font-size: 14px; color: #14532d; background: white; padding: 14px; border-radius: 8px; white-space: pre-wrap; font-family: monospace; }
+        .hasil-lab-card .lab-biaya { font-size: 12px; color: #166534; margin-top: 8px; font-weight: 600; }
 
         .emr-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
         .card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 20px; }
@@ -54,12 +74,34 @@
         
         .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 15px; }
         .form-group label { font-size: 12px; font-weight: 600; }
+        .form-group label .req { color: var(--danger); }
         .form-group textarea, .form-group input, .form-group select { padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; background: #f9fafb; font-family: inherit; }
-        .form-group textarea:focus, .form-group input:focus { border-color: var(--primary); background: #fff; }
+        .form-group textarea:focus, .form-group input:focus, .form-group select:focus { border-color: var(--primary); background: #fff; }
+        .form-group textarea:disabled, .form-group input:disabled, .form-group select:disabled { background: #f3f4f6; color: #6b7280; cursor: not-allowed; }
 
-        .btn-save { background: var(--primary); color: white; border: none; padding: 14px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3); }
-        .btn-save:hover { background: var(--primary-hover); }
-        .btn-save:disabled { background: #9ca3af; cursor: not-allowed; }
+        /* BUTTON GROUP */
+        .btn-group { display: flex; flex-direction: column; gap: 10px; }
+        .btn { border: none; padding: 14px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; width: 100%; }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3); }
+        .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+        .btn-success { background: var(--success); color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+        .btn-success:hover:not(:disabled) { background: #059669; }
+        .btn-warning { background: var(--warning); color: white; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); }
+        .btn-warning:hover:not(:disabled) { background: #d97706; }
+
+        /* EMPTY STATE */
+        .empty-state { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 60px 20px; text-align: center; color: var(--text-muted); }
+        .empty-state i { font-size: 60px; color: #d1d5db; margin-bottom: 15px; }
+
+        /* TOAST */
+        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { padding: 14px 20px; border-radius: 8px; color: white; font-size: 13px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease; min-width: 280px; }
+        .toast.success { background: var(--success); }
+        .toast.error { background: var(--danger); }
+        .toast.warning { background: var(--warning); }
+        .toast.info { background: var(--primary); }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
@@ -69,8 +111,8 @@
             .dashboard { padding: 15px; }
             .topbar { padding: 0 15px; }
             .emr-grid { grid-template-columns: 1fr; }
-            .patient-card { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .patient-meta { text-align: left; width: 100%; justify-content: space-between; flex-wrap: wrap; }
+            .patient-card { flex-direction: column; align-items: flex-start; }
+            .patient-meta { text-align: left; width: 100%; justify-content: space-between; }
         }
     </style>
 </head>
@@ -111,69 +153,104 @@
         </header>
 
         <div class="dashboard">
-            
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Rekam Medis Elektronik</h1>
+                    <p class="page-subtitle">Pilih pasien dari antrean untuk mulai pemeriksaan.</p>
+                </div>
+            </div>
+
             <!-- PEMILIH PASIEN -->
             <div class="patient-selector">
-                <label><i class="fa-solid fa-list-check"></i> Pilih Pasien dari Antrean:</label>
-                <select id="pilih-pasien" onchange="tampilkanDataPasien()">
+                <label><i class="fa-solid fa-list-check"></i> Pasien Menunggu Pemeriksaan:</label>
+                <select id="pilih-pasien" onchange="pilihPasien()">
                     <option value="">-- Memuat daftar pasien --</option>
                 </select>
+                <div class="hint"><i class="fa-solid fa-circle-info"></i> Termasuk pasien baru (Menunggu) dan pasien dengan hasil lab selesai (Hasil Lab Selesai).</div>
             </div>
 
-            <!-- DATA DIRI PASIEN -->
-            <div class="patient-card" id="kartu-pasien" style="display: none;">
-                <div class="patient-info">
-                    <h2 id="detail-nama">-</h2>
-                    <p><i class="fa-solid fa-id-card"></i> NIK: <span id="detail-nik">-</span></p>
-                </div>
-                <div class="patient-meta">
-                    <div class="meta-item"><span>Tgl Lahir</span><strong id="detail-tgl">-</strong></div>
-                    <div class="meta-item"><span>Jenis Kelamin</span><strong id="detail-jk">-</strong></div>
-                    <div class="meta-item"><span>Poli</span><strong id="detail-poli">-</strong></div>
-                </div>
+            <!-- EMPTY STATE -->
+            <div id="empty-state" class="empty-state">
+                <i class="fa-solid fa-user-doctor"></i>
+                <p>Pilih pasien untuk memulai pemeriksaan.</p>
             </div>
 
-            <!-- FORM SOAP & RESEP -->
-            <div class="emr-grid">
-                <div class="card">
-                    <h3 class="card-title"><i class="fa-solid fa-notes-medical"></i> Catatan (SOAP)</h3>
-                    <div class="form-group">
-                        <label>S (Subjective) - Keluhan</label>
-                        <textarea id="inp-subjective" rows="2" placeholder="Keluhan pasien..."></textarea>
+            <!-- KONTEN PEMERIKSAAN (disembunyikan default) -->
+            <div id="konten-pemeriksaan" style="display:none;">
+                
+                <!-- STATUS BANNER (dinamis) -->
+                <div id="status-banner" class="status-banner"></div>
+
+                <!-- DATA DIRI PASIEN -->
+                <div class="patient-card">
+                    <div class="patient-info">
+                        <h2 id="detail-nama">-</h2>
+                        <p><i class="fa-solid fa-id-card"></i> <span id="detail-norm">-</span> • NIK: <span id="detail-nik">-</span></p>
                     </div>
-                    <div class="form-group">
-                        <label>O (Objective) - Pemeriksaan Fisik</label>
-                        <textarea id="inp-objective" rows="2" placeholder="TD, Suhu, Nadi..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>A (Assessment) - Diagnosa (ICD-10)</label>
-                        <select id="inp-assessment">
-                            <option value="">Pilih Diagnosa...</option>
-                            <option value="A91">A91 - DBD</option>
-                            <option value="J00">J00 - Common Cold</option>
-                            <option value="K30">K30 - Dispepsia</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>P (Plan) - Rencana Tindakan</label>
-                        <textarea id="inp-plan" rows="2" placeholder="Terapi dan kontrol..."></textarea>
+                    <div class="patient-meta">
+                        <div class="meta-item"><span>Tgl Lahir</span><strong id="detail-tgl">-</strong></div>
+                        <div class="meta-item"><span>Jenis Kelamin</span><strong id="detail-jk">-</strong></div>
+                        <div class="meta-item"><span>Poli</span><strong id="detail-poli">-</strong></div>
+                        <div class="meta-item"><span>Penjamin</span><strong id="detail-penjamin">-</strong></div>
                     </div>
                 </div>
 
-                <div class="card">
-                    <h3 class="card-title"><i class="fa-solid fa-pills"></i> E-Resep</h3>
-                    <div style="padding: 10px; background:#f9fafb; border:1px dashed #ccc; border-radius:8px; margin-bottom:20px; font-size:12px; color:var(--text-muted); text-align:center;">
-                        (Modul pemilihan obat akan dihubungkan ke Database Farmasi nanti)
+                <!-- HASIL LAB (jika mode konfirmasi) -->
+                <div id="hasil-lab-card" class="hasil-lab-card" style="display:none;">
+                    <h3><i class="fa-solid fa-flask-vial"></i> Hasil Laboratorium</h3>
+                    <div class="lab-content" id="lab-content">-</div>
+                    <div class="lab-biaya" id="lab-biaya"></div>
+                </div>
+
+                <!-- GRID SOAP + AKSI -->
+                <div class="emr-grid">
+                    <div class="card">
+                        <h3 class="card-title"><i class="fa-solid fa-notes-medical"></i> Catatan (SOAP)</h3>
+                        <div class="form-group">
+                            <label>S (Subjective) - Keluhan <span class="req">*</span></label>
+                            <textarea id="inp-subjective" rows="2" placeholder="Keluhan yang dirasakan pasien..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>O (Objective) - Pemeriksaan Fisik</label>
+                            <textarea id="inp-objective" rows="2" placeholder="TD, Suhu, Nadi, RR, SpO2..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>A (Assessment) - Diagnosa (ICD-10)</label>
+                            <select id="inp-assessment">
+                                <option value="">Pilih Diagnosa...</option>
+                                <option value="A91">A91 - Demam Berdarah Dengue</option>
+                                <option value="J00">J00 - Common Cold (ISPA)</option>
+                                <option value="K30">K30 - Dispepsia</option>
+                                <option value="I10">I10 - Hipertensi Esensial</option>
+                                <option value="E11">E11 - Diabetes Mellitus Tipe 2</option>
+                                <option value="R50">R50 - Demam Tidak Spesifik</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>P (Plan) - Rencana Tindakan</label>
+                            <textarea id="inp-plan" rows="2" placeholder="Terapi, edukasi, kontrol..."></textarea>
+                        </div>
                     </div>
-                    <button class="btn-save" id="btn-simpan-medis" onclick="simpanRekamMedis()">
-                        <i class="fa-solid fa-floppy-disk"></i> Selesaikan Pemeriksaan
-                    </button>
+
+                    <div class="card">
+                        <h3 class="card-title"><i class="fa-solid fa-bolt"></i> Aksi Pemeriksaan</h3>
+                        <div class="btn-group" id="btn-group">
+                            <!-- Tombol akan diisi dinamis berdasarkan mode -->
+                        </div>
+                        <div style="margin-top:15px; padding:12px; background:#f9fafb; border:1px dashed #ccc; border-radius:8px; font-size:11px; color:var(--text-muted); line-height:1.6;">
+                            <i class="fa-solid fa-circle-info"></i> <strong>Alur:</strong><br>
+                            • <strong>Selesaikan</strong> → Pasien ke Farmasi<br>
+                            • <strong>Kirim ke Lab</strong> → Pasien ke Laboratorium, setelah hasil keluar kembali ke dokter ini
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- SCRIPT FIREBASE UNTUK REKAM MEDIS & UPDATE STATUS -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- SCRIPT FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, onSnapshot, query, where, doc, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -189,109 +266,35 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+        // ============ TOAST ============
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', warning: 'fa-triangle-exclamation', info: 'fa-circle-info' };
+            toast.innerHTML = `<i class="fa-solid ${icons[type]}"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.transition = 'opacity 0.3s, transform 0.3s';
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // ============ STATE ============
+        let pasienMap = {}; // id -> data
+        let idPasienAktif = null;
+        let modeAktif = null; // 'pertama' | 'konfirmasi'
+
+        // ============ TARIK PASIEN (Menunggu + Hasil Lab Selesai) ============
+        // Karena Firestore tidak bisa OR di 1 query tanpa composite index,
+        // kita buat 2 listener terpisah dan gabungkan di state.
         
-        const q = query(collection(db, "pendaftaran"), where("status", "==", "Menunggu"));
-        const selectElement = document.getElementById('pilih-pasien');
-        let daftarPasien = {};
-        let idPasienAktif = ""; // Menyimpan ID dokumen pasien yang sedang diperiksa
+        let listMenunggu = [];
+        let listHasilLab = [];
 
-        // 1. TARIK DATA PASIEN "MENUNGGU"
-        onSnapshot(q, (snapshot) => {
-            selectElement.innerHTML = '<option value="">-- Pilih Pasien --</option>';
-            daftarPasien = {}; 
-            
-            if (snapshot.empty) {
-                selectElement.innerHTML = '<option value="">Tidak ada antrean pasien</option>';
-                document.getElementById('kartu-pasien').style.display = 'none';
-                return;
-            }
-
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                daftarPasien[doc.id] = data; 
-                selectElement.innerHTML += `<option value="${doc.id}">${data.nama} (${data.poli})</option>`;
-            });
-        });
-
-        // 2. TAMPILKAN DATA PASIEN SAAT DIPILIH
-        window.tampilkanDataPasien = () => {
-            idPasienAktif = selectElement.value;
-            const kartu = document.getElementById('kartu-pasien');
-
-            if (idPasienAktif && daftarPasien[idPasienAktif]) {
-                const data = daftarPasien[idPasienAktif];
-                kartu.style.display = 'flex';
-                document.getElementById('detail-nama').innerText = data.nama;
-                document.getElementById('detail-nik').innerText = data.nik;
-                document.getElementById('detail-tgl').innerText = data.tglLahir;
-                document.getElementById('detail-jk').innerText = data.jk === 'L' ? 'Laki-laki' : 'Perempuan';
-                document.getElementById('detail-poli').innerText = data.poli;
-            } else {
-                kartu.style.display = 'none';
-            }
-        };
-
-        // 3. SIMPAN REKAM MEDIS & UBAH STATUS PASIEN
-        window.simpanRekamMedis = async () => {
-            if (!idPasienAktif) {
-                alert("Pilih pasien terlebih dahulu!");
-                return;
-            }
-
-            const btn = document.getElementById('btn-simpan-medis');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
-            btn.disabled = true;
-
-            try {
-                // A. Simpan Catatan SOAP ke koleksi "rekam_medis"
-                await addDoc(collection(db, "rekam_medis"), {
-                    idPendaftaran: idPasienAktif,
-                    namaPasien: document.getElementById('detail-nama').innerText,
-                    subjective: document.getElementById('inp-subjective').value,
-                    objective: document.getElementById('inp-objective').value,
-                    assessment: document.getElementById('inp-assessment').value,
-                    plan: document.getElementById('inp-plan').value,
-                    waktuDiperiksa: new Date().toISOString()
-                });
-
-                // B. Ubah status pasien di koleksi "pendaftaran" menjadi "Diperiksa"
-                const pasienRef = doc(db, "pendaftaran", idPasienAktif);
-                await updateDoc(pasienRef, {
-                    status: "Diperiksa"
-                });
-
-                alert("✅ Berhasil! Rekam medis tersimpan dan pasien selesai diperiksa.");
-                
-                // Reset Form
-                document.getElementById('kartu-pasien').style.display = 'none';
-                document.getElementById('inp-subjective').value = '';
-                document.getElementById('inp-objective').value = '';
-                document.getElementById('inp-assessment').value = '';
-                document.getElementById('inp-plan').value = '';
-                selectElement.value = '';
-
-            } catch (error) {
-                console.error(error);
-                alert("❌ Gagal menyimpan: " + error.message);
-            } finally {
-                btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Selesaikan Pemeriksaan';
-                btn.disabled = false;
-            }
-        };
-    </script>
-
-    <script>
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('show');
-            document.getElementById('sidebarOverlay').classList.toggle('show');
-        }
-        function navigasiKe(url) {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            if (sidebar && overlay) { sidebar.classList.remove('show'); overlay.classList.remove('show'); }
-            window.scrollTo(0, 0);
-            window.location.href = url;
-        }
-    </script>
-</body>
-</html>
+        const qMenunggu = query(collection(db, "pendaftaran"), where("status", "==", "Menunggu"));
+        onSnapshot(qMenunggu, (snap) => {
+            listMenunggu = snap.docs.map(d => ({ id: d.id, ...
