@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMRS Pro - Pengaturan Modul</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-body: #f3f4f6; --bg-sidebar: #ffffff; --bg-card: #ffffff;
+            --text-main: #111827; --text-muted: #6b7280;
+            --primary: #0ea5e9; --primary-hover: #0284c7;
+            --border: #e5e7eb; --sidebar-width: 260px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: var(--sidebar-width); background: var(--bg-sidebar);
+            border-right: 1px solid var(--border); position: fixed;
+            top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
+        .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
+        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; }
+        .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; }
+        .nav-item:hover, .nav-item.active { background: #e0f2fe; color: var(--primary); }
+        .nav-item i { width: 20px; text-align: center; }
+
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
+        .sidebar-overlay.show { display: block; opacity: 1; }
+
+        /* MAIN CONTENT */
+        .main-content { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - var(--sidebar-width)); transition: margin 0.3s ease; }
+        .topbar { height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 90; }
+        .menu-toggle { display: none; background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; }
+        .user-profile { display: flex; align-items: center; gap: 15px; }
+        .user-info { text-align: right; }
+        .user-name { font-size: 14px; font-weight: 600; }
+        .user-role { font-size: 11px; color: var(--text-muted); }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: #64748b; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+
+        /* DASHBOARD AREA */
+        .dashboard { padding: 30px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 10px; }
+        .page-title { font-size: 24px; font-weight: 700; }
+        
+        /* CARD PENGATURAN */
+        .setting-card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 20px; }
+        .setting-header { padding: 20px; border-bottom: 1px solid var(--border); }
+        .setting-header h2 { font-size: 18px; font-weight: 700; }
+        .setting-header p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+        
+        .setting-list { padding: 0; }
+        .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border); }
+        .setting-item:last-child { border-bottom: none; }
+        
+        .setting-info { flex-grow: 1; padding-right: 20px; }
+        .setting-info h3 { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .setting-info p { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+        
+        /* TOGGLE SWITCH (Tombol Geser) */
+        .switch { position: relative; display: inline-block; width: 46px; height: 24px; flex-shrink: 0; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--primary); }
+        input:checked + .slider:before { transform: translateX(22px); }
+
+        /* Tombol Simpan */
+        .btn-save { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; transition: background 0.2s; }
+        .btn-save:hover { background: var(--primary-hover); }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.show { transform: translateX(0); }
+            .main-content { margin-left: 0; width: 100%; }
+            .menu-toggle { display: block; }
+            .dashboard { padding: 15px; }
+            .topbar { padding: 0 15px; }
+            .page-title { font-size: 20px; }
+            .setting-item { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .switch { align-self: flex-end; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand"><i class="fa-solid fa-hospital"></i> SIMRS<span style="color:var(--text-main)">Pro</span></div>
+        <div class="nav-menu">
+            <a href="javascript:void(0)" onclick="navigasiKe('simrs.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('pendaftaran.html')" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('antrean.html')" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
+            
+            <div class="nav-label">Pelayanan Medis</div>
+            <a href="javascript:void(0)" onclick="navigasiKe('rekam-medis.html')" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('farmasi.html')" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('lab.html')" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
+
+            <div class="nav-label">Keuangan & Sistem</div>
+            <a href="javascript:void(0)" onclick="navigasiKe('kasir.html')" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
+            <!-- AKTIF DI PENGATURAN -->
+            <a href="javascript:void(0)" onclick="navigasiKe('pengaturan.html')" class="nav-item active"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <header class="topbar">
+            <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+            <div class="user-profile" style="margin-left:auto;">
+                <div class="user-info">
+                    <div class="user-name">Admin Klinik</div>
+                    <div class="user-role">Super Admin</div>
+                </div>
+                <div class="avatar">AD</div>
+            </div>
+        </header>
+
+        <div class="dashboard">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Pengaturan Modul</h1>
+                    <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">Aktifkan atau matikan fitur sesuai kebutuhan klinik Anda.</p>
+                </div>
+            </div>
+
+            <div class="setting-card">
+                <div class="setting-header">
+                    <h2>Modul Pelayanan</h2>
+                    <p>Jika dimatikan, menu terkait tidak akan muncul di sidebar.</p>
+                </div>
+                <div class="setting-list">
+                    
+                    <!-- TOGGLE 1: REKAM MEDIS -->
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3><i class="fa-solid fa-stethoscope" style="color:var(--primary)"></i> Rekam Medis Elektronik</h3>
+                            <p>Catatan SOAP, diagnosa dokter, dan riwayat penyakit pasien.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- TOGGLE 2: FARMASI -->
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3><i class="fa-solid fa-pills" style="color:var(--primary)"></i> Farmasi & Apotek</h3>
+                            <p>Manajemen resep dokter dan stok gudang obat.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- TOGGLE 3: LABORATORIUM -->
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3><i class="fa-solid fa-flask" style="color:var(--primary)"></i> Laboratorium</h3>
+                            <p>Pemeriksaan darah, urine, dan hasil penunjang lainnya.</p>
+                        </div>
+                        <label class="switch">
+                            <!-- Saya set tidak dicentang sebagai contoh simulasi -->
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- TOGGLE 4: KASIR -->
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3><i class="fa-solid fa-file-invoice-dollar" style="color:var(--primary)"></i> Kasir & Billing</h3>
+                            <p>Proses pembayaran pasien dan cetak struk.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+
+            <button class="btn-save" onclick="alert('Simulasi: Pengaturan berhasil disimpan!')">
+                <i class="fa-solid fa-floppy-disk"></i> Simpan Pengaturan
+            </button>
+
+        </div>
+    </main>
+
+    <!-- SCRIPT -->
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
+        }
+        function navigasiKe(url) {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar && overlay) { sidebar.classList.remove('show'); overlay.classList.remove('show'); }
+            window.scrollTo(0, 0);
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>

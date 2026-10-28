@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMRS Pro - Rekam Medis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-body: #f3f4f6; --bg-sidebar: #ffffff; --bg-card: #ffffff;
+            --text-main: #111827; --text-muted: #6b7280;
+            --primary: #0ea5e9; --primary-hover: #0284c7;
+            --border: #e5e7eb; --sidebar-width: 260px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
+
+        .sidebar {
+            width: var(--sidebar-width); background: var(--bg-sidebar);
+            border-right: 1px solid var(--border); position: fixed;
+            top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
+        .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
+        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; }
+        .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; }
+        .nav-item:hover, .nav-item.active { background: #e0f2fe; color: var(--primary); }
+        .nav-item i { width: 20px; text-align: center; }
+
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
+        .sidebar-overlay.show { display: block; opacity: 1; }
+
+        .main-content { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - var(--sidebar-width)); transition: margin 0.3s ease; }
+        .topbar { height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 90; }
+        .menu-toggle { display: none; background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; }
+        .user-profile { display: flex; align-items: center; gap: 15px; }
+        .user-info { text-align: right; }
+        .user-name { font-size: 14px; font-weight: 600; }
+        .user-role { font-size: 11px; color: var(--text-muted); }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+
+        .dashboard { padding: 30px; }
+        
+        .patient-card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .patient-info h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+        .patient-info p { font-size: 13px; color: var(--text-muted); }
+        .patient-meta { display: flex; gap: 20px; text-align: right; }
+        .meta-item span { display: block; font-size: 11px; color: var(--text-muted); }
+        .meta-item strong { font-size: 14px; }
+
+        .emr-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 20px; }
+        .card-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        
+        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 15px; }
+        .form-group label { font-size: 12px; font-weight: 600; }
+        .form-group textarea, .form-group input, .form-group select { padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; background: #f9fafb; font-family: inherit; }
+        .form-group textarea:focus, .form-group input:focus { border-color: var(--primary); background: #fff; }
+
+        .resep-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+        .resep-table th, .resep-table td { padding: 10px; font-size: 12px; border-bottom: 1px solid var(--border); text-align: left; }
+        .resep-table th { background: #f9fafb; color: var(--text-muted); }
+        
+        .btn-add-obat { background: #f3f4f6; color: var(--text-main); border: 1px dashed var(--border); padding: 10px; border-radius: 8px; width: 100%; font-size: 12px; font-weight: 600; cursor: pointer; margin-bottom: 20px; transition: all 0.2s; }
+        .btn-add-obat:hover { background: #e5e7eb; border-color: var(--primary); color: var(--primary); }
+
+        .btn-save { background: var(--primary); color: white; border: none; padding: 14px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3); }
+        .btn-save:hover { background: var(--primary-hover); }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.show { transform: translateX(0); }
+            .main-content { margin-left: 0; width: 100%; }
+            .menu-toggle { display: block; }
+            .dashboard { padding: 15px; }
+            .topbar { padding: 0 15px; }
+            .emr-grid { grid-template-columns: 1fr; }
+            .patient-card { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .patient-meta { text-align: left; width: 100%; justify-content: space-between; flex-wrap: wrap; }
+            .table-responsive { overflow-x: auto; width: 100%; }
+            table { min-width: 400px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="brand"><i class="fa-solid fa-hospital"></i> SIMRS<span style="color:var(--text-main)">Pro</span></div>
+        <div class="nav-menu">
+            <a href="javascript:void(0)" onclick="navigasiKe('simrs.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('pendaftaran.html')" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('antrean.html')" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
+            
+            <div class="nav-label">Pelayanan Medis</div>
+            <a href="javascript:void(0)" onclick="navigasiKe('rekam-medis.html')" class="nav-item active"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('farmasi.html')" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('lab.html')" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
+
+            <div class="nav-label">Keuangan & Sistem</div>
+            <a href="javascript:void(0)" onclick="navigasiKe('kasir.html')" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('pengaturan.html')" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+            <div class="user-profile" style="margin-left:auto;">
+                <div class="user-info">
+                    <div class="user-name">dr. Athajar</div>
+                    <div class="user-role">Dokter Umum</div>
+                </div>
+                <div class="avatar">A</div>
+            </div>
+        </header>
+
+        <div class="dashboard">
+            <div class="patient-card">
+                <div class="patient-info">
+                    <h2>Budi Santoso</h2>
+                    <p><i class="fa-solid fa-id-card"></i> RM-00122 • NIK: 1101xxxxxxxxxxxx</p>
+                </div>
+                <div class="patient-meta">
+                    <div class="meta-item"><span>Tgl Lahir</span><strong>12 Mei 1990 (34 thn)</strong></div>
+                    <div class="meta-item"><span>Poli</span><strong>Poli Umum</strong></div>
+                    <div class="meta-item"><span>Penjamin</span><strong>Umum</strong></div>
+                </div>
+            </div>
+
+            <div class="emr-grid">
+                <div class="card">
+                    <h3 class="card-title"><i class="fa-solid fa-notes-medical"></i> Catatan (SOAP)</h3>
+                    <div class="form-group">
+                        <label>S (Subjective) - Keluhan</label>
+                        <textarea rows="2" placeholder="Keluhan pasien..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>O (Objective) - Pemeriksaan Fisik</label>
+                        <textarea rows="2" placeholder="TD, Suhu, Nadi..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>A (Assessment) - Diagnosa (ICD-10)</label>
+                        <select>
+                            <option value="">Pilih Diagnosa...</option>
+                            <option value="A91">A91 - DBD</option>
+                            <option value="J00">J00 - Common Cold</option>
+                            <option value="K30">K30 - Dispepsia</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>P (Plan) - Rencana Tindakan</label>
+                        <textarea rows="2" placeholder="Terapi dan kontrol..."></textarea>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title"><i class="fa-solid fa-pills"></i> E-Resep</h3>
+                    <div class="table-responsive">
+                        <table class="resep-table">
+                            <thead>
+                                <tr><th>Nama Obat</th><th>Qty</th><th>Aturan</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Paracetamol 500mg</td><td>10 Tab</td><td>3x1</td></tr>
+                                <tr><td>Amoxicillin 500mg</td><td>15 Kap</td><td>3x1</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn-add-obat"><i class="fa-solid fa-plus"></i> Tambah Obat</button>
+                    <button class="btn-save" onclick="alert('Simulasi: Rekam Medis disimpan!')">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan Pemeriksaan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
+        }
+        function navigasiKe(url) {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar && overlay) { sidebar.classList.remove('show'); overlay.classList.remove('show'); }
+            window.scrollTo(0, 0);
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>

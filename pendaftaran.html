@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMRS Pro - Pendaftaran</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS SAMA SEPERTI SEBELUMNYA (Tidak diubah) */
+        :root {
+            --bg-body: #f3f4f6; --bg-sidebar: #ffffff; --bg-card: #ffffff;
+            --text-main: #111827; --text-muted: #6b7280;
+            --primary: #0ea5e9; --primary-hover: #0284c7;
+            --border: #e5e7eb; --sidebar-width: 260px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
+
+        .sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000; transition: transform 0.3s ease; }
+        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
+        .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
+        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; }
+        .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; }
+        .nav-item:hover, .nav-item.active { background: #e0f2fe; color: var(--primary); }
+        .nav-item i { width: 20px; text-align: center; }
+
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
+        .sidebar-overlay.show { display: block; opacity: 1; }
+
+        .main-content { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - var(--sidebar-width)); transition: margin 0.3s ease; }
+        .topbar { height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 90; }
+        .menu-toggle { display: none; background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; }
+        .user-profile { display: flex; align-items: center; gap: 15px; }
+        .user-info { text-align: right; }
+        .user-name { font-size: 14px; font-weight: 600; }
+        .user-role { font-size: 11px; color: var(--text-muted); }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: #10b981; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+
+        .dashboard { padding: 30px; }
+        .page-header { margin-bottom: 24px; }
+        .page-title { font-size: 24px; font-weight: 700; }
+        
+        .form-card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 24px; margin-bottom: 30px; }
+        .form-title { font-size: 16px; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-group label { font-size: 12px; font-weight: 600; }
+        .form-group input, .form-group select, .form-group textarea { padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; background: #f9fafb; }
+        .form-group input:focus { border-color: var(--primary); background: #fff; }
+        
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 10px; display: flex; align-items: center; gap: 8px; }
+        .btn-submit:disabled { background: #9ca3af; cursor: not-allowed; }
+
+        .card-table { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
+        .card-header { padding: 20px; border-bottom: 1px solid var(--border); }
+        .card-title { font-size: 16px; font-weight: 700; }
+        .table-responsive { overflow-x: auto; width: 100%; }
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 600px; }
+        th, td { padding: 16px 20px; font-size: 13px; border-bottom: 1px solid var(--border); }
+        th { background: #f9fafb; color: var(--text-muted); font-weight: 600; font-size: 11px; }
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; background: #fef3c7; color: #d97706; }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.show { transform: translateX(0); }
+            .main-content { margin-left: 0; width: 100%; }
+            .menu-toggle { display: block; }
+            .dashboard { padding: 15px; }
+            .topbar { padding: 0 15px; }
+            .page-title { font-size: 20px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-card { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="brand"><i class="fa-solid fa-hospital"></i> SIMRS<span style="color:var(--text-main)">Pro</span></div>
+        <div class="nav-menu">
+            <a href="javascript:void(0)" onclick="navigasiKe('simrs.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('pendaftaran.html')" class="nav-item active"><i class="fa-solid fa-users"></i> Pendaftaran</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('antrean.html')" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
+            
+            <div class="nav-label">Data & Pelayanan</div>
+            <a href="javascript:void(0)" onclick="navigasiKe('pasien.html')" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('rekam-medis.html')" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('farmasi.html')" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('lab.html')" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
+
+            <div class="nav-label">Keuangan & Sistem</div>
+            <a href="javascript:void(0)" onclick="navigasiKe('kasir.html')" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('laporan.html')" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('pengaturan.html')" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+            <div class="user-profile" style="margin-left:auto;">
+                <div class="user-info">
+                    <div class="user-name">Admin</div>
+                    <div class="user-role">Front Office</div>
+                </div>
+                <div class="avatar">AD</div>
+            </div>
+        </header>
+
+        <div class="dashboard">
+            <div class="page-header">
+                <h1 class="page-title">Pendaftaran Pasien Baru</h1>
+            </div>
+
+            <div class="form-card">
+                <h2 class="form-title">Formulir Data Diri</h2>
+                <!-- FORM SUDAH DIBERI ID AGAR BISA DIBACA JAVASCRIPT -->
+                <form id="formPendaftaran">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>NIK *</label>
+                            <input type="number" id="inp-nik" placeholder="16 Digit NIK" required>
+                        </div>
+                        <div class="form-group">
+                            <label>No. BPJS (Opsional)</label>
+                            <input type="number" id="inp-bpjs" placeholder="13 Digit No. BPJS">
+                        </div>
+                        <div class="form-group">
+                            <label>Nama Lengkap *</label>
+                            <input type="text" id="inp-nama" placeholder="Sesuai KTP" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Tanggal Lahir *</label>
+                            <input type="date" id="inp-tgl" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Jenis Kelamin *</label>
+                            <select id="inp-jk" required>
+                                <option value="">Pilih...</option>
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>No. Handphone</label>
+                            <input type="tel" id="inp-hp" placeholder="08xxxxxxxxxx">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Alamat Lengkap</label>
+                            <textarea id="inp-alamat" rows="2" placeholder="Jalan, RT/RW, Desa, Kecamatan..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Poli Tujuan *</label>
+                            <select id="inp-poli" required>
+                                <option value="">Pilih Poli...</option>
+                                <option value="Poli Umum">Poli Umum</option>
+                                <option value="Poli Gigi">Poli Gigi</option>
+                                <option value="Poli Anak">Poli Anak</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="btn-simpan">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan & Daftarkan
+                    </button>
+                </form>
+            </div>
+
+            <div class="card-table">
+                <div class="card-header">
+                    <h2 class="card-title">Pendaftaran Hari Ini</h2>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr><th>Waktu</th><th>Nama Pasien</th><th>Poli</th><th>Status</th></tr>
+                        </thead>
+                        <tbody id="tabel-pendaftaran">
+                            <!-- Data dari Firebase akan muncul di sini -->
+                            <tr><td colspan="4" style="text-align:center;">Memuat data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- SCRIPT FIREBASE UNTUK MENYIMPAN DATA -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Konfigurasi Firebase milikmu
+        const firebaseConfig = {
+            apiKey: "AIzaSyCceiYONY_sx9ivD0CDDQGoB9OXm05h4CY",
+            authDomain: "kebab-idi.firebaseapp.com",
+            projectId: "kebab-idi",
+            storageBucket: "kebab-idi.firebasestorage.app",
+            messagingSenderId: "303997052314",
+            appId: "1:303997052314:web:1db122bc5911297b710623"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const pendaftaranRef = collection(db, "pendaftaran");
+
+        // 1. FUNGSI UNTUK MENYIMPAN DATA KE FIREBASE
+        document.getElementById('formPendaftaran').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Mencegah halaman refresh
+            const btn = document.getElementById('btn-simpan');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+            btn.disabled = true;
+
+            try {
+                await addDoc(pendaftaranRef, {
+                    nik: document.getElementById('inp-nik').value,
+                    bpjs: document.getElementById('inp-bpjs').value,
+                    nama: document.getElementById('inp-nama').value,
+                    tglLahir: document.getElementById('inp-tgl').value,
+                    jk: document.getElementById('inp-jk').value,
+                    hp: document.getElementById('inp-hp').value,
+                    alamat: document.getElementById('inp-alamat').value,
+                    poli: document.getElementById('inp-poli').value,
+                    status: "Menunggu",
+                    waktu: new Date().toISOString()
+                });
+                
+                alert("✅ Berhasil! Data pasien tersimpan di Firebase.");
+                document.getElementById('formPendaftaran').reset(); // Kosongkan form
+            } catch (error) {
+                console.error("Error: ", error);
+                alert("❌ Gagal menyimpan data: " + error.message);
+            } finally {
+                btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan & Daftarkan';
+                btn.disabled = false;
+            }
+        });
+
+        // 2. FUNGSI UNTUK MENAMPILKAN DATA REAL-TIME DI TABEL
+        const q = query(pendaftaranRef, orderBy("waktu", "desc"));
+        onSnapshot(q, (snapshot) => {
+            const tbody = document.getElementById('tabel-pendaftaran');
+            tbody.innerHTML = ''; // Kosongkan tabel dulu
+            
+            if (snapshot.empty) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Belum ada pendaftaran hari ini.</td></tr>';
+                return;
+            }
+
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                // Format jam dari timestamp
+                const jam = new Date(data.waktu).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
+                
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${jam}</td>
+                        <td><strong>${data.nama}</strong></td>
+                        <td>${data.poli}</td>
+                        <td><span class="badge">${data.status}</span></td>
+                    </tr>
+                `;
+            });
+        });
+    </script>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
+        }
+        function navigasiKe(url) {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar && overlay) { sidebar.classList.remove('show'); overlay.classList.remove('show'); }
+            window.scrollTo(0, 0);
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>

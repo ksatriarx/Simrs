@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMRS Pro - Laboratorium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-body: #f3f4f6; --bg-sidebar: #ffffff; --bg-card: #ffffff;
+            --text-main: #111827; --text-muted: #6b7280;
+            --primary: #0ea5e9; --primary-hover: #0284c7;
+            --border: #e5e7eb; --sidebar-width: 260px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: var(--sidebar-width); background: var(--bg-sidebar);
+            border-right: 1px solid var(--border); position: fixed;
+            top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
+        .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
+        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; }
+        .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; }
+        .nav-item:hover, .nav-item.active { background: #e0f2fe; color: var(--primary); }
+        .nav-item i { width: 20px; text-align: center; }
+
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
+        .sidebar-overlay.show { display: block; opacity: 1; }
+
+        /* MAIN CONTENT */
+        .main-content { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - var(--sidebar-width)); transition: margin 0.3s ease; }
+        .topbar { height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 90; }
+        .menu-toggle { display: none; background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; }
+        .user-profile { display: flex; align-items: center; gap: 15px; }
+        .user-info { text-align: right; }
+        .user-name { font-size: 14px; font-weight: 600; }
+        .user-role { font-size: 11px; color: var(--text-muted); }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: #8b5cf6; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+
+        /* DASHBOARD AREA */
+        .dashboard { padding: 30px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 10px; }
+        .page-title { font-size: 24px; font-weight: 700; }
+        
+        /* TABEL */
+        .card-table { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 20px; }
+        .card-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .card-title { font-size: 16px; font-weight: 700; }
+        .table-responsive { overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; }
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 600px; }
+        th, td { padding: 16px 20px; font-size: 13px; border-bottom: 1px solid var(--border); }
+        th { background: #f9fafb; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 11px; white-space: nowrap; }
+        tr:hover { background: #f9fafb; }
+        
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+        .badge-waiting { background: #fef3c7; color: #d97706; }
+        .badge-done { background: #dcfce7; color: #16a34a; }
+
+        .btn-action { background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .btn-action:hover { background: var(--primary-hover); }
+        .btn-outline { background: transparent; color: var(--primary); border: 1px solid var(--primary); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.show { transform: translateX(0); }
+            .main-content { margin-left: 0; width: 100%; }
+            .menu-toggle { display: block; }
+            .dashboard { padding: 15px; }
+            .topbar { padding: 0 15px; }
+            .page-title { font-size: 20px; }
+            .page-header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand"><i class="fa-solid fa-hospital"></i> SIMRS<span style="color:var(--text-main)">Pro</span></div>
+        <div class="nav-menu">
+            <a href="javascript:void(0)" onclick="navigasiKe('simrs.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('pendaftaran.html')" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('antrean.html')" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
+            
+            <div class="nav-label">Pelayanan Medis</div>
+            <a href="javascript:void(0)" onclick="navigasiKe('rekam-medis.html')" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('farmasi.html')" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
+            <!-- AKTIF DI LAB -->
+            <a href="javascript:void(0)" onclick="navigasiKe('lab.html')" class="nav-item active"><i class="fa-solid fa-flask"></i> Laboratorium</a>
+
+            <div class="nav-label">Keuangan & Sistem</div>
+            <a href="javascript:void(0)" onclick="navigasiKe('kasir.html')" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('pengaturan.html')" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <header class="topbar">
+            <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+            <div class="user-profile" style="margin-left:auto;">
+                <div class="user-info">
+                    <div class="user-name">Petugas Lab</div>
+                    <div class="user-role">Analis Kesehatan</div>
+                </div>
+                <div class="avatar">L</div>
+            </div>
+        </header>
+
+        <div class="dashboard">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Laboratorium Klinik</h1>
+                    <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">Kelola permintaan dan hasil pemeriksaan penunjang.</p>
+                </div>
+            </div>
+
+            <!-- TABEL PERMINTAAN LAB -->
+            <div class="card-table">
+                <div class="card-header">
+                    <h2 class="card-title">Permintaan Pemeriksaan Lab</h2>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr><th>Waktu</th><th>No. RM</th><th>Nama Pasien</th><th>Jenis Pemeriksaan</th><th>Dokter Pengirim</th><th>Status</th><th>Aksi</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>09:20</td>
+                                <td><strong>RM-00122</strong></td>
+                                <td>Budi Santoso</td>
+                                <td>Darah Lengkap</td>
+                                <td>dr. Athajar</td>
+                                <td><span class="badge badge-waiting">Menunggu Sampel</span></td>
+                                <td><button class="btn-action">Input Hasil</button></td>
+                            </tr>
+                            <tr>
+                                <td>09:35</td>
+                                <td><strong>RM-00124</strong></td>
+                                <td>Dewi Lestari</td>
+                                <td>Gula Darah Sewaktu</td>
+                                <td>dr. Sarah</td>
+                                <td><span class="badge badge-done">Selesai</span></td>
+                                <td><button class="btn-outline">Lihat Hasil</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CONTOH FORM INPUT HASIL (Disembunyikan) -->
+            <div class="card-table" style="border: 2px dashed var(--primary); background: #f0f9ff;">
+                <div class="card-header">
+                    <h2 class="card-title" style="color: var(--primary);"><i class="fa-solid fa-pen-to-square"></i> Form Input Hasil Lab (Simulasi)</h2>
+                </div>
+                <div style="padding: 20px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div>
+                            <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 5px;">Hemoglobin (Hb)</label>
+                            <input type="text" placeholder="14.5 g/dL" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 5px;">Leukosit (WBC)</label>
+                            <input type="text" placeholder="8.000 /uL" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 5px;">Trombosit (PLT)</label>
+                            <input type="text" placeholder="250.000 /uL" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
+                        </div>
+                    </div>
+                    <button class="btn-action" style="padding: 10px 20px;" onclick="alert('Simulasi: Hasil lab berhasil disimpan dan dikirim ke Dokter!')">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan & Validasi Hasil
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- SCRIPT -->
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
+        }
+        function navigasiKe(url) {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar && overlay) { sidebar.classList.remove('show'); overlay.classList.remove('show'); }
+            window.scrollTo(0, 0);
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>
