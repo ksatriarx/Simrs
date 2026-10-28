@@ -16,24 +16,16 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        /* SIDEBAR */
-        .sidebar {
-            width: var(--sidebar-width); background: var(--bg-sidebar);
-            border-right: 1px solid var(--border); position: fixed;
-            top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000;
-            transition: transform 0.3s ease;
-        }
+        /* SIDEBAR & TOPBAR */
+        .sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000; transition: transform 0.3s ease; }
         .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
         .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
         .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; }
         .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; }
         .nav-item:hover, .nav-item.active { background: #e0f2fe; color: var(--primary); }
         .nav-item i { width: 20px; text-align: center; }
-
         .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
         .sidebar-overlay.show { display: block; opacity: 1; }
-
-        /* MAIN CONTENT */
         .main-content { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - var(--sidebar-width)); transition: margin 0.3s ease; }
         .topbar { height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 90; }
         .menu-toggle { display: none; background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; }
@@ -91,27 +83,27 @@
 
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
         <div class="brand"><i class="fa-solid fa-hospital"></i> SIMRS<span style="color:var(--text-main)">Pro</span></div>
         <div class="nav-menu">
-            <a href="javascript:void(0)" onclick="navigasiKe('simrs.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('index.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
             <a href="javascript:void(0)" onclick="navigasiKe('pendaftaran.html')" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
             <a href="javascript:void(0)" onclick="navigasiKe('antrean.html')" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
             
-            <div class="nav-label">Pelayanan Medis</div>
+            <div class="nav-label">Data & Pelayanan</div>
+            <a href="javascript:void(0)" onclick="navigasiKe('pasien.html')" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
             <a href="javascript:void(0)" onclick="navigasiKe('rekam-medis.html')" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
             <a href="javascript:void(0)" onclick="navigasiKe('farmasi.html')" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
             <a href="javascript:void(0)" onclick="navigasiKe('lab.html')" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
 
             <div class="nav-label">Keuangan & Sistem</div>
             <a href="javascript:void(0)" onclick="navigasiKe('kasir.html')" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('laporan.html')" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
             <!-- AKTIF DI PENGATURAN -->
             <a href="javascript:void(0)" onclick="navigasiKe('pengaturan.html')" class="nav-item active"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
         </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main class="main-content">
         <header class="topbar">
             <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
@@ -135,7 +127,7 @@
             <div class="setting-card">
                 <div class="setting-header">
                     <h2>Modul Pelayanan</h2>
-                    <p>Jika dimatikan, menu terkait tidak akan muncul di sidebar.</p>
+                    <p>Jika dimatikan, menu terkait tidak akan muncul di sidebar (Fitur ini butuh logika Backend tambahan).</p>
                 </div>
                 <div class="setting-list">
                     
@@ -170,7 +162,6 @@
                             <p>Pemeriksaan darah, urine, dan hasil penunjang lainnya.</p>
                         </div>
                         <label class="switch">
-                            <!-- Saya set tidak dicentang sebagai contoh simulasi -->
                             <input type="checkbox">
                             <span class="slider"></span>
                         </label>
@@ -198,7 +189,6 @@
         </div>
     </main>
 
-    <!-- SCRIPT -->
     <script>
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('show');
