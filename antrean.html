@@ -16,17 +16,16 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        /* SIDEBAR */
         .sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000; transition: transform 0.3s ease; }
-        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
-        .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
-        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; }
-        .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; }
+        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; flex-shrink: 0; }
+        .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; position: relative; z-index: 10; }
+        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; pointer-events: none; }
+        .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; position: relative; z-index: 11; pointer-events: auto; }
         .nav-item:hover, .nav-item.active { background: #e0f2fe; color: var(--primary); }
         .nav-item i { width: 20px; text-align: center; }
 
-        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
-        .sidebar-overlay.show { display: block; opacity: 1; }
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .sidebar-overlay.show { display: block; opacity: 1; pointer-events: auto; }
 
         .main-content { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - var(--sidebar-width)); transition: margin 0.3s ease; }
         .topbar { height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 90; }
@@ -37,7 +36,6 @@
         .user-role { font-size: 11px; color: var(--text-muted); }
         .avatar { width: 40px; height: 40px; border-radius: 50%; background: #f59e0b; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-        /* DASHBOARD */
         .dashboard { padding: 30px; display: flex; flex-direction: column; gap: 20px; flex-grow: 1; }
         .page-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .page-title { font-size: 24px; font-weight: 700; }
@@ -50,7 +48,6 @@
 
         .queue-container { display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px; flex-grow: 1; }
         
-        /* ACTIVE QUEUE */
         .active-queue { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-radius: 20px; padding: 40px; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3); position: relative; overflow: hidden; }
         .active-queue::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%); animation: pulse 4s infinite linear; }
         @keyframes pulse { 0% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 0.8; } 100% { transform: scale(1); opacity: 0.5; } }
@@ -64,7 +61,6 @@
         .queue-patient { font-size: 28px; font-weight: 700; margin-bottom: 5px; z-index: 1; }
         .queue-room { font-size: 16px; background: rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 20px; display: inline-block; z-index: 1; margin-top: 5px; }
 
-        /* WAITING LIST */
         .waiting-list { background: var(--bg-card); border-radius: 20px; border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
         .waiting-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .waiting-header h3 { font-size: 16px; font-weight: 700; }
@@ -82,11 +78,9 @@
         .waiting-status { font-size: 11px; font-weight: 600; color: #d97706; background: #fef3c7; padding: 4px 10px; border-radius: 20px; }
         .waiting-item.next .waiting-status { background: #fbbf24; color: white; }
 
-        /* EMPTY STATE */
         .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); }
         .empty-state i { font-size: 50px; color: #d1d5db; margin-bottom: 12px; }
 
-        /* TOAST */
         .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
         .toast { padding: 14px 20px; border-radius: 8px; color: white; font-size: 13px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease; min-width: 280px; }
         .toast.success { background: #10b981; }
@@ -95,7 +89,6 @@
         .toast.info { background: #0ea5e9; }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-        /* FULLSCREEN MODE */
         body.fullscreen-mode .sidebar,
         body.fullscreen-mode .topbar,
         body.fullscreen-mode .page-header { display: none; }
@@ -129,20 +122,20 @@
     <aside class="sidebar" id="sidebar">
         <div class="brand"><i class="fa-solid fa-hospital"></i> SIMRS<span style="color:var(--text-main)">Pro</span></div>
         <div class="nav-menu">
-            <a href="javascript:void(0)" onclick="navigasiKe('index.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('pendaftaran.html')" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('antrean.html')" class="nav-item active"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
+            <a href="#" data-page="index.html" onclick="event.preventDefault(); navigasiKe('index.html');" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="#" data-page="pendaftaran.html" onclick="event.preventDefault(); navigasiKe('pendaftaran.html');" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
+            <a href="#" data-page="antrean.html" onclick="event.preventDefault(); navigasiKe('antrean.html');" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
             
             <div class="nav-label">Data & Pelayanan</div>
-            <a href="javascript:void(0)" onclick="navigasiKe('pasien.html')" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('rekam-medis.html')" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('farmasi.html')" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('lab.html')" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
+            <a href="#" data-page="pasien.html" onclick="event.preventDefault(); navigasiKe('pasien.html');" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
+            <a href="#" data-page="rekam-medis.html" onclick="event.preventDefault(); navigasiKe('rekam-medis.html');" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
+            <a href="#" data-page="farmasi.html" onclick="event.preventDefault(); navigasiKe('farmasi.html');" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
+            <a href="#" data-page="lab.html" onclick="event.preventDefault(); navigasiKe('lab.html');" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
 
             <div class="nav-label">Keuangan & Sistem</div>
-            <a href="javascript:void(0)" onclick="navigasiKe('kasir.html')" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('laporan.html')" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('pengaturan.html')" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
+            <a href="#" data-page="kasir.html" onclick="event.preventDefault(); navigasiKe('kasir.html');" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
+            <a href="#" data-page="laporan.html" onclick="event.preventDefault(); navigasiKe('laporan.html');" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
+            <a href="#" data-page="pengaturan.html" onclick="event.preventDefault(); navigasiKe('pengaturan.html');" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
         </div>
     </aside>
 
@@ -177,7 +170,6 @@
             <div style="text-align:right; font-size: 14px; font-weight: 600; color: var(--text-muted); margin-bottom:-10px;" id="jam-sekarang"></div>
 
             <div class="queue-container">
-                <!-- KIRI: SEDANG DIPANGGIL -->
                 <div class="active-queue">
                     <div class="queue-label">
                         <span class="live-dot"></span>
@@ -188,7 +180,6 @@
                     <div class="queue-room" id="panggil-poli"><i class="fa-solid fa-door-open"></i> -</div>
                 </div>
 
-                <!-- KANAN: DAFTAR TUNGGU -->
                 <div class="waiting-list">
                     <div class="waiting-header">
                         <h3>Antrean Berikutnya</h3>
@@ -207,30 +198,21 @@
 
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- SCRIPT FIREBASE -->
+    <!-- Firebase config terpusat -->
+    <script src="firebase-config.js"></script>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyB5u4UAw9JAmXA6vsuSwuexO5ASR-0Kjn0",
-            authDomain: "simrs-pro.firebaseapp.com",
-            projectId: "simrs-pro",
-            storageBucket: "simrs-pro.firebasestorage.app",
-            messagingSenderId: "745412639051",
-            appId: "1:745412639051:web:e434bc2a118ca2c67750ce"
-        };
-
-        const app = initializeApp(firebaseConfig);
+        const app = initializeApp(window.FIREBASE_CONFIG);
         const db = getFirestore(app);
 
-        // ============ STATE ============
         let listPasien = [];
-        let lastCalledId = null;    // track pasien yang sedang dipanggil agar tidak spam suara
+        let lastCalledId = null;
         let soundEnabled = false;
         let voices = [];
 
-        // ============ TOAST ============
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -246,10 +228,8 @@
             }, 3000);
         }
 
-        // ============ SOUND (Text-to-Speech) ============
         function loadVoices() {
             voices = window.speechSynthesis.getVoices();
-            // Prefer Indonesian voice
             const idVoice = voices.find(v => v.lang === 'id-ID' || v.lang.startsWith('id'));
             return idVoice || voices[0];
         }
@@ -261,17 +241,12 @@
                 showToast('Browser tidak mendukung text-to-speech', 'warning');
                 return;
             }
-            
             const text = `Nomor antrean ${nomor.split('').join(' ')}, ${nama}, silakan menuju ${poli}`;
             const utter = new SpeechSynthesisUtterance(text);
             utter.lang = 'id-ID';
             utter.rate = 0.9;
-            utter.pitch = 1;
-            utter.volume = 1;
             const voice = loadVoices();
             if (voice) utter.voice = voice;
-
-            // Stop utterance sebelumnya
             window.speechSynthesis.cancel();
             window.speechSynthesis.speak(utter);
         }
@@ -283,11 +258,9 @@
                 btn.classList.add('active');
                 btn.innerHTML = '<i class="fa-solid fa-volume-high"></i> <span>Suara: ON</span>';
                 showToast('Suara panggilan diaktifkan', 'success');
-                // Test voice
                 const u = new SpeechSynthesisUtterance('Suara panggilan aktif');
                 u.lang = 'id-ID';
                 window.speechSynthesis.speak(u);
-                // Repanggil pasien aktif
                 if (listPasien.length > 0) {
                     const p = listPasien[0];
                     panggilSuara(formatNomor(1), p.nama, p.poli);
@@ -300,7 +273,6 @@
             }
         };
 
-        // ============ FULLSCREEN ============
         window.toggleFullscreen = () => {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().then(() => {
@@ -314,27 +286,21 @@
         };
 
         document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement) {
-                document.body.classList.remove('fullscreen-mode');
-            }
+            if (!document.fullscreenElement) document.body.classList.remove('fullscreen-mode');
         });
 
-        // ============ FORMAT NOMOR A-XX ============
         function formatNomor(index) {
             return `A-${String(index).padStart(2, '0')}`;
         }
 
-        // ============ TARIK PASIEN MENUNGGU ============
         const q = query(collection(db, "pendaftaran"), where("status", "==", "Menunggu"));
         
         onSnapshot(q, (snapshot) => {
             listPasien = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-            // Sort by waktu daftar (terlama dulu = nomor terkecil)
             listPasien.sort((a, b) => new Date(a.waktu) - new Date(b.waktu));
             renderAntrean();
         });
 
-        // ============ RENDER ============
         function renderAntrean() {
             const elNomor = document.getElementById('panggil-nomor');
             const elNama = document.getElementById('panggil-nama');
@@ -357,21 +323,16 @@
                 return;
             }
 
-            // Pasien pertama = sedang dipanggil
             const pasienAktif = listPasien[0];
             elNomor.innerText = formatNomor(1);
             elNama.innerText = pasienAktif.nama;
             elPoli.innerHTML = `<i class="fa-solid fa-door-open"></i> ${pasienAktif.poli}`;
 
-            // Panggil suara jika pasien berubah (bukan spam)
             if (lastCalledId !== pasienAktif.id) {
                 lastCalledId = pasienAktif.id;
-                if (soundEnabled) {
-                    panggilSuara(formatNomor(1), pasienAktif.nama, pasienAktif.poli);
-                }
+                if (soundEnabled) panggilSuara(formatNomor(1), pasienAktif.nama, pasienAktif.poli);
             }
 
-            // Sisa pasien
             const sisa = listPasien.slice(1);
             elCount.innerText = `${sisa.length} Menunggu`;
 
@@ -380,12 +341,11 @@
                     <div class="empty-state">
                         <i class="fa-solid fa-user-clock"></i>
                         <p>Tidak ada antrean berikutnya.</p>
-                        <p style="font-size:12px; margin-top:8px;">Pasien berikutnya akan muncul di sini.</p>
                     </div>
                 `;
             } else {
                 elList.innerHTML = sisa.slice(0, 10).map((p, i) => {
-                    const nomor = formatNomor(i + 2); // +2 karena index 0 = no 2 (no 1 sedang dipanggil)
+                    const nomor = formatNomor(i + 2);
                     const isNext = i === 0;
                     return `
                         <div class="waiting-item ${isNext ? 'next' : ''}">
@@ -401,7 +361,6 @@
             }
         }
 
-        // ============ JAM REALTIME ============
         function updateJam() {
             const now = new Date();
             const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
@@ -410,7 +369,6 @@
         setInterval(updateJam, 1000);
         updateJam();
 
-        // ============ KEYBOARD SHORTCUT ============
         document.addEventListener('keydown', (e) => {
             if (e.key === 'f' || e.key === 'F') {
                 if (e.ctrlKey || e.metaKey) {
@@ -419,30 +377,37 @@
                 }
             }
             if (e.key === 's' || e.key === 'S') {
-                if (!e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT') {
-                    toggleSound();
-                }
+                if (!e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT') toggleSound();
             }
         });
 
-        // ============ INITIAL VOICE LOAD ============
-        if ('speechSynthesis' in window) {
-            loadVoices();
-        }
+        if ('speechSynthesis' in window) loadVoices();
     </script>
 
     <script>
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('show');
-            document.getElementById('sidebarOverlay').classList.toggle('show');
-        }
-        function navigasiKe(url) {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
-            if (sidebar && overlay) { sidebar.classList.remove('show'); overlay.classList.remove('show'); }
+            if (sidebar) sidebar.classList.toggle('show');
+            if (overlay) overlay.classList.toggle('show');
+        }
+        function navigasiKe(url) {
+            try {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebarOverlay');
+                if (sidebar) sidebar.classList.remove('show');
+                if (overlay) overlay.classList.remove('show');
+            } catch (e) { console.warn(e); }
             window.scrollTo(0, 0);
             window.location.href = url;
         }
+        (function autoActiveMenu() {
+            const current = window.getCurrentPage ? window.getCurrentPage() : (window.location.pathname.split('/').pop() || 'index.html');
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-page') === current) item.classList.add('active');
+            });
+        })();
     </script>
 </body>
 </html>
