@@ -16,12 +16,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        .sidebar {
-            width: var(--sidebar-width); background: var(--bg-sidebar);
-            border-right: 1px solid var(--border); position: fixed;
-            top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000;
-            transition: transform 0.3s ease;
-        }
+        .sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000; transition: transform 0.3s ease; }
         .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
         .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
         .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; }
@@ -85,17 +80,19 @@
     <aside class="sidebar" id="sidebar">
         <div class="brand"><i class="fa-solid fa-hospital"></i> SIMRS<span style="color:var(--text-main)">Pro</span></div>
         <div class="nav-menu">
-            <a href="javascript:void(0)" onclick="navigasiKe('simrs.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('index.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
             <a href="javascript:void(0)" onclick="navigasiKe('pendaftaran.html')" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
             <a href="javascript:void(0)" onclick="navigasiKe('antrean.html')" class="nav-item active"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
             
-            <div class="nav-label">Pelayanan Medis</div>
+            <div class="nav-label">Data & Pelayanan</div>
+            <a href="javascript:void(0)" onclick="navigasiKe('pasien.html')" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
             <a href="javascript:void(0)" onclick="navigasiKe('rekam-medis.html')" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
             <a href="javascript:void(0)" onclick="navigasiKe('farmasi.html')" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
             <a href="javascript:void(0)" onclick="navigasiKe('lab.html')" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
 
             <div class="nav-label">Keuangan & Sistem</div>
             <a href="javascript:void(0)" onclick="navigasiKe('kasir.html')" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('laporan.html')" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
             <a href="javascript:void(0)" onclick="navigasiKe('pengaturan.html')" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
         </div>
     </aside>
@@ -119,48 +116,109 @@
             </div>
 
             <div class="queue-container">
+                <!-- KIRI: SEDANG DIPANGGIL (Akan berubah otomatis) -->
                 <div class="active-queue">
-                    <div class="queue-label">Nomor Dipanggil</div>
-                    <div class="queue-number">A-01</div>
-                    <div class="queue-patient">Budi Santoso</div>
-                    <div class="queue-room"><i class="fa-solid fa-door-open"></i> Ruang Poli Umum 1</div>
+                    <div class="queue-label">Sedang Dipanggil</div>
+                    <div class="queue-number" id="panggil-nomor">-</div>
+                    <div class="queue-patient" id="panggil-nama">Menunggu pasien...</div>
+                    <div class="queue-room" id="panggil-poli"><i class="fa-solid fa-door-open"></i> -</div>
                 </div>
 
+                <!-- KANAN: DAFTAR TUNGGU (Real-time dari database) -->
                 <div class="waiting-list">
                     <div class="waiting-header">
                         <h3>Antrean Berikutnya</h3>
-                        <span class="waiting-count">4 Menunggu</span>
+                        <span class="waiting-count" id="jumlah-antrean">0 Menunggu</span>
                     </div>
-                    <div class="waiting-items">
-                        <div class="waiting-item">
-                            <div class="waiting-number">A-02</div>
-                            <div class="waiting-info">
-                                <div class="waiting-name">Siti Aminah</div>
-                                <div class="waiting-poli">Poli Gigi</div>
-                            </div>
-                            <div class="waiting-status">Menunggu</div>
-                        </div>
-                        <div class="waiting-item">
-                            <div class="waiting-number">A-03</div>
-                            <div class="waiting-info">
-                                <div class="waiting-name">Andi Wijaya</div>
-                                <div class="waiting-poli">Poli Umum</div>
-                            </div>
-                            <div class="waiting-status">Menunggu</div>
-                        </div>
-                        <div class="waiting-item">
-                            <div class="waiting-number">A-04</div>
-                            <div class="waiting-info">
-                                <div class="waiting-name">Dewi Lestari</div>
-                                <div class="waiting-poli">Poli Anak</div>
-                            </div>
-                            <div class="waiting-status">Menunggu</div>
-                        </div>
+                    <div class="waiting-items" id="daftar-tunggu">
+                        <!-- Diisi oleh JavaScript -->
+                        <div style="text-align:center; color:var(--text-muted); padding:20px;">Memuat data...</div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- SCRIPT FIREBASE UNTUK ANTREAN -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB5u4UAw9JAmXA6vsuSwuexO5ASR-0Kjn0",
+            authDomain: "simrs-pro.firebaseapp.com",
+            projectId: "simrs-pro",
+            storageBucket: "simrs-pro.firebasestorage.app",
+            messagingSenderId: "745412639051",
+            appId: "1:745412639051:web:e434bc2a118ca2c67750ce"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        // Ambil pasien dengan status "Menunggu"
+        const q = query(collection(db, "pendaftaran"), where("status", "==", "Menunggu"));
+        
+        const daftarTunggu = document.getElementById('daftar-tunggu');
+        const jumlahAntrean = document.getElementById('jumlah-antrean');
+
+        onSnapshot(q, (snapshot) => {
+            daftarTunggu.innerHTML = '';
+            
+            if (snapshot.empty) {
+                daftarTunggu.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:20px;">Tidak ada antrean saat ini.</div>';
+                jumlahAntrean.innerText = `0 Menunggu`;
+                document.getElementById('panggil-nama').innerText = "Menunggu pasien...";
+                document.getElementById('panggil-nomor').innerText = "-";
+                document.getElementById('panggil-poli').innerHTML = '<i class="fa-solid fa-door-open"></i> -';
+                return;
+            }
+
+            let listPasien = [];
+            snapshot.forEach((doc) => {
+                listPasien.push(doc.data());
+            });
+
+            // Urutkan berdasarkan waktu daftar (terlama di atas)
+            listPasien.sort((a, b) => new Date(a.waktu) - new Date(b.waktu));
+
+            // Tampilkan pasien pertama sebagai "Sedang Dipanggil"
+            const pasienAktif = listPasien[0];
+            document.getElementById('panggil-nama').innerText = pasienAktif.nama;
+            document.getElementById('panggil-nomor').innerText = "A-01"; // Simulasi nomor antrean
+            document.getElementById('panggil-poli').innerHTML = `<i class="fa-solid fa-door-open"></i> ${pasienAktif.poli}`;
+
+            // Tampilkan sisanya di daftar tunggu
+            let sisaPasien = listPasien.slice(1);
+            jumlahAntrean.innerText = `${sisaPasien.length} Menunggu`;
+
+            if (sisaPasien.length === 0) {
+                daftarTunggu.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:20px;">Tidak ada antrean berikutnya.</div>';
+            } else {
+                sisaPasien.forEach((pasien, index) => {
+                    daftarTunggu.innerHTML += `
+                        <div class="waiting-item">
+                            <div class="waiting-number">A-0${index + 2}</div>
+                            <div class="waiting-info">
+                                <div class="waiting-name">${pasien.nama}</div>
+                                <div class="waiting-poli">${pasien.poli}</div>
+                            </div>
+                            <div class="waiting-status">Menunggu</div>
+                        </div>
+                    `;
+                });
+            }
+        });
+
+        // Jam Real-time
+        function updateJam() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            document.getElementById('jam-sekarang').innerText = now.toLocaleDateString('id-ID', options);
+        }
+        setInterval(updateJam, 1000);
+        updateJam();
+    </script>
 
     <script>
         function toggleSidebar() {
@@ -174,14 +232,6 @@
             window.scrollTo(0, 0);
             window.location.href = url;
         }
-        // Jam Real-time
-        function updateJam() {
-            const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-            document.getElementById('jam-sekarang').innerText = now.toLocaleDateString('id-ID', options);
-        }
-        setInterval(updateJam, 1000);
-        updateJam();
     </script>
 </body>
 </html>
