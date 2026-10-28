@@ -54,6 +54,19 @@
         .btn-action { background: #f3f4f6; color: var(--text-main); border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
         .btn-action:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
+        /* MODAL RIWAYAT MEDIS */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+        .modal-overlay.show { display: flex; }
+        .modal-box { background: var(--bg-card); border-radius: 12px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .modal-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--bg-card); z-index: 2; }
+        .modal-title { font-size: 18px; font-weight: 700; }
+        .close-btn { background: none; border: none; font-size: 20px; color: var(--text-muted); cursor: pointer; }
+        .modal-body { padding: 20px; }
+        
+        .detail-group { margin-bottom: 15px; }
+        .detail-group label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 4px; }
+        .detail-group p { font-size: 14px; background: #f9fafb; padding: 10px; border-radius: 8px; border: 1px solid var(--border); min-height: 40px;}
+        
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.show { transform: translateX(0); }
@@ -129,10 +142,42 @@
         </div>
     </main>
 
+    <!-- MODAL DETAIL RIWAYAT -->
+    <div class="modal-overlay" id="modal-riwayat" onclick="if(event.target===this) tutupModal()">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-nama">Riwayat Pasien</h3>
+                <button class="close-btn" onclick="tutupModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-group">
+                    <label>Subjective (Keluhan)</label>
+                    <p id="modal-subjective">-</p>
+                </div>
+                <div class="detail-group">
+                    <label>Objective (Pemeriksaan Fisik)</label>
+                    <p id="modal-objective">-</p>
+                </div>
+                <div class="detail-group">
+                    <label>Assessment (Diagnosa)</label>
+                    <p id="modal-assessment">-</p>
+                </div>
+                <div class="detail-group">
+                    <label>Plan (Rencana Tindakan)</label>
+                    <p id="modal-plan">-</p>
+                </div>
+                <div class="detail-group" id="group-hasil-lab" style="display: none;">
+                    <label>Hasil Laboratorium</label>
+                    <p id="modal-hasil-lab" style="border-color: var(--success); background: #dcfce7; color: #166534;">-</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- SCRIPT FIREBASE UNTUK DATA PASIEN -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyB5u4UAw9JAmXA6vsuSwuexO5ASR-0Kjn0",
@@ -148,14 +193,15 @@
         
         const pendaftaranRef = collection(db, "pendaftaran");
         const tbody = document.getElementById('tabel-pasien');
-        let semuaPasien = []; // Menyimpan data untuk fitur pencarian
+        let semuaPasien = [];
 
         onSnapshot(pendaftaranRef, (snapshot) => {
             semuaPasien = [];
             snapshot.forEach((doc) => {
-                semuaPasien.push(doc.data());
+                // Simpan ID dokumen beserta datanya
+                semuaPasien.push({ id: doc.id, ...doc.data() });
             });
-            renderTabel(semuaPasien); // Tampilkan semua data saat pertama kali load
+            renderTabel(semuaPasien);
         });
 
         function renderTabel(dataArray) {
@@ -167,7 +213,6 @@
             }
 
             dataArray.forEach((data) => {
-                // Tampilkan maksimal 30 karakter alamat agar tidak kepanjangan
                 const alamatSingkat = data.alamat ? (data.alamat.length > 30 ? data.alamat.substring(0, 30) + '...' : data.alamat) : '-';
                 const jk = data.jk === 'L' ? 'Laki-laki' : 'Perempuan';
 
@@ -178,13 +223,12 @@
                         <td>${data.tglLahir}</td>
                         <td>${data.hp || '-'}</td>
                         <td>${alamatSingkat}</td>
-                        <td><button class="btn-action" onclick="alert('Fitur detail riwayat medis akan dibuat nanti.')">Lihat Riwayat</button></td>
+                        <td><button class="btn-action" onclick="lihatRiwayat('${data.id}')">Lihat Riwayat</button></td>
                     </tr>
                 `;
             });
         }
 
-        // Fungsi Pencarian (Real-time)
         window.cariPasien = () => {
             const kataKunci = document.getElementById('input-cari').value.toLowerCase();
             const hasilFilter = semuaPasien.filter(pasien => 
@@ -192,6 +236,44 @@
                 pasien.nik.includes(kataKunci)
             );
             renderTabel(hasilFilter);
+        };
+
+        // Fungsi Ambil Data Rekam Medis dari Firebase
+        window.lihatRiwayat = async (idPasien) => {
+            try {
+                // Kita perlu mengambil data dari koleksi rekam_medis berdasarkan ID Pendaftaran
+                // Karena di kode sebelumnya kita menyimpan SOAP ke 'rekam_medis'
+                // Untuk simplifikasi, kita tampilkan data dasar pasien saja dari tabel pendaftaran
+                const pasienRef = doc(db, "pendaftaran", idPasien);
+                const docSnap = await getDoc(pasienRef);
+                
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    
+                    document.getElementById('modal-nama').innerText = `Riwayat: ${data.nama}`;
+                    document.getElementById('modal-subjective').innerText = data.subjective || "Belum ada catatan dokter.";
+                    document.getElementById('modal-objective').innerText = data.objective || "Belum ada catatan pemeriksaan fisik.";
+                    document.getElementById('modal-assessment').innerText = data.assessment || "Belum ada diagnosa.";
+                    document.getElementById('modal-plan').innerText = data.plan || "Belum ada rencana tindakan.";
+                    
+                    // Tampilkan hasil lab jika ada
+                    const groupLab = document.getElementById('group-hasil-lab');
+                    if (data.hasilLab) {
+                        groupLab.style.display = 'block';
+                        document.getElementById('modal-hasil-lab').innerText = data.hasilLab;
+                    } else {
+                        groupLab.style.display = 'none';
+                    }
+
+                    document.getElementById('modal-riwayat').classList.add('show');
+                }
+            } catch (error) {
+                alert("Gagal memuat riwayat: " + error.message);
+            }
+        };
+
+        window.tutupModal = () => {
+            document.getElementById('modal-riwayat').classList.remove('show');
         };
     </script>
 
@@ -209,4 +291,4 @@
         }
     </script>
 </body>
-</html>
+    </html>
