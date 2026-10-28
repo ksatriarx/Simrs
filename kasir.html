@@ -17,16 +17,15 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        /* SIDEBAR & TOPBAR */
         .sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000; transition: transform 0.3s ease; }
-        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
-        .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
-        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; }
-        .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; }
+        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; flex-shrink: 0; }
+        .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; position: relative; z-index: 10; }
+        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; pointer-events: none; }
+        .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; position: relative; z-index: 11; pointer-events: auto; }
         .nav-item:hover, .nav-item.active { background: #e0f2fe; color: var(--primary); }
         .nav-item i { width: 20px; text-align: center; }
-        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
-        .sidebar-overlay.show { display: block; opacity: 1; }
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .sidebar-overlay.show { display: block; opacity: 1; pointer-events: auto; }
         .main-content { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - var(--sidebar-width)); transition: margin 0.3s ease; }
         .topbar { height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 90; }
         .menu-toggle { display: none; background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; }
@@ -36,7 +35,6 @@
         .user-role { font-size: 11px; color: var(--text-muted); }
         .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--danger); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-        /* DASHBOARD */
         .dashboard { padding: 30px; }
         .page-header { margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .page-title { font-size: 24px; font-weight: 700; }
@@ -51,10 +49,8 @@
         .stat-details h3 { font-size: 22px; font-weight: 700; margin-bottom: 2px; }
         .stat-details p { font-size: 11px; color: var(--text-muted); font-weight: 500; }
 
-        /* BILLING GRID */
         .billing-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 24px; }
 
-        /* KARTU RINCIAN */
         .bill-card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 24px; }
         .bill-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px dashed var(--border); padding-bottom: 15px; margin-bottom: 15px; gap: 10px; flex-wrap: wrap; }
         .patient-info h2 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
@@ -72,7 +68,6 @@
         .bill-total { border-top: 2px solid var(--text-main); padding-top: 15px; display: flex; justify-content: space-between; align-items: center; font-size: 18px; font-weight: 800; }
         .bill-total .total-amount { color: var(--primary); font-size: 24px; }
 
-        /* KARTU PEMBAYARAN */
         .payment-card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 24px; height: fit-content; }
         .payment-title { font-size: 16px; font-weight: 700; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
         .form-group { margin-bottom: 15px; }
@@ -92,12 +87,10 @@
         .btn-pay:hover:not(:disabled) { background: #059669; }
         .btn-pay:disabled { background: #9ca3af; cursor: not-allowed; }
 
-        /* PASIEN LIST (jika > 1 antrean) */
         .pasien-selector { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 16px 20px; margin-bottom: 20px; }
         .pasien-selector label { font-size: 12px; font-weight: 600; display: block; margin-bottom: 8px; color: var(--text-muted); text-transform: uppercase; }
         .pasien-selector select { width: 100%; padding: 10px 14px; border: 2px solid var(--primary); border-radius: 8px; font-size: 14px; outline: none; font-weight: 600; color: var(--primary); background: #f0f9ff; }
 
-        /* TABEL RIWAYAT */
         .card-table { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin-top: 20px; }
         .card-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .card-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
@@ -119,7 +112,6 @@
         .empty-state i { font-size: 60px; color: #d1d5db; margin-bottom: 15px; }
         .empty-row { text-align: center; padding: 40px 20px !important; color: var(--text-muted); }
 
-        /* KWITANSI (MODAL) */
         .kwitansi-box { background: white; border-radius: 12px; padding: 30px; font-family: 'Courier New', monospace; color: #111; max-width: 420px; margin: 0 auto; }
         .kwitansi-header { text-align: center; border-bottom: 2px dashed #111; padding-bottom: 12px; margin-bottom: 12px; }
         .kwitansi-header h2 { font-size: 18px; font-weight: 700; letter-spacing: 1px; }
@@ -130,7 +122,6 @@
         .kwitansi-footer { text-align: center; font-size: 10px; margin-top: 15px; border-top: 2px dashed #111; padding-top: 10px; }
         .kwitansi-obat { font-size: 11px; padding: 2px 0 2px 10px; color: #444; }
 
-        /* TOAST */
         .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
         .toast { padding: 14px 20px; border-radius: 8px; color: white; font-size: 13px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease; min-width: 280px; }
         .toast.success { background: var(--success); }
@@ -139,9 +130,8 @@
         .toast.info { background: var(--primary); }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-        /* MODAL GENERIC */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; overflow-y: auto; }
-        .modal-overlay.show { display: flex; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; overflow-y: auto; pointer-events: none; }
+        .modal-overlay.show { display: flex; pointer-events: auto; }
         .modal-box { background: var(--bg-card); border-radius: 16px; width: 100%; max-width: 500px; max-height: 92vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: modalIn 0.25s ease; }
         @keyframes modalIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
@@ -179,20 +169,20 @@
     <aside class="sidebar" id="sidebar">
         <div class="brand"><i class="fa-solid fa-hospital"></i> SIMRS<span style="color:var(--text-main)">Pro</span></div>
         <div class="nav-menu">
-            <a href="javascript:void(0)" onclick="navigasiKe('index.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('pendaftaran.html')" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('antrean.html')" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
+            <a href="#" data-page="index.html" onclick="event.preventDefault(); navigasiKe('index.html');" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="#" data-page="pendaftaran.html" onclick="event.preventDefault(); navigasiKe('pendaftaran.html');" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
+            <a href="#" data-page="antrean.html" onclick="event.preventDefault(); navigasiKe('antrean.html');" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
             
             <div class="nav-label">Data & Pelayanan</div>
-            <a href="javascript:void(0)" onclick="navigasiKe('pasien.html')" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('rekam-medis.html')" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('farmasi.html')" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('lab.html')" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
+            <a href="#" data-page="pasien.html" onclick="event.preventDefault(); navigasiKe('pasien.html');" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
+            <a href="#" data-page="rekam-medis.html" onclick="event.preventDefault(); navigasiKe('rekam-medis.html');" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
+            <a href="#" data-page="farmasi.html" onclick="event.preventDefault(); navigasiKe('farmasi.html');" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
+            <a href="#" data-page="lab.html" onclick="event.preventDefault(); navigasiKe('lab.html');" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
 
             <div class="nav-label">Keuangan & Sistem</div>
-            <a href="javascript:void(0)" onclick="navigasiKe('kasir.html')" class="nav-item active"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('laporan.html')" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('pengaturan.html')" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
+            <a href="#" data-page="kasir.html" onclick="event.preventDefault(); navigasiKe('kasir.html');" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
+            <a href="#" data-page="laporan.html" onclick="event.preventDefault(); navigasiKe('laporan.html');" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
+            <a href="#" data-page="pengaturan.html" onclick="event.preventDefault(); navigasiKe('pengaturan.html');" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
         </div>
     </aside>
 
@@ -216,7 +206,6 @@
                 </div>
             </div>
 
-            <!-- STATISTIK -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon icon-orange"><i class="fa-solid fa-hourglass-half"></i></div>
@@ -232,15 +221,11 @@
                 </div>
             </div>
 
-            <!-- PASIEN SELECTOR (jika ada lebih dari 1) -->
             <div class="pasien-selector" id="pasien-selector" style="display:none;">
                 <label><i class="fa-solid fa-list-check"></i> Pilih Pasien yang Akan Dibayar:</label>
-                <select id="pilih-pasien-bayar" onchange="pilihPasienBayar()">
-                    <!-- diisi JS -->
-                </select>
+                <select id="pilih-pasien-bayar" onchange="pilihPasienBayar()"></select>
             </div>
 
-            <!-- AREA TAGIHAN -->
             <div id="area-tagihan">
                 <div class="empty-state">
                     <i class="fa-solid fa-check-circle" style="color:#10b981;"></i>
@@ -248,7 +233,6 @@
                 </div>
             </div>
 
-            <!-- RIWAYAT PEMBAYARAN -->
             <div class="card-table">
                 <div class="card-header">
                     <h2 class="card-title">
@@ -271,7 +255,6 @@
         </div>
     </main>
 
-    <!-- MODAL KWITANSI -->
     <div class="modal-overlay" id="modal-kwitansi" onclick="if(event.target===this) tutupKwitansi()">
         <div class="modal-box" style="max-width: 480px;">
             <div class="modal-header">
@@ -279,9 +262,7 @@
                 <button class="close-btn" onclick="tutupKwitansi()">&times;</button>
             </div>
             <div class="modal-body" style="background:#f9fafb;">
-                <div class="kwitansi-box" id="kwitansi-content">
-                    <!-- diisi JS -->
-                </div>
+                <div class="kwitansi-box" id="kwitansi-content"></div>
             </div>
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="tutupKwitansi()">Tutup</button>
@@ -292,24 +273,16 @@
 
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- SCRIPT FIREBASE -->
+    <!-- Firebase config terpusat -->
+    <script src="firebase-config.js"></script>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, onSnapshot, query, where, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyB5u4UAw9JAmXA6vsuSwuexO5ASR-0Kjn0",
-            authDomain: "simrs-pro.firebaseapp.com",
-            projectId: "simrs-pro",
-            storageBucket: "simrs-pro.firebasestorage.app",
-            messagingSenderId: "745412639051",
-            appId: "1:745412639051:web:e434bc2a118ca2c67750ce"
-        };
-
-        const app = initializeApp(firebaseConfig);
+        const app = initializeApp(window.FIREBASE_CONFIG);
         const db = getFirestore(app);
 
-        // ============ TOAST ============
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -325,29 +298,24 @@
             }, 3000);
         }
 
-        // ============ BIAYA DEFAULT (fallback data lama) ============
         const BIAYA_DEFAULT = { admin: 15000, dokter: 50000, tindakan: 25000, obat: 0, lab: 0 };
 
-        // ============ STATE ============
-        let semuaSelesai = [];      // pasien status "Selesai" (siap bayar)
-        let semuaLunas = [];        // pasien status "Lunas" (riwayat)
+        let semuaSelesai = [];
+        let semuaLunas = [];
         let idAktif = null;
         let pasienAktif = null;
         let totalTagihanAktif = 0;
 
-        // ============ TARIK PASIEN SIAP BAYAR (status: Selesai) ============
         const qSelesai = query(collection(db, "pendaftaran"), where("status", "==", "Selesai"));
         onSnapshot(qSelesai, (snap) => {
             semuaSelesai = snap.docs.map(d => ({ id: d.id, ...d.data() }));
             semuaSelesai.sort((a, b) => new Date(a.waktuSerahObat || a.waktu) - new Date(b.waktuSerahObat || b.waktu));
             document.getElementById('stat-antrean').innerText = semuaSelesai.length;
             
-            // Jika pasien aktif masih ada, refresh tampilannya
             if (idAktif && semuaSelesai.some(p => p.id === idAktif)) {
                 const p = semuaSelesai.find(p => p.id === idAktif);
                 renderTagihan(p);
             } else if (semuaSelesai.length > 0) {
-                // Auto-pilih pasien pertama
                 pilihPasienById(semuaSelesai[0].id);
             } else {
                 idAktif = null;
@@ -358,7 +326,6 @@
             renderSelector();
         });
 
-        // ============ TARIK RIWAYAT LUNAS ============
         const qLunas = query(collection(db, "pendaftaran"), where("status", "==", "Lunas"));
         onSnapshot(qLunas, (snap) => {
             semuaLunas = snap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -370,17 +337,14 @@
                 return w && new Date(w).toDateString() === today;
             });
 
-            // Statistik
             const totalPendapatan = lunasHariIni.reduce((sum, p) => sum + (p.totalBayar || 0), 0);
             document.getElementById('stat-pendapatan').innerText = `Rp ${totalPendapatan.toLocaleString('id-ID')}`;
             document.getElementById('stat-transaksi').innerText = lunasHariIni.length;
             document.getElementById('badge-riwayat').innerText = lunasHariIni.length;
 
-            // Render tabel riwayat
             renderRiwayat(lunasHariIni);
         });
 
-        // ============ RENDER PASIEN SELECTOR ============
         function renderSelector() {
             const wrapper = document.getElementById('pasien-selector');
             const sel = document.getElementById('pilih-pasien-bayar');
@@ -398,7 +362,6 @@
             if (idAktif) sel.value = idAktif;
         }
 
-        // ============ PILIH PASIEN ============
         window.pilihPasienBayar = () => {
             const id = document.getElementById('pilih-pasien-bayar').value;
             pilihPasienById(id);
@@ -412,7 +375,6 @@
             renderTagihan(p);
         }
 
-        // ============ TAMPILKAN EMPTY ============
         function tampilkanEmpty() {
             document.getElementById('area-tagihan').innerHTML = `
                 <div class="empty-state">
@@ -423,7 +385,6 @@
             `;
         }
 
-        // ============ RENDER TAGIHAN PASIEN ============
         function renderTagihan(p) {
             const biaya = p.biaya || BIAYA_DEFAULT;
             const bAdmin = biaya.admin || 0;
@@ -434,13 +395,9 @@
             const total = bAdmin + bDokter + bTindakan + bObat + bLab;
             totalTagihanAktif = total;
 
-            // Penjamin
             const penjamin = p.penjamin || 'Umum';
             const isNonTunai = penjamin === 'BPJS' || penjamin === 'Asuransi';
-            // Jika BPJS/Asuransi, pasien bayar 0 (ditanggung)
-            const totalDibayar = isNonTunai ? 0 : total;
 
-            // Rincian obat (jika ada daftarObat)
             let obatDetailHtml = '';
             if (p.daftarObat && Array.isArray(p.daftarObat) && p.daftarObat.length > 0) {
                 obatDetailHtml = p.daftarObat.map(o => 
@@ -450,7 +407,6 @@
 
             const html = `
                 <div class="billing-grid">
-                    <!-- KIRI: RINCIAN -->
                     <div class="bill-card">
                         <div class="bill-header">
                             <div class="patient-info">
@@ -487,7 +443,6 @@
                         ` : ''}
                     </div>
 
-                    <!-- KANAN: PEMBAYARAN -->
                     <div class="payment-card">
                         <h3 class="payment-title"><i class="fa-solid fa-money-bill-wave" style="color:#10b981"></i> Proses Pembayaran</h3>
 
@@ -528,14 +483,10 @@
 
             document.getElementById('area-tagihan').innerHTML = html;
 
-            // Setup listener setelah render
-            if (isNonTunai) {
-                document.getElementById('pilih-metode').value = 'Penjamin';
-            }
+            if (isNonTunai) document.getElementById('pilih-metode').value = 'Penjamin';
             hitungKembalian();
         }
 
-        // ============ HITUNG KEMBALIAN ============
         window.hitungKembalian = () => {
             const inputEl = document.getElementById('uang-diterima');
             if (!inputEl) return;
@@ -564,7 +515,6 @@
             }
         };
 
-        // ============ PROSES PEMBAYARAN ============
         window.prosesPembayaran = async () => {
             if (!idAktif || !pasienAktif) return;
 
@@ -575,7 +525,6 @@
             const isNonTunai = penjamin === 'BPJS' || penjamin === 'Asuransi';
             const totalDibayar = isNonTunai ? 0 : totalTagihanAktif;
 
-            // Validasi
             if (!isNonTunai && !uangInput.value) {
                 showToast('Masukkan nominal uang yang diterima!', 'warning');
                 uangInput.focus();
@@ -612,7 +561,6 @@
                     waktuBayar: waktuBayar
                 });
 
-                // Simpan data untuk kwitansi sebelum hilang dari list
                 const dataKwitansi = {
                     ...pasienAktif,
                     totalBayar: totalDibayar,
@@ -625,11 +573,8 @@
                 };
 
                 showToast(`✅ Pembayaran berhasil! ${isNonTunai ? 'Ditanggung ' + penjamin : 'Kembalian Rp ' + kembalian.toLocaleString('id-ID')}`, 'success');
-                
-                // Tampilkan kwitansi
                 tampilkanKwitansi(dataKwitansi);
                 
-                // Reset (data realtime akan otomatis hilang dari list)
                 idAktif = null;
                 pasienAktif = null;
             } catch (err) {
@@ -640,7 +585,6 @@
             }
         };
 
-        // ============ KWITANSI ============
         function tampilkanKwitansi(data) {
             const biaya = data.biaya || BIAYA_DEFAULT;
             const tgl = new Date(data.waktuBayar).toLocaleString('id-ID', {
@@ -699,19 +643,14 @@
 
         window.tutupKwitansi = () => {
             document.getElementById('modal-kwitansi').classList.remove('show');
-            // Setelah tutup kwitansi, pilih pasien berikutnya atau tampilkan empty
-            if (semuaSelesai.length > 0) {
-                pilihPasienById(semuaSelesai[0].id);
-            } else {
-                tampilkanEmpty();
-            }
+            if (semuaSelesai.length > 0) pilihPasienById(semuaSelesai[0].id);
+            else tampilkanEmpty();
         };
 
         window.cetakKwitansi = () => {
             window.print();
         };
 
-        // ============ RENDER TABEL RIWAYAT ============
         function renderRiwayat(lunasHariIni) {
             const tbody = document.getElementById('tabel-riwayat');
             if (lunasHariIni.length === 0) {
@@ -735,29 +674,39 @@
             }).join('');
         }
 
-        // ============ LIHAT KWITANSI LAMA ============
         window.lihatKwitansi = (id) => {
             const p = semuaLunas.find(x => x.id === id);
             if (!p) return;
             tampilkanKwitansi(p);
         };
 
-        // ============ RENDER AWAL ============
         tampilkanEmpty();
     </script>
 
     <script>
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('show');
-            document.getElementById('sidebarOverlay').classList.toggle('show');
-        }
-        function navigasiKe(url) {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
-            if (sidebar && overlay) { sidebar.classList.remove('show'); overlay.classList.remove('show'); }
+            if (sidebar) sidebar.classList.toggle('show');
+            if (overlay) overlay.classList.toggle('show');
+        }
+        function navigasiKe(url) {
+            try {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebarOverlay');
+                if (sidebar) sidebar.classList.remove('show');
+                if (overlay) overlay.classList.remove('show');
+            } catch (e) { console.warn(e); }
             window.scrollTo(0, 0);
             window.location.href = url;
         }
+        (function autoActiveMenu() {
+            const current = window.getCurrentPage ? window.getCurrentPage() : (window.location.pathname.split('/').pop() || 'index.html');
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-page') === current) item.classList.add('active');
+            });
+        })();
     </script>
 </body>
 </html>
