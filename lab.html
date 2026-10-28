@@ -20,14 +20,17 @@
 
         /* SIDEBAR & TOPBAR */
         .sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000; transition: transform 0.3s ease; }
-        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
-        .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
-        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; }
-        .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; }
+        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; flex-shrink: 0; }
+        .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; position: relative; z-index: 10; }
+        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; pointer-events: none; }
+        .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; position: relative; z-index: 11; pointer-events: auto; }
         .nav-item:hover, .nav-item.active { background: #e0f2fe; color: var(--primary); }
         .nav-item i { width: 20px; text-align: center; }
-        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
-        .sidebar-overlay.show { display: block; opacity: 1; }
+
+        /* FIX: Overlay hanya intersep saat .show */
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .sidebar-overlay.show { display: block; opacity: 1; pointer-events: auto; }
+
         .main-content { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - var(--sidebar-width)); transition: margin 0.3s ease; }
         .topbar { height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 90; }
         .menu-toggle { display: none; background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; }
@@ -74,8 +77,8 @@
         .btn-outline:hover { background: #f0f9ff; }
 
         /* MODAL */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; overflow-y: auto; }
-        .modal-overlay.show { display: flex; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; overflow-y: auto; pointer-events: none; }
+        .modal-overlay.show { display: flex; pointer-events: auto; }
         .modal-box { background: var(--bg-card); border-radius: 16px; width: 100%; max-width: 720px; max-height: 92vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: modalIn 0.25s ease; }
         @keyframes modalIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--bg-card); z-index: 2; border-radius: 16px 16px 0 0; }
@@ -148,20 +151,20 @@
     <aside class="sidebar" id="sidebar">
         <div class="brand"><i class="fa-solid fa-hospital"></i> SIMRS<span style="color:var(--text-main)">Pro</span></div>
         <div class="nav-menu">
-            <a href="javascript:void(0)" onclick="navigasiKe('index.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('pendaftaran.html')" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('antrean.html')" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('index.html');" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('pendaftaran.html');" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('antrean.html');" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
             
             <div class="nav-label">Data & Pelayanan</div>
-            <a href="javascript:void(0)" onclick="navigasiKe('pasien.html')" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('rekam-medis.html')" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('farmasi.html')" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('lab.html')" class="nav-item active"><i class="fa-solid fa-flask"></i> Laboratorium</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('pasien.html');" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('rekam-medis.html');" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('farmasi.html');" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('lab.html');" class="nav-item active"><i class="fa-solid fa-flask"></i> Laboratorium</a>
 
             <div class="nav-label">Keuangan & Sistem</div>
-            <a href="javascript:void(0)" onclick="navigasiKe('kasir.html')" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('laporan.html')" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('pengaturan.html')" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('kasir.html');" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('laporan.html');" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('pengaturan.html');" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
         </div>
     </aside>
 
@@ -193,11 +196,11 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon icon-green"><i class="fa-solid fa-check-double"></i></div>
-                    <div class="stat-details"><h3 id="stat-selesai">0</h3><p>Hasil Terkirim Hari Ini</p></div>
+                    <div class="stat-details"><h3 id="stat-selesai">0</h3><p>Hasil Terkirim</p></div>
                 </div>
             </div>
 
-            <!-- TABEL PERMINTAAN LAB (Menunggu Lab) -->
+            <!-- TABEL PERMINTAAN LAB -->
             <div class="card-table">
                 <div class="card-header">
                     <h2 class="card-title">
@@ -226,7 +229,7 @@
                 </div>
             </div>
 
-            <!-- TABEL RIWAYAT (Hasil Lab Selesai) -->
+            <!-- TABEL RIWAYAT -->
             <div class="card-table">
                 <div class="card-header">
                     <h2 class="card-title"><i class="fa-solid fa-clipboard-check" style="color:#16a34a"></i> Hasil Selesai</h2>
@@ -261,7 +264,6 @@
             </div>
             <div class="modal-body">
                 
-                <!-- Patient mini info -->
                 <div class="patient-mini">
                     <div class="patient-mini-info">
                         <h4 id="m-nama">-</h4>
@@ -273,20 +275,15 @@
                     </div>
                 </div>
 
-                <!-- Permintaan dokter -->
                 <div class="permintaan-dokter">
                     <i class="fa-solid fa-user-doctor"></i> <strong>Permintaan Dokter:</strong> <span id="m-permintaan">-</span>
                 </div>
 
-                <!-- Pilih jenis pemeriksaan -->
                 <div class="form-section">
                     <h4><i class="fa-solid fa-vial"></i> Pilih Pemeriksaan yang Dilakukan</h4>
-                    <div class="checkbox-grid" id="checkbox-lab">
-                        <!-- Diisi JS -->
-                    </div>
+                    <div class="checkbox-grid" id="checkbox-lab"></div>
                 </div>
 
-                <!-- Input nilai -->
                 <div class="form-section">
                     <h4><i class="fa-solid fa-pen-to-square"></i> Nilai Hasil Pemeriksaan</h4>
                     <div class="form-group">
@@ -294,4 +291,294 @@
                         <textarea id="inp-hasil" rows="6" placeholder="Contoh:&#10;Hemoglobin = 14.5 = g/dL (13.0-17.0)&#10;Leukosit = 8000 = /uL (4000-10000)&#10;Trombosit = 250000 = /uL (150000-400000)"></textarea>
                     </div>
                     <div class="form-group">
-                        <label>C
+                        <label>Catatan / Kesimpulan Tambahan</label>
+                        <textarea id="inp-catatan" rows="2" placeholder="Kesan: Darah dalam batas normal..."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h4><i class="fa-solid fa-money-bill"></i> Biaya Pemeriksaan</h4>
+                    <div class="form-group">
+                        <label>Total Biaya Lab (Rp) <span class="req">*</span></label>
+                        <input type="number" id="inp-biaya" placeholder="Contoh: 75000" min="0" value="75000">
+                        <small style="font-size:11px; color:var(--text-muted);">Biaya ini akan ditambahkan ke total tagihan pasien.</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="tutupModal()">Batal</button>
+                <button class="btn-submit" id="btn-simpan-hasil" onclick="simpanHasil()">
+                    <i class="fa-solid fa-paper-plane"></i> Simpan & Kirim ke Dokter
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- SCRIPT FIREBASE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, query, where, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB5u4UAw9JAmXA6vsuSwuexO5ASR-0Kjn0",
+            authDomain: "simrs-pro.firebaseapp.com",
+            projectId: "simrs-pro",
+            storageBucket: "simrs-pro.firebasestorage.app",
+            messagingSenderId: "745412639051",
+            appId: "1:745412639051:web:e434bc2a118ca2c67750ce"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ============ TOAST ============
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', warning: 'fa-triangle-exclamation', info: 'fa-circle-info' };
+            toast.innerHTML = `<i class="fa-solid ${icons[type]}"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.transition = 'opacity 0.3s, transform 0.3s';
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // ============ JENIS PEMERIKSAAN ============
+        const JENIS_LAB = [
+            { id: 'darah_lengkap', label: 'Darah Lengkap', biaya: 50000 },
+            { id: 'gula_darah', label: 'Gula Darah Sewaktu', biaya: 25000 },
+            { id: 'kolesterol', label: 'Kolesterol Total', biaya: 30000 },
+            { id: 'asam_urat', label: 'Asam Urat', biaya: 25000 },
+            { id: 'fungsi_hati', label: 'Fungsi Hati (SGOT/SGPT)', biaya: 60000 },
+            { id: 'fungsi_ginjal', label: 'Fungsi Ginjal (Ureum/Creatinin)', biaya: 55000 },
+            { id: 'urine_lengkap', label: 'Urine Lengkap', biaya: 35000 },
+            { id: 'widal', label: 'Widal Test', biaya: 45000 }
+        ];
+
+        // ============ STATE ============
+        let idAktif = null;
+        let pasienAktif = null;
+        let semuaMenunggu = [];
+        let semuaSelesai = [];
+
+        // ============ TARIK PASIEN MENUNGGU LAB ============
+        const qMenunggu = query(collection(db, "pendaftaran"), where("status", "==", "Menunggu Lab"));
+        onSnapshot(qMenunggu, (snap) => {
+            semuaMenunggu = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            semuaMenunggu.sort((a, b) => new Date(a.waktuKirimLab || a.waktu) - new Date(b.waktuKirimLab || b.waktu));
+            renderTabelMenunggu();
+            document.getElementById('stat-menunggu').innerText = semuaMenunggu.length;
+            document.getElementById('badge-jumlah-menunggu').innerText = semuaMenunggu.length;
+        });
+
+        // ============ TARIK PASIEN SELESAI ============
+        const qSelesai = query(collection(db, "pendaftaran"), where("status", "==", "Hasil Lab Selesai"));
+        onSnapshot(qSelesai, (snap) => {
+            semuaSelesai = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            semuaSelesai.sort((a, b) => new Date(b.waktuSelesaiLab || b.waktu) - new Date(a.waktuSelesaiLab || a.waktu));
+            renderTabelSelesai();
+            document.getElementById('stat-selesai').innerText = semuaSelesai.length;
+        });
+
+        // ============ RENDER TABEL MENUNGGU ============
+        function renderTabelMenunggu() {
+            const tbody = document.getElementById('tabel-menunggu');
+            if (semuaMenunggu.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="empty-row">Tidak ada permintaan lab.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = semuaMenunggu.map(p => {
+                const jam = p.waktuKirimLab ? new Date(p.waktuKirimLab).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) : '-';
+                return `
+                    <tr>
+                        <td>${jam}</td>
+                        <td><strong>${p.noRM || '(lama)'}</strong></td>
+                        <td>${p.nama}</td>
+                        <td>${p.poli}</td>
+                        <td style="max-width:220px; font-size:12px;">${p.permintaanLab || '(tidak ada spesifikasi)'}</td>
+                        <td><span class="badge badge-waiting">Menunggu Sampel</span></td>
+                        <td><button class="btn-action" onclick="bukaModal('${p.id}')"><i class="fa-solid fa-pen"></i> Input Hasil</button></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ============ RENDER TABEL SELESAI ============
+        function renderTabelSelesai() {
+            const tbody = document.getElementById('tabel-selesai');
+            if (semuaSelesai.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="empty-row">Belum ada hasil lab selesai.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = semuaSelesai.map(p => {
+                const jam = p.waktuSelesaiLab ? new Date(p.waktuSelesaiLab).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) : '-';
+                const biaya = (p.biaya && p.biaya.lab) ? p.biaya.lab : 0;
+                const jenis = p.jenisLabDilakukan || p.permintaanLab || '-';
+                return `
+                    <tr>
+                        <td>${jam}</td>
+                        <td><strong>${p.noRM || '(lama)'}</strong></td>
+                        <td>${p.nama}</td>
+                        <td style="font-size:12px;">${jenis}</td>
+                        <td>Rp ${biaya.toLocaleString('id-ID')}</td>
+                        <td><button class="btn-outline" onclick="lihatHasil('${p.id}')"><i class="fa-solid fa-eye"></i> Lihat</button></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ============ BUKA MODAL INPUT ============
+        window.bukaModal = (id) => {
+            const p = semuaMenunggu.find(x => x.id === id);
+            if (!p) return;
+            
+            idAktif = id;
+            pasienAktif = p;
+
+            document.getElementById('m-nama').innerText = p.nama;
+            document.getElementById('m-norm').innerText = p.noRM || '(lama)';
+            document.getElementById('m-nik').innerText = p.nik;
+            document.getElementById('m-poli').innerText = p.poli;
+            document.getElementById('m-permintaan').innerText = p.permintaanLab || '(tidak ada spesifikasi)';
+
+            const cbContainer = document.getElementById('checkbox-lab');
+            cbContainer.innerHTML = JENIS_LAB.map(j => `
+                <label class="checkbox-card" id="cb-card-${j.id}">
+                    <input type="checkbox" value="${j.id}" data-biaya="${j.biaya}" onchange="toggleCheckbox('${j.id}')">
+                    <span>${j.label}</span>
+                </label>
+            `).join('');
+
+            document.getElementById('inp-hasil').value = '';
+            document.getElementById('inp-catatan').value = '';
+            document.getElementById('inp-biaya').value = 75000;
+
+            document.getElementById('modal-hasil').classList.add('show');
+        };
+
+        window.toggleCheckbox = (id) => {
+            const card = document.getElementById('cb-card-' + id);
+            const cb = card.querySelector('input');
+            if (cb.checked) card.classList.add('checked');
+            else card.classList.remove('checked');
+        };
+
+        window.tutupModal = () => {
+            document.getElementById('modal-hasil').classList.remove('show');
+            idAktif = null;
+            pasienAktif = null;
+        };
+
+        // ============ SIMPAN HASIL LAB ============
+        window.simpanHasil = async () => {
+            if (!idAktif || !pasienAktif) return;
+
+            const checked = Array.from(document.querySelectorAll('#checkbox-lab input:checked'))
+                .map(cb => JENIS_LAB.find(j => j.id === cb.value))
+                .filter(Boolean);
+
+            if (checked.length === 0) {
+                showToast('Pilih minimal 1 jenis pemeriksaan!', 'warning');
+                return;
+            }
+
+            const hasil = document.getElementById('inp-hasil').value.trim();
+            if (!hasil) {
+                showToast('Isi hasil pemeriksaan terlebih dahulu!', 'warning');
+                document.getElementById('inp-hasil').focus();
+                return;
+            }
+
+            const catatan = document.getElementById('inp-catatan').value.trim();
+            const biayaInput = parseInt(document.getElementById('inp-biaya').value) || 0;
+
+            if (biayaInput < 0) {
+                showToast('Biaya tidak boleh negatif!', 'warning');
+                return;
+            }
+
+            const yakin = confirm(`Kirim hasil lab ke dokter?\n\nJenis: ${checked.map(c=>c.label).join(', ')}\nBiaya: Rp ${biayaInput.toLocaleString('id-ID')}\n\nStatus pasien akan berubah menjadi "Hasil Lab Selesai" dan kembali ke dokter.`);
+            if (!yakin) return;
+
+            const btn = document.getElementById('btn-simpan-hasil');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+            btn.disabled = true;
+
+            try {
+                let hasilLabFinal = `--- HASIL LABORATORIUM ---\n`;
+                hasilLabFinal += `Tanggal: ${new Date().toLocaleString('id-ID')}\n`;
+                hasilLabFinal += `Jenis Pemeriksaan: ${checked.map(c => c.label).join(', ')}\n\n`;
+                hasilLabFinal += hasil;
+                if (catatan) {
+                    hasilLabFinal += `\n\nCatatan: ${catatan}`;
+                }
+
+                const biayaLama = pasienAktif.biaya || { admin: 15000, dokter: 50000, tindakan: 25000, obat: 0, lab: 0 };
+                const biayaBaru = { ...biayaLama, lab: biayaInput };
+
+                const ref = doc(db, "pendaftaran", idAktif);
+                await updateDoc(ref, {
+                    status: "Hasil Lab Selesai",
+                    hasilLab: hasilLabFinal,
+                    hasilLabCatatan: catatan,
+                    jenisLabDilakukan: checked.map(c => c.label).join(', '),
+                    biaya: biayaBaru,
+                    waktuSelesaiLab: new Date().toISOString()
+                });
+
+                showToast('✅ Hasil lab terkirim ke dokter. Pasien akan dikonfirmasi dokter.', 'success');
+                tutupModal();
+            } catch (err) {
+                console.error(err);
+                showToast('Gagal menyimpan: ' + err.message, 'error');
+            } finally {
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Simpan & Kirim ke Dokter';
+                btn.disabled = false;
+            }
+        };
+
+        // ============ LIHAT HASIL ============
+        window.lihatHasil = (id) => {
+            const p = semuaSelesai.find(x => x.id === id);
+            if (!p) return;
+            
+            const biaya = (p.biaya && p.biaya.lab) ? p.biaya.lab : 0;
+            const isi = 
+                `Pasien: ${p.nama}\n` +
+                `No. RM: ${p.noRM || '(lama)'}\n` +
+                `Poli: ${p.poli}\n` +
+                `Waktu Selesai: ${new Date(p.waktuSelesaiLab).toLocaleString('id-ID')}\n` +
+                `Biaya Lab: Rp ${biaya.toLocaleString('id-ID')}\n\n` +
+                `${p.hasilLab || '(tidak ada)'}`;
+            
+            alert(isi);
+        };
+    </script>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar) sidebar.classList.toggle('show');
+            if (overlay) overlay.classList.toggle('show');
+        }
+        function navigasiKe(url) {
+            try {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebarOverlay');
+                if (sidebar) sidebar.classList.remove('show');
+                if (overlay) overlay.classList.remove('show');
+            } catch (e) { console.warn(e); }
+            window.scrollTo(0, 0);
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>
