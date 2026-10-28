@@ -16,12 +16,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        .sidebar {
-            width: var(--sidebar-width); background: var(--bg-sidebar);
-            border-right: 1px solid var(--border); position: fixed;
-            top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000;
-            transition: transform 0.3s ease;
-        }
+        .sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000; transition: transform 0.3s ease; }
         .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
         .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
         .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; }
@@ -43,6 +38,11 @@
 
         .dashboard { padding: 30px; }
         
+        /* KARTU PEMILIHAN PASIEN */
+        .patient-selector { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 20px; margin-bottom: 20px; }
+        .patient-selector label { font-size: 13px; font-weight: 600; display: block; margin-bottom: 8px; }
+        .patient-selector select { width: 100%; padding: 12px; border: 2px solid var(--primary); border-radius: 8px; font-size: 14px; outline: none; font-weight: 600; color: var(--primary); }
+
         .patient-card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .patient-info h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
         .patient-info p { font-size: 13px; color: var(--text-muted); }
@@ -59,13 +59,6 @@
         .form-group textarea, .form-group input, .form-group select { padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; background: #f9fafb; font-family: inherit; }
         .form-group textarea:focus, .form-group input:focus { border-color: var(--primary); background: #fff; }
 
-        .resep-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
-        .resep-table th, .resep-table td { padding: 10px; font-size: 12px; border-bottom: 1px solid var(--border); text-align: left; }
-        .resep-table th { background: #f9fafb; color: var(--text-muted); }
-        
-        .btn-add-obat { background: #f3f4f6; color: var(--text-main); border: 1px dashed var(--border); padding: 10px; border-radius: 8px; width: 100%; font-size: 12px; font-weight: 600; cursor: pointer; margin-bottom: 20px; transition: all 0.2s; }
-        .btn-add-obat:hover { background: #e5e7eb; border-color: var(--primary); color: var(--primary); }
-
         .btn-save { background: var(--primary); color: white; border: none; padding: 14px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3); }
         .btn-save:hover { background: var(--primary-hover); }
 
@@ -79,8 +72,6 @@
             .emr-grid { grid-template-columns: 1fr; }
             .patient-card { flex-direction: column; align-items: flex-start; gap: 15px; }
             .patient-meta { text-align: left; width: 100%; justify-content: space-between; flex-wrap: wrap; }
-            .table-responsive { overflow-x: auto; width: 100%; }
-            table { min-width: 400px; }
         }
     </style>
 </head>
@@ -91,17 +82,19 @@
     <aside class="sidebar" id="sidebar">
         <div class="brand"><i class="fa-solid fa-hospital"></i> SIMRS<span style="color:var(--text-main)">Pro</span></div>
         <div class="nav-menu">
-            <a href="javascript:void(0)" onclick="navigasiKe('simrs.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('index.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
             <a href="javascript:void(0)" onclick="navigasiKe('pendaftaran.html')" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
             <a href="javascript:void(0)" onclick="navigasiKe('antrean.html')" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
             
-            <div class="nav-label">Pelayanan Medis</div>
+            <div class="nav-label">Data & Pelayanan</div>
+            <a href="javascript:void(0)" onclick="navigasiKe('pasien.html')" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
             <a href="javascript:void(0)" onclick="navigasiKe('rekam-medis.html')" class="nav-item active"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
             <a href="javascript:void(0)" onclick="navigasiKe('farmasi.html')" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
             <a href="javascript:void(0)" onclick="navigasiKe('lab.html')" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
 
             <div class="nav-label">Keuangan & Sistem</div>
             <a href="javascript:void(0)" onclick="navigasiKe('kasir.html')" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('laporan.html')" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
             <a href="javascript:void(0)" onclick="navigasiKe('pengaturan.html')" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
         </div>
     </aside>
@@ -119,15 +112,25 @@
         </header>
 
         <div class="dashboard">
-            <div class="patient-card">
+            
+            <!-- PILIH PASIEN DARI ANTREAN -->
+            <div class="patient-selector">
+                <label><i class="fa-solid fa-list-check"></i> Pilih Pasien dari Antrean:</label>
+                <select id="pilih-pasien" onchange="tampilkanDataPasien()">
+                    <option value="">-- Memuat daftar pasien --</option>
+                </select>
+            </div>
+
+            <!-- KARTU IDENTITAS PASIEN (Akan berubah sesuai pilihan) -->
+            <div class="patient-card" id="kartu-pasien" style="display: none;">
                 <div class="patient-info">
-                    <h2>Budi Santoso</h2>
-                    <p><i class="fa-solid fa-id-card"></i> RM-00122 • NIK: 1101xxxxxxxxxxxx</p>
+                    <h2 id="detail-nama">-</h2>
+                    <p><i class="fa-solid fa-id-card"></i> NIK: <span id="detail-nik">-</span></p>
                 </div>
                 <div class="patient-meta">
-                    <div class="meta-item"><span>Tgl Lahir</span><strong>12 Mei 1990 (34 thn)</strong></div>
-                    <div class="meta-item"><span>Poli</span><strong>Poli Umum</strong></div>
-                    <div class="meta-item"><span>Penjamin</span><strong>Umum</strong></div>
+                    <div class="meta-item"><span>Tgl Lahir</span><strong id="detail-tgl">-</strong></div>
+                    <div class="meta-item"><span>Jenis Kelamin</span><strong id="detail-jk">-</strong></div>
+                    <div class="meta-item"><span>Poli</span><strong id="detail-poli">-</strong></div>
                 </div>
             </div>
 
@@ -160,17 +163,16 @@
                 <div class="card">
                     <h3 class="card-title"><i class="fa-solid fa-pills"></i> E-Resep</h3>
                     <div class="table-responsive">
-                        <table class="resep-table">
+                        <table class="resep-table" style="width:100%; border-collapse:collapse; margin-bottom:10px;">
                             <thead>
-                                <tr><th>Nama Obat</th><th>Qty</th><th>Aturan</th></tr>
+                                <tr><th style="padding:10px; font-size:12px; border-bottom:1px solid #eee; text-align:left;">Nama Obat</th><th style="padding:10px; font-size:12px; border-bottom:1px solid #eee; text-align:left;">Qty</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td>Paracetamol 500mg</td><td>10 Tab</td><td>3x1</td></tr>
-                                <tr><td>Amoxicillin 500mg</td><td>15 Kap</td><td>3x1</td></tr>
+                                <tr><td style="padding:10px; font-size:12px;">Paracetamol 500mg</td><td style="padding:10px; font-size:12px;">10 Tab</td></tr>
                             </tbody>
                         </table>
                     </div>
-                    <button class="btn-add-obat"><i class="fa-solid fa-plus"></i> Tambah Obat</button>
+                    <button class="btn-add-obat" style="width:100%; padding:10px; border:1px dashed #ccc; background:#f9fafb; border-radius:8px; font-size:12px; font-weight:600; margin-bottom:20px; cursor:pointer;"><i class="fa-solid fa-plus"></i> Tambah Obat</button>
                     <button class="btn-save" onclick="alert('Simulasi: Rekam Medis disimpan!')">
                         <i class="fa-solid fa-floppy-disk"></i> Simpan Pemeriksaan
                     </button>
@@ -178,6 +180,64 @@
             </div>
         </div>
     </main>
+
+    <!-- SCRIPT FIREBASE UNTUK REKAM MEDIS -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB5u4UAw9JAmXA6vsuSwuexO5ASR-0Kjn0",
+            authDomain: "simrs-pro.firebaseapp.com",
+            projectId: "simrs-pro",
+            storageBucket: "simrs-pro.firebasestorage.app",
+            messagingSenderId: "745412639051",
+            appId: "1:745412639051:web:e434bc2a118ca2c67750ce"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        // Hanya ambil pasien yang statusnya "Menunggu"
+        const q = query(collection(db, "pendaftaran"), where("status", "==", "Menunggu"));
+        const selectElement = document.getElementById('pilih-pasien');
+        let daftarPasien = {};
+
+        onSnapshot(q, (snapshot) => {
+            selectElement.innerHTML = '<option value="">-- Pilih Pasien --</option>';
+            daftarPasien = {}; // Reset data lokal
+            
+            if (snapshot.empty) {
+                selectElement.innerHTML = '<option value="">Tidak ada antrean pasien</option>';
+                document.getElementById('kartu-pasien').style.display = 'none';
+                return;
+            }
+
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                daftarPasien[doc.id] = data; // Simpan data berdasarkan ID dokumen
+                selectElement.innerHTML += `<option value="${doc.id}">${data.nama} (${data.poli})</option>`;
+            });
+        });
+
+        // Fungsi untuk menampilkan detail pasien saat dipilih dari dropdown
+        window.tampilkanDataPasien = () => {
+            const idTerpilih = selectElement.value;
+            const kartu = document.getElementById('kartu-pasien');
+
+            if (idTerpilih && daftarPasien[idTerpilih]) {
+                const data = daftarPasien[idTerpilih];
+                kartu.style.display = 'flex';
+                document.getElementById('detail-nama').innerText = data.nama;
+                document.getElementById('detail-nik').innerText = data.nik;
+                document.getElementById('detail-tgl').innerText = data.tglLahir;
+                document.getElementById('detail-jk').innerText = data.jk === 'L' ? 'Laki-laki' : 'Perempuan';
+                document.getElementById('detail-poli').innerText = data.poli;
+            } else {
+                kartu.style.display = 'none'; // Sembunyikan jika tidak ada yang dipilih
+            }
+        };
+    </script>
 
     <script>
         function toggleSidebar() {
