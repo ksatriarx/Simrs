@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Error Firestore</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 15px; background: #f3f4f6; }
+        h1 { font-size: 18px; color: #0ea5e9; }
+        .box { background: white; padding: 15px; border-radius: 10px; margin: 10px 0; border: 1px solid #ddd; }
+        .success { background: #dcfce7; border-color: #16a34a; color: #166534; }
+        .error { background: #fef2f2; border-color: #ef4444; color: #991b1b; }
+        .info { background: #dbeafe; border-color: #2563eb; color: #1e40af; }
+        pre { background: #1f2937; color: #10b981; padding: 10px; border-radius: 6px; font-size: 11px; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+        button { background: #0ea5e9; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-size: 15px; font-weight: bold; width: 100%; margin: 10px 0; }
+        button:disabled { opacity: 0.6; }
+        .status { padding: 10px; border-radius: 6px; margin: 8px 0; font-size: 13px; }
+        .loading { background: #fef3c7; color: #92400e; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Cek Koneksi Firestore</h1>
+    <p style="font-size: 13px; color: #666;">Klik tombol di bawah untuk test koneksi ke database.</p>
+    
+    <button id="btnTest" onclick="jalankanTest()">▶️ Mulai Test</button>
+    
+    <div id="hasil"></div>
+
+    <script src="firebase-config.js"></script>
+
+    <script type="module">
+        window.jalankanTest = async function() {
+            const hasil = document.getElementById('hasil');
+            const btn = document.getElementById('btnTest');
+            btn.disabled = true;
+            hasil.innerHTML = '<div class="status loading">⏳ Test berjalan... tunggu 3 detik</div>';
+
+            try {
+                // Cek dulu apakah firebase-config.js ter-load
+                if (!window.FIREBASE_CONFIG) {
+                    hasil.innerHTML = `
+                        <div class="box error">
+                            <b>❌ FIREBASE_CONFIG tidak ditemukan</b><br><br>
+                            File <code>firebase-config.js</code> mungkin tidak ada atau tidak ter-load.<br><br>
+                            Cek: file ada di folder yang sama?
+                        </div>
+                    `;
+                    btn.disabled = false;
+                    return;
+                }
+
+                hasil.innerHTML += '<div class="status loading">⏳ Load Firebase SDK...</div>';
+                
+                const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js');
+                const { getFirestore, collection, getDocs } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
+
+                hasil.innerHTML += '<div class="status loading">⏳ Inisialisasi Firebase...</div>';
+                const app = initializeApp(window.FIREBASE_CONFIG);
+                const db = getFirestore(app);
+
+                hasil.innerHTML += '<div class="status loading">⏳ Ambil data dari collection "pendaftaran"...</div>';
+                
+                const snap = await getDocs(collection(db, "pendaftaran"));
+
+                // HAPUS loading, tampilkan hasil
+                hasil.querySelectorAll('.loading').forEach(el => el.remove());
+
+                if (snap.size === 0) {
+                    hasil.innerHTML += `
+                        <div class="box error">
+                            <b>⚠️ BERHASIL CONNECT tapi collection KOSONG</b><br><br>
+                            Koneksi OK, tapi tidak ada data di collection "pendaftaran".<br>
+                            Ini aneh karena di Firebase Console ada 1 dokumen.<br><br>
+                            Kemungkinan: data di collection lain? Atau query berbeda?
+                        </div>
+                    `;
+                } else {
+                    const daftar = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                    
+                    hasil.innerHTML += `
+                        <div class="box success">
+                            <b>✅ BERHASIL! Data ditemukan: ${snap.size} dokumen</b>
+                        </div>
+                        
+                        <div class="box info">
+                            <b>📋 Daftar Pasien:</b>
+                        </div>
+                    `;
+
+                    daftar.forEach((p, i) => {
+                        hasil.innerHTML += `
+                            <div class="box">
+                                <b>${i + 1}. ${p.nama || '(tanpa nama)'}</b><br>
+                                <span style="font-size: 12px; color: #666;">
+                                    NIK: ${p.nik || '-'} • Status: ${p.status || '-'}<br>
+                                    No RM: ${p.noRM || '(lama)'} • Poli: ${p.poli || '-'}
+                                </span>
+                            </div>
+                        `;
+                    });
+
+                    hasil.innerHTML += `
+                        <div class="box success">
+                            🎉 <b>Kesimpulan:</b> Firestore bisa dibaca dengan baik!<br>
+                            Kalau aplikasi <code>pendaftaran.html</code> masih kosong, kemungkinan ada masalah di JavaScript aplikasi (bukan Firebase).
+                        </div>
+                    `;
+                }
+
+            } catch (err) {
+                hasil.querySelectorAll('.loading').forEach(el => el.remove());
+                
+                let penyebab = '';
+                if (err.code === 'permission-denied') {
+                    penyebab = `
+                        <b>🛑 Penyebab:</b> Firebase Rules memblokir akses baca.<br><br>
+                        <b>Solusi:</b> Buka Firebase Console → Firestore → Rules → ubah jadi:<br><br>
+                        <pre>rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}</pre>
+                        Klik <b>Publish</b>, lalu coba test ini lagi.
+                    `;
+                } else if (err.message && err.message.includes('timeout')) {
+                    penyebab = '<b>🛑 Penyebab:</b> Koneksi timeout. Cek internet Anda.';
+                } else {
+                    penyebab = `<b>🛑 Penyebab:</b> ${err.message}`;
+                }
+
+                hasil.innerHTML += `
+                    <div class="box error">
+                        <b>❌ GAGAL</b><br><br>
+                        <b>Kode Error:</b> <code>${err.code || 'unknown'}</code><br><br>
+                        ${penyebab}
+                    </div>
+
+                    <div class="box">
+                        <b>📝 Detail Teknis:</b>
+                        <pre>${err.message}\n\n${err.stack || ''}</pre>
+                    </div>
+                `;
+            }
+
+            btn.disabled = false;
+        };
+    </script>
+</body>
+</html>
