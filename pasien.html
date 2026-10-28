@@ -74,22 +74,58 @@
         .badge-selesai { background: #dcfce7; color: #16a34a; }
         .badge-lunas { background: #bbf7d0; color: #15803d; }
 
-        .btn-action { background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
-        .btn-action:hover { background: var(--primary-hover); }
+        /* ACTION BUTTONS */
+        .action-group { display: flex; gap: 4px; flex-wrap: nowrap; }
+        .btn-icon { border: none; padding: 7px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-width: 32px; }
+        .btn-icon-view { background: #e0f2fe; color: #0284c7; }
+        .btn-icon-view:hover { background: #0284c7; color: white; }
+        .btn-icon-edit { background: #fef3c7; color: #d97706; }
+        .btn-icon-edit:hover { background: #d97706; color: white; }
+        .btn-icon-delete { background: #fef2f2; color: var(--danger); }
+        .btn-icon-delete:hover { background: var(--danger); color: white; }
+
         .empty-row { text-align: center; padding: 40px 20px !important; color: var(--text-muted); }
 
+        /* MODAL */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; overflow-y: auto; pointer-events: none; }
         .modal-overlay.show { display: flex; pointer-events: auto; }
         .modal-box { background: var(--bg-card); border-radius: 16px; width: 100%; max-width: 720px; max-height: 92vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: modalIn 0.25s ease; }
         @keyframes modalIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--bg-card); z-index: 2; border-radius: 16px 16px 0 0; }
-        .modal-title { font-size: 18px; font-weight: 700; }
+        .modal-title { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
         .close-btn { background: none; border: none; font-size: 22px; color: var(--text-muted); cursor: pointer; line-height: 1; }
         .modal-body { padding: 24px; }
-        .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; position: sticky; bottom: 0; background: var(--bg-card); border-radius: 0 0 16px 16px; }
+        .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; position: sticky; bottom: 0; background: var(--bg-card); border-radius: 0 0 16px 16px; flex-wrap: wrap; }
         .btn-cancel { background: #f3f4f6; color: var(--text-main); border: 1px solid var(--border); padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
         .btn-cancel:hover { background: #e5e7eb; }
+        .btn-save { background: var(--primary); color: white; border: none; padding: 10px 24px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-save:hover:not(:disabled) { background: var(--primary-hover); }
+        .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-danger { background: var(--danger); color: white; border: none; padding: 10px 24px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-danger:hover:not(:disabled) { background: #dc2626; }
+        .btn-danger:disabled { opacity: 0.6; cursor: not-allowed; }
 
+        /* FORM GRID */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-group label { font-size: 12px; font-weight: 600; }
+        .form-group label .req { color: var(--danger); }
+        .form-group input, .form-group select, .form-group textarea { padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; background: #f9fafb; font-family: inherit; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); background: #fff; }
+        .form-group input:disabled { background: #f3f4f6; color: #9ca3af; cursor: not-allowed; }
+        .form-group input.error { border-color: var(--danger); background: #fef2f2; }
+        .form-group small.helper { font-size: 11px; color: var(--text-muted); }
+        .form-group small.error-msg { font-size: 11px; color: var(--danger); display: none; }
+        .form-group.has-error small.error-msg { display: block; }
+
+        .delete-warning { background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 14px 18px; margin-bottom: 20px; }
+        .delete-warning h4 { font-size: 14px; font-weight: 700; color: #991b1b; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        .delete-warning p { font-size: 12px; color: #7f1d1d; line-height: 1.5; }
+        .delete-warning .data-list { font-size: 12px; color: #7f1d1d; margin-top: 8px; background: white; padding: 10px; border-radius: 6px; }
+        .delete-warning .data-list div { padding: 3px 0; }
+
+        /* DETAIL PASIEN */
         .patient-detail-header { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
         .patient-detail-header h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
         .patient-detail-header .meta { font-size: 12px; opacity: 0.9; display: flex; flex-wrap: wrap; gap: 12px; }
@@ -123,6 +159,7 @@
         .payment-info .payment-row { display: flex; justify-content: space-between; font-size: 12px; padding: 4px 0; color: #14532d; }
         .payment-info .payment-row.bold { font-weight: 700; border-top: 1px solid #86efac; margin-top: 6px; padding-top: 8px; font-size: 13px; }
 
+        /* TOAST */
         .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
         .toast { padding: 14px 20px; border-radius: 8px; color: white; font-size: 13px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease; min-width: 280px; }
         .toast.success { background: var(--success); }
@@ -142,6 +179,8 @@
             .search-input { width: 100%; }
             .card-header { flex-direction: column; align-items: flex-start; }
             .info-grid { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+            .modal-body { padding: 16px; }
         }
     </style>
 </head>
@@ -238,15 +277,121 @@
         </div>
     </main>
 
-    <div class="modal-overlay" id="modal-riwayat" onclick="if(event.target===this) tutupModal()">
+    <!-- ============ MODAL DETAIL RIWAYAT ============ -->
+    <div class="modal-overlay" id="modal-riwayat" onclick="if(event.target===this) tutupModal('modal-riwayat')">
         <div class="modal-box">
             <div class="modal-header">
-                <h3 class="modal-title" id="modal-title">Riwayat Pasien</h3>
-                <button class="close-btn" onclick="tutupModal()">&times;</button>
+                <h3 class="modal-title"><i class="fa-solid fa-file-medical"></i> <span id="modal-title">Riwayat Pasien</span></h3>
+                <button class="close-btn" onclick="tutupModal('modal-riwayat')">&times;</button>
             </div>
             <div class="modal-body" id="modal-body"></div>
             <div class="modal-footer">
-                <button class="btn-cancel" onclick="tutupModal()">Tutup</button>
+                <button class="btn-cancel" onclick="tutupModal('modal-riwayat')">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ MODAL EDIT PASIEN ============ -->
+    <div class="modal-overlay" id="modal-edit" onclick="if(event.target===this) tutupModal('modal-edit')">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fa-solid fa-pen-to-square"></i> Edit Data Pasien</h3>
+                <button class="close-btn" onclick="tutupModal('modal-edit')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="formEdit" novalidate>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>No. Rekam Medis</label>
+                            <input type="text" id="edit-norm" disabled>
+                            <small class="helper">No. RM tidak dapat diubah.</small>
+                        </div>
+                        <div class="form-group" id="grp-edit-nik">
+                            <label>NIK <span class="req">*</span></label>
+                            <input type="text" id="edit-nik" placeholder="16 digit NIK" maxlength="16" inputmode="numeric" required>
+                            <small class="error-msg" id="msg-edit-nik">NIK harus 16 digit angka & unik.</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Nama Lengkap <span class="req">*</span></label>
+                            <input type="text" id="edit-nama" placeholder="Sesuai KTP" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Tanggal Lahir <span class="req">*</span></label>
+                            <input type="date" id="edit-tgl" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Jenis Kelamin <span class="req">*</span></label>
+                            <select id="edit-jk" required>
+                                <option value="">Pilih...</option>
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>No. Handphone</label>
+                            <input type="tel" id="edit-hp" placeholder="08xxxxxxxxxx" maxlength="15" inputmode="numeric">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Alamat Lengkap</label>
+                            <textarea id="edit-alamat" rows="2" placeholder="Jalan, RT/RW, Desa, Kecamatan..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Jenis Penjamin <span class="req">*</span></label>
+                            <select id="edit-penjamin" required>
+                                <option value="Umum">Umum / Mandiri</option>
+                                <option value="BPJS">BPJS Kesehatan</option>
+                                <option value="Asuransi">Asuransi Swasta</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="grp-edit-bpjs">
+                            <label>No. BPJS</label>
+                            <input type="text" id="edit-bpjs" placeholder="13 digit No. BPJS" maxlength="13" inputmode="numeric">
+                        </div>
+                        <div class="form-group">
+                            <label>Poli <span class="req">*</span></label>
+                            <select id="edit-poli" required>
+                                <option value="">Pilih Poli...</option>
+                                <option value="Poli Umum">Poli Umum</option>
+                                <option value="Poli Gigi">Poli Gigi</option>
+                                <option value="Poli Anak">Poli Anak</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="tutupModal('modal-edit')">Batal</button>
+                <button class="btn-save" id="btn-simpan-edit" onclick="simpanEdit()">
+                    <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ MODAL KONFIRMASI HAPUS ============ -->
+    <div class="modal-overlay" id="modal-hapus" onclick="if(event.target===this) tutupModal('modal-hapus')">
+        <div class="modal-box" style="max-width: 500px;">
+            <div class="modal-header" style="border-bottom-color: #fecaca;">
+                <h3 class="modal-title" style="color: var(--danger);"><i class="fa-solid fa-triangle-exclamation"></i> Konfirmasi Hapus</h3>
+                <button class="close-btn" onclick="tutupModal('modal-hapus')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="delete-warning">
+                    <h4><i class="fa-solid fa-circle-exclamation"></i> Data akan dihapus permanen</h4>
+                    <p>Tindakan ini <strong>tidak dapat dibatalkan</strong>. Semua data pasien berikut akan terhapus dari sistem.</p>
+                    <div class="data-list" id="delete-data-list"></div>
+                </div>
+                <div class="form-group" id="grp-konfirmasi">
+                    <label>Ketik nama pasien untuk konfirmasi: <span class="req">*</span></label>
+                    <input type="text" id="input-konfirmasi" placeholder="Ketik nama pasien persis" autocomplete="off">
+                    <small class="helper">Ketik <strong id="konfirmasi-target">-</strong> untuk melanjutkan.</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="tutupModal('modal-hapus')">Batal</button>
+                <button class="btn-danger" id="btn-hapus-final" onclick="hapusPasien()" disabled>
+                    <i class="fa-solid fa-trash"></i> Hapus Permanen
+                </button>
             </div>
         </div>
     </div>
@@ -258,15 +403,36 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, query, orderBy, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy, where, getDocs, doc, getDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const app = initializeApp(window.FIREBASE_CONFIG);
         const db = getFirestore(app);
         const pendaftaranRef = collection(db, "pendaftaran");
 
+        // ============ STATE ============
         let semuaPasien = [];
         let filterAktif = 'all';
+        let idEditAktif = null;
+        let idHapusAktif = null;
+        let namaHapusAktif = null;
 
+        // ============ TOAST ============
+        window.showToast = function(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', warning: 'fa-triangle-exclamation', info: 'fa-circle-info' };
+            toast.innerHTML = `<i class="fa-solid ${icons[type]}"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.transition = 'opacity 0.3s, transform 0.3s';
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        };
+
+        // ============ BADGE ============
         function badgeClass(status) {
             const map = {
                 "Menunggu": "badge-menunggu", "Menunggu Lab": "badge-lab",
@@ -276,6 +442,7 @@
             return map[status] || "badge-menunggu";
         }
 
+        // ============ TARIK DATA REALTIME ============
         const q = query(pendaftaranRef, orderBy("waktu", "desc"));
         onSnapshot(q, (snap) => {
             semuaPasien = snap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -292,6 +459,7 @@
             document.getElementById('stat-lunas').innerText = lunas;
         }
 
+        // ============ FILTER ============
         window.setFilter = (f) => {
             filterAktif = f;
             document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -300,6 +468,7 @@
             renderTabel();
         };
 
+        // ============ RENDER TABEL ============
         window.renderTabel = () => {
             const tbody = document.getElementById('tabel-pasien');
             const keyword = (document.getElementById('input-cari')?.value || '').toLowerCase().trim();
@@ -321,7 +490,7 @@
                 return;
             }
 
-            tbody.innerHTML = list.slice(0, 50).map(p => {
+            tbody.innerHTML = list.slice(0, 100).map(p => {
                 const tgl = p.waktu ? new Date(p.waktu).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
                 return `
                     <tr>
@@ -331,17 +500,35 @@
                         <td>${p.penjamin || 'Umum'}</td>
                         <td>${tgl}</td>
                         <td><span class="badge ${badgeClass(p.status)}">${p.status}</span></td>
-                        <td><button class="btn-action" onclick="lihatRiwayat('${p.id}')"><i class="fa-solid fa-eye"></i> Detail</button></td>
+                        <td>
+                            <div class="action-group">
+                                <button class="btn-icon btn-icon-view" onclick="lihatRiwayat('${p.id}')" title="Lihat detail">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-icon-edit" onclick="bukaEdit('${p.id}')" title="Edit data">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button class="btn-icon btn-icon-delete" onclick="bukaHapus('${p.id}')" title="Hapus">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                 `;
             }).join('');
         };
 
+        // ============ MODAL HELPER ============
+        window.tutupModal = (id) => {
+            document.getElementById(id).classList.remove('show');
+        };
+
+        // ============ DETAIL RIWAYAT ============
         window.lihatRiwayat = async (id) => {
             try {
                 const ref = doc(db, "pendaftaran", id);
                 const snap = await getDoc(ref);
-                if (!snap.exists()) { alert('Data pasien tidak ditemukan.'); return; }
+                if (!snap.exists()) { showToast('Data pasien tidak ditemukan.', 'error'); return; }
 
                 const p = { id: snap.id, ...snap.data() };
                 document.getElementById('modal-title').innerText = `Riwayat: ${p.nama}`;
@@ -439,12 +626,217 @@
                 document.getElementById('modal-riwayat').classList.add('show');
             } catch (err) {
                 console.error(err);
-                alert('Gagal memuat riwayat: ' + err.message);
+                showToast('Gagal memuat riwayat: ' + err.message, 'error');
             }
         };
 
-        window.tutupModal = () => {
-            document.getElementById('modal-riwayat').classList.remove('show');
+        // ============ BUKA MODAL EDIT ============
+        window.bukaEdit = async (id) => {
+            try {
+                const ref = doc(db, "pendaftaran", id);
+                const snap = await getDoc(ref);
+                if (!snap.exists()) { showToast('Data pasien tidak ditemukan.', 'error'); return; }
+
+                const p = snap.data();
+                idEditAktif = id;
+
+                // Isi form
+                document.getElementById('edit-norm').value = p.noRM || '(lama)';
+                document.getElementById('edit-nik').value = p.nik || '';
+                document.getElementById('edit-nama').value = p.nama || '';
+                document.getElementById('edit-tgl').value = p.tglLahir || '';
+                document.getElementById('edit-jk').value = p.jk || '';
+                document.getElementById('edit-hp').value = p.hp || '';
+                document.getElementById('edit-alamat').value = p.alamat || '';
+                document.getElementById('edit-penjamin').value = p.penjamin || 'Umum';
+                document.getElementById('edit-bpjs').value = p.bpjs || '';
+                document.getElementById('edit-poli').value = p.poli || '';
+
+                // Toggle BPJS field
+                toggleBpjsEdit();
+
+                // Reset error states
+                document.querySelectorAll('#formEdit .error').forEach(el => el.classList.remove('error'));
+                document.querySelectorAll('#formEdit .has-error').forEach(el => el.classList.remove('has-error'));
+
+                document.getElementById('modal-edit').classList.add('show');
+            } catch (err) {
+                console.error(err);
+                showToast('Gagal memuat data: ' + err.message, 'error');
+            }
+        };
+
+        window.toggleBpjsEdit = () => {
+            const penjamin = document.getElementById('edit-penjamin').value;
+            const grpBpjs = document.getElementById('grp-edit-bpjs');
+            if (penjamin === 'BPJS') grpBpjs.style.display = 'flex';
+            else grpBpjs.style.display = 'none';
+        };
+
+        document.getElementById('edit-penjamin').addEventListener('change', toggleBpjsEdit);
+
+        // ============ CEK NIK UNIK (kecuali ID sendiri) ============
+        async function isNikExistsExcept(nik, excludeId) {
+            const q = query(pendaftaranRef, where("nik", "==", nik));
+            const snap = await getDocs(q);
+            return snap.docs.some(d => d.id !== excludeId);
+        }
+
+        // ============ SIMPAN EDIT ============
+        window.simpanEdit = async () => {
+            if (!idEditAktif) return;
+
+            const nik = document.getElementById('edit-nik').value.trim();
+            const nama = document.getElementById('edit-nama').value.trim();
+            const tgl = document.getElementById('edit-tgl').value;
+            const jk = document.getElementById('edit-jk').value;
+            const poli = document.getElementById('edit-poli').value;
+            const penjamin = document.getElementById('edit-penjamin').value;
+            const bpjs = document.getElementById('edit-bpjs').value.trim();
+
+            // Validasi
+            const grpNik = document.getElementById('grp-edit-nik');
+            const msgNik = document.getElementById('msg-edit-nik');
+            
+            if (!/^\d{16}$/.test(nik)) {
+                document.getElementById('edit-nik').classList.add('error');
+                grpNik.classList.add('has-error');
+                msgNik.textContent = "NIK harus 16 digit angka.";
+                showToast('Periksa kembali form!', 'warning');
+                return;
+            }
+            if (!nama || !tgl || !jk || !poli) {
+                showToast('Lengkapi field wajib!', 'warning');
+                return;
+            }
+            if (penjamin === 'BPJS' && !/^\d{13}$/.test(bpjs)) {
+                document.getElementById('edit-bpjs').classList.add('error');
+                showToast('No. BPJS harus 13 digit!', 'warning');
+                return;
+            }
+
+            const btn = document.getElementById('btn-simpan-edit');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+            btn.disabled = true;
+
+            try {
+                // Cek NIK unik (kecuali dirinya sendiri)
+                const nikDuplicate = await isNikExistsExcept(nik, idEditAktif);
+                if (nikDuplicate) {
+                    document.getElementById('edit-nik').classList.add('error');
+                    grpNik.classList.add('has-error');
+                    msgNik.textContent = "NIK sudah dipakai pasien lain.";
+                    showToast('NIK sudah terdaftar pada pasien lain!', 'error');
+                    btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan';
+                    btn.disabled = false;
+                    return;
+                }
+
+                const ref = doc(db, "pendaftaran", idEditAktif);
+                await updateDoc(ref, {
+                    nik: nik,
+                    nama: nama,
+                    tglLahir: tgl,
+                    jk: jk,
+                    hp: document.getElementById('edit-hp').value.trim() || '',
+                    alamat: document.getElementById('edit-alamat').value.trim() || '',
+                    penjamin: penjamin,
+                    bpjs: penjamin === 'BPJS' ? bpjs : '',
+                    poli: poli,
+                    waktuEdit: new Date().toISOString()
+                });
+
+                showToast('✅ Data pasien berhasil diperbarui.', 'success');
+                tutupModal('modal-edit');
+                idEditAktif = null;
+            } catch (err) {
+                console.error(err);
+                showToast('Gagal menyimpan: ' + err.message, 'error');
+            } finally {
+                btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan';
+                btn.disabled = false;
+            }
+        };
+
+        // ============ BUKA MODAL HAPUS ============
+        window.bukaHapus = async (id) => {
+            try {
+                const ref = doc(db, "pendaftaran", id);
+                const snap = await getDoc(ref);
+                if (!snap.exists()) { showToast('Data pasien tidak ditemukan.', 'error'); return; }
+
+                const p = snap.data();
+
+                // Validasi: hanya boleh hapus jika status Lunas atau Selesai
+                const statusBolehHapus = ['Lunas', 'Selesai'];
+                if (!statusBolehHapus.includes(p.status)) {
+                    showToast(`Tidak bisa hapus. Pasien masih dalam alur pelayanan (status: ${p.status}).`, 'warning');
+                    return;
+                }
+
+                idHapusAktif = id;
+                namaHapusAktif = p.nama;
+
+                // Isi data list
+                const biaya = p.biaya || {};
+                const total = (biaya.admin||0) + (biaya.dokter||0) + (biaya.tindakan||0) + (biaya.obat||0) + (biaya.lab||0);
+                
+                document.getElementById('delete-data-list').innerHTML = `
+                    <div><strong>No. RM:</strong> ${p.noRM || '(lama)'}</div>
+                    <div><strong>Nama:</strong> ${p.nama}</div>
+                    <div><strong>NIK:</strong> ${p.nik}</div>
+                    <div><strong>Poli:</strong> ${p.poli}</div>
+                    <div><strong>Status:</strong> ${p.status}</div>
+                    <div><strong>Total Tagihan:</strong> Rp ${total.toLocaleString('id-ID')}</div>
+                `;
+
+                document.getElementById('konfirmasi-target').innerText = p.nama;
+                document.getElementById('input-konfirmasi').value = '';
+                document.getElementById('btn-hapus-final').disabled = true;
+                document.getElementById('grp-konfirmasi').classList.remove('has-error');
+
+                document.getElementById('modal-hapus').classList.add('show');
+            } catch (err) {
+                console.error(err);
+                showToast('Gagal memuat data: ' + err.message, 'error');
+            }
+        };
+
+        // ============ VALIDASI INPUT KONFIRMASI HAPUS ============
+        document.getElementById('input-konfirmasi').addEventListener('input', function() {
+            const input = this.value.trim();
+            const btn = document.getElementById('btn-hapus-final');
+            btn.disabled = input !== namaHapusAktif;
+        });
+
+        // ============ EKSEKUSI HAPUS ============
+        window.hapusPasien = async () => {
+            if (!idHapusAktif) return;
+            
+            const inputKonfirmasi = document.getElementById('input-konfirmasi').value.trim();
+            if (inputKonfirmasi !== namaHapusAktif) {
+                showToast('Nama konfirmasi tidak cocok!', 'warning');
+                return;
+            }
+
+            const btn = document.getElementById('btn-hapus-final');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menghapus...';
+            btn.disabled = true;
+
+            try {
+                const ref = doc(db, "pendaftaran", idHapusAktif);
+                await deleteDoc(ref);
+
+                showToast(`✅ Data pasien "${namaHapusAktif}" berhasil dihapus permanen.`, 'success');
+                tutupModal('modal-hapus');
+                idHapusAktif = null;
+                namaHapusAktif = null;
+            } catch (err) {
+                console.error(err);
+                showToast('Gagal menghapus: ' + err.message, 'error');
+                btn.innerHTML = '<i class="fa-solid fa-trash"></i> Hapus Permanen';
+                btn.disabled = false;
+            }
         };
     </script>
 
