@@ -18,7 +18,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        /* SIDEBAR & TOPBAR */
         .sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000; transition: transform 0.3s ease; }
         .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; flex-shrink: 0; }
         .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; position: relative; z-index: 10; }
@@ -26,11 +25,8 @@
         .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; position: relative; z-index: 11; pointer-events: auto; }
         .nav-item:hover, .nav-item.active { background: #e0f2fe; color: var(--primary); }
         .nav-item i { width: 20px; text-align: center; }
-
-        /* FIX: Overlay hanya intersep saat .show */
         .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
         .sidebar-overlay.show { display: block; opacity: 1; pointer-events: auto; }
-
         .main-content { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - var(--sidebar-width)); transition: margin 0.3s ease; }
         .topbar { height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 90; }
         .menu-toggle { display: none; background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; }
@@ -40,13 +36,11 @@
         .user-role { font-size: 11px; color: var(--text-muted); }
         .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--purple); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-        /* DASHBOARD */
         .dashboard { padding: 30px; }
         .page-header { margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .page-title { font-size: 24px; font-weight: 700; }
         .page-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
 
-        /* STAT CARDS */
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
         .stat-card { background: var(--bg-card); padding: 18px; border-radius: 12px; border: 1px solid var(--border); display: flex; align-items: center; gap: 14px; }
         .stat-icon { width: 46px; height: 46px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
@@ -56,7 +50,6 @@
         .stat-details h3 { font-size: 22px; font-weight: 700; margin-bottom: 2px; }
         .stat-details p { font-size: 11px; color: var(--text-muted); font-weight: 500; }
 
-        /* TABEL */
         .card-table { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 24px; }
         .card-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .card-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
@@ -76,7 +69,6 @@
         .btn-outline { background: transparent; color: var(--primary); border: 1px solid var(--primary); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
         .btn-outline:hover { background: #f0f9ff; }
 
-        /* MODAL */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; overflow-y: auto; pointer-events: none; }
         .modal-overlay.show { display: flex; pointer-events: auto; }
         .modal-box { background: var(--bg-card); border-radius: 16px; width: 100%; max-width: 720px; max-height: 92vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: modalIn 0.25s ease; }
@@ -86,7 +78,6 @@
         .close-btn { background: none; border: none; font-size: 22px; color: var(--text-muted); cursor: pointer; line-height: 1; }
         .modal-body { padding: 24px; }
 
-        /* PATIENT INFO DI MODAL */
         .patient-mini { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 14px 18px; margin-bottom: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
         .patient-mini-info h4 { font-size: 16px; font-weight: 700; color: #0c4a6e; margin-bottom: 2px; }
         .patient-mini-info p { font-size: 12px; color: #075985; }
@@ -96,7 +87,6 @@
         .permintaan-dokter { background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #92400e; margin-bottom: 20px; }
         .permintaan-dokter strong { color: #78350f; }
 
-        /* CHECKBOX GRID */
         .form-section { margin-bottom: 20px; }
         .form-section h4 { font-size: 14px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; color: var(--text-main); }
         .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
@@ -119,10 +109,8 @@
         .btn-submit:hover:not(:disabled) { background: #059669; }
         .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        /* EMPTY STATE */
         .empty-row { text-align: center; padding: 40px 20px !important; color: var(--text-muted); }
 
-        /* TOAST */
         .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
         .toast { padding: 14px 20px; border-radius: 8px; color: white; font-size: 13px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease; min-width: 280px; }
         .toast.success { background: var(--success); }
@@ -151,20 +139,20 @@
     <aside class="sidebar" id="sidebar">
         <div class="brand"><i class="fa-solid fa-hospital"></i> SIMRS<span style="color:var(--text-main)">Pro</span></div>
         <div class="nav-menu">
-            <a href="#" onclick="event.preventDefault(); navigasiKe('index.html');" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-            <a href="#" onclick="event.preventDefault(); navigasiKe('pendaftaran.html');" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
-            <a href="#" onclick="event.preventDefault(); navigasiKe('antrean.html');" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
+            <a href="#" data-page="index.html" onclick="event.preventDefault(); navigasiKe('index.html');" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="#" data-page="pendaftaran.html" onclick="event.preventDefault(); navigasiKe('pendaftaran.html');" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
+            <a href="#" data-page="antrean.html" onclick="event.preventDefault(); navigasiKe('antrean.html');" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
             
             <div class="nav-label">Data & Pelayanan</div>
-            <a href="#" onclick="event.preventDefault(); navigasiKe('pasien.html');" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
-            <a href="#" onclick="event.preventDefault(); navigasiKe('rekam-medis.html');" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
-            <a href="#" onclick="event.preventDefault(); navigasiKe('farmasi.html');" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
-            <a href="#" onclick="event.preventDefault(); navigasiKe('lab.html');" class="nav-item active"><i class="fa-solid fa-flask"></i> Laboratorium</a>
+            <a href="#" data-page="pasien.html" onclick="event.preventDefault(); navigasiKe('pasien.html');" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
+            <a href="#" data-page="rekam-medis.html" onclick="event.preventDefault(); navigasiKe('rekam-medis.html');" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
+            <a href="#" data-page="farmasi.html" onclick="event.preventDefault(); navigasiKe('farmasi.html');" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
+            <a href="#" data-page="lab.html" onclick="event.preventDefault(); navigasiKe('lab.html');" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
 
             <div class="nav-label">Keuangan & Sistem</div>
-            <a href="#" onclick="event.preventDefault(); navigasiKe('kasir.html');" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
-            <a href="#" onclick="event.preventDefault(); navigasiKe('laporan.html');" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
-            <a href="#" onclick="event.preventDefault(); navigasiKe('pengaturan.html');" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
+            <a href="#" data-page="kasir.html" onclick="event.preventDefault(); navigasiKe('kasir.html');" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
+            <a href="#" data-page="laporan.html" onclick="event.preventDefault(); navigasiKe('laporan.html');" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
+            <a href="#" data-page="pengaturan.html" onclick="event.preventDefault(); navigasiKe('pengaturan.html');" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
         </div>
     </aside>
 
@@ -188,7 +176,6 @@
                 </div>
             </div>
 
-            <!-- STATISTIK -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon icon-orange"><i class="fa-solid fa-hourglass-half"></i></div>
@@ -200,7 +187,6 @@
                 </div>
             </div>
 
-            <!-- TABEL PERMINTAAN LAB -->
             <div class="card-table">
                 <div class="card-header">
                     <h2 class="card-title">
@@ -229,7 +215,6 @@
                 </div>
             </div>
 
-            <!-- TABEL RIWAYAT -->
             <div class="card-table">
                 <div class="card-header">
                     <h2 class="card-title"><i class="fa-solid fa-clipboard-check" style="color:#16a34a"></i> Hasil Selesai</h2>
@@ -255,7 +240,6 @@
         </div>
     </main>
 
-    <!-- MODAL INPUT HASIL LAB -->
     <div class="modal-overlay" id="modal-hasil" onclick="if(event.target===this) tutupModal()">
         <div class="modal-box">
             <div class="modal-header">
@@ -317,24 +301,16 @@
 
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- SCRIPT FIREBASE -->
+    <!-- Firebase config terpusat -->
+    <script src="firebase-config.js"></script>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, onSnapshot, query, where, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyB5u4UAw9JAmXA6vsuSwuexO5ASR-0Kjn0",
-            authDomain: "simrs-pro.firebaseapp.com",
-            projectId: "simrs-pro",
-            storageBucket: "simrs-pro.firebasestorage.app",
-            messagingSenderId: "745412639051",
-            appId: "1:745412639051:web:e434bc2a118ca2c67750ce"
-        };
-
-        const app = initializeApp(firebaseConfig);
+        const app = initializeApp(window.FIREBASE_CONFIG);
         const db = getFirestore(app);
 
-        // ============ TOAST ============
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -350,7 +326,6 @@
             }, 3000);
         }
 
-        // ============ JENIS PEMERIKSAAN ============
         const JENIS_LAB = [
             { id: 'darah_lengkap', label: 'Darah Lengkap', biaya: 50000 },
             { id: 'gula_darah', label: 'Gula Darah Sewaktu', biaya: 25000 },
@@ -362,13 +337,11 @@
             { id: 'widal', label: 'Widal Test', biaya: 45000 }
         ];
 
-        // ============ STATE ============
         let idAktif = null;
         let pasienAktif = null;
         let semuaMenunggu = [];
         let semuaSelesai = [];
 
-        // ============ TARIK PASIEN MENUNGGU LAB ============
         const qMenunggu = query(collection(db, "pendaftaran"), where("status", "==", "Menunggu Lab"));
         onSnapshot(qMenunggu, (snap) => {
             semuaMenunggu = snap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -378,7 +351,6 @@
             document.getElementById('badge-jumlah-menunggu').innerText = semuaMenunggu.length;
         });
 
-        // ============ TARIK PASIEN SELESAI ============
         const qSelesai = query(collection(db, "pendaftaran"), where("status", "==", "Hasil Lab Selesai"));
         onSnapshot(qSelesai, (snap) => {
             semuaSelesai = snap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -387,7 +359,6 @@
             document.getElementById('stat-selesai').innerText = semuaSelesai.length;
         });
 
-        // ============ RENDER TABEL MENUNGGU ============
         function renderTabelMenunggu() {
             const tbody = document.getElementById('tabel-menunggu');
             if (semuaMenunggu.length === 0) {
@@ -410,7 +381,6 @@
             }).join('');
         }
 
-        // ============ RENDER TABEL SELESAI ============
         function renderTabelSelesai() {
             const tbody = document.getElementById('tabel-selesai');
             if (semuaSelesai.length === 0) {
@@ -434,7 +404,6 @@
             }).join('');
         }
 
-        // ============ BUKA MODAL INPUT ============
         window.bukaModal = (id) => {
             const p = semuaMenunggu.find(x => x.id === id);
             if (!p) return;
@@ -476,7 +445,6 @@
             pasienAktif = null;
         };
 
-        // ============ SIMPAN HASIL LAB ============
         window.simpanHasil = async () => {
             if (!idAktif || !pasienAktif) return;
 
@@ -516,9 +484,7 @@
                 hasilLabFinal += `Tanggal: ${new Date().toLocaleString('id-ID')}\n`;
                 hasilLabFinal += `Jenis Pemeriksaan: ${checked.map(c => c.label).join(', ')}\n\n`;
                 hasilLabFinal += hasil;
-                if (catatan) {
-                    hasilLabFinal += `\n\nCatatan: ${catatan}`;
-                }
+                if (catatan) hasilLabFinal += `\n\nCatatan: ${catatan}`;
 
                 const biayaLama = pasienAktif.biaya || { admin: 15000, dokter: 50000, tindakan: 25000, obat: 0, lab: 0 };
                 const biayaBaru = { ...biayaLama, lab: biayaInput };
@@ -544,7 +510,6 @@
             }
         };
 
-        // ============ LIHAT HASIL ============
         window.lihatHasil = (id) => {
             const p = semuaSelesai.find(x => x.id === id);
             if (!p) return;
@@ -579,6 +544,13 @@
             window.scrollTo(0, 0);
             window.location.href = url;
         }
+        (function autoActiveMenu() {
+            const current = window.getCurrentPage ? window.getCurrentPage() : (window.location.pathname.split('/').pop() || 'index.html');
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-page') === current) item.classList.add('active');
+            });
+        })();
     </script>
 </body>
 </html>
