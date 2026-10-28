@@ -12,28 +12,22 @@
             --text-main: #111827; --text-muted: #6b7280;
             --primary: #0ea5e9; --primary-hover: #0284c7;
             --border: #e5e7eb; --sidebar-width: 260px;
+            --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
+            --purple: #8b5cf6;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        /* SIDEBAR */
-        .sidebar {
-            width: var(--sidebar-width); background: var(--bg-sidebar);
-            border-right: 1px solid var(--border); position: fixed;
-            top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000;
-            transition: transform 0.3s ease;
-        }
+        /* SIDEBAR & TOPBAR */
+        .sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000; transition: transform 0.3s ease; }
         .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
         .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
         .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; }
         .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; }
         .nav-item:hover, .nav-item.active { background: #e0f2fe; color: var(--primary); }
         .nav-item i { width: 20px; text-align: center; }
-
         .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
         .sidebar-overlay.show { display: block; opacity: 1; }
-
-        /* MAIN CONTENT */
         .main-content { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - var(--sidebar-width)); transition: margin 0.3s ease; }
         .topbar { height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 90; }
         .menu-toggle { display: none; background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; }
@@ -41,30 +35,98 @@
         .user-info { text-align: right; }
         .user-name { font-size: 14px; font-weight: 600; }
         .user-role { font-size: 11px; color: var(--text-muted); }
-        .avatar { width: 40px; height: 40px; border-radius: 50%; background: #8b5cf6; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--purple); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-        /* DASHBOARD AREA */
+        /* DASHBOARD */
         .dashboard { padding: 30px; }
-        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 10px; }
+        .page-header { margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .page-title { font-size: 24px; font-weight: 700; }
-        
+        .page-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+        /* STAT CARDS */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .stat-card { background: var(--bg-card); padding: 18px; border-radius: 12px; border: 1px solid var(--border); display: flex; align-items: center; gap: 14px; }
+        .stat-icon { width: 46px; height: 46px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+        .icon-orange { background: #ffedd5; color: #ea580c; }
+        .icon-green { background: #dcfce7; color: #16a34a; }
+        .icon-blue { background: #e0f2fe; color: #0284c7; }
+        .stat-details h3 { font-size: 22px; font-weight: 700; margin-bottom: 2px; }
+        .stat-details p { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+
         /* TABEL */
-        .card-table { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 20px; }
-        .card-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .card-title { font-size: 16px; font-weight: 700; }
-        .table-responsive { overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; }
-        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 600px; }
+        .card-table { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 24px; }
+        .card-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .card-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .card-title .count-badge { background: #ffedd5; color: #ea580c; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+        .table-responsive { overflow-x: auto; width: 100%; }
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 700px; }
         th, td { padding: 16px 20px; font-size: 13px; border-bottom: 1px solid var(--border); }
-        th { background: #f9fafb; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 11px; white-space: nowrap; }
+        th { background: #f9fafb; color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; }
         tr:hover { background: #f9fafb; }
-        
+
         .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
-        .badge-waiting { background: #fef3c7; color: #d97706; }
+        .badge-waiting { background: #ffedd5; color: #ea580c; }
         .badge-done { background: #dcfce7; color: #16a34a; }
 
-        .btn-action { background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .btn-action { background: var(--primary); color: white; border: none; padding: 7px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s; display: inline-flex; align-items: center; gap: 6px; }
         .btn-action:hover { background: var(--primary-hover); }
-        .btn-outline { background: transparent; color: var(--primary); border: 1px solid var(--primary); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; }
+        .btn-outline { background: transparent; color: var(--primary); border: 1px solid var(--primary); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-outline:hover { background: #f0f9ff; }
+
+        /* MODAL */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; overflow-y: auto; }
+        .modal-overlay.show { display: flex; }
+        .modal-box { background: var(--bg-card); border-radius: 16px; width: 100%; max-width: 720px; max-height: 92vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: modalIn 0.25s ease; }
+        @keyframes modalIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--bg-card); z-index: 2; border-radius: 16px 16px 0 0; }
+        .modal-title { font-size: 18px; font-weight: 700; }
+        .close-btn { background: none; border: none; font-size: 22px; color: var(--text-muted); cursor: pointer; line-height: 1; }
+        .modal-body { padding: 24px; }
+
+        /* PATIENT INFO DI MODAL */
+        .patient-mini { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 14px 18px; margin-bottom: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+        .patient-mini-info h4 { font-size: 16px; font-weight: 700; color: #0c4a6e; margin-bottom: 2px; }
+        .patient-mini-info p { font-size: 12px; color: #075985; }
+        .patient-mini-meta { text-align: right; }
+        .patient-mini-meta span { font-size: 11px; color: #075985; display: block; }
+        .patient-mini-meta strong { font-size: 13px; color: #0c4a6e; }
+        .permintaan-dokter { background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #92400e; margin-bottom: 20px; }
+        .permintaan-dokter strong { color: #78350f; }
+
+        /* CHECKBOX GRID */
+        .form-section { margin-bottom: 20px; }
+        .form-section h4 { font-size: 14px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; color: var(--text-main); }
+        .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+        .checkbox-card { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #f9fafb; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.2s; user-select: none; }
+        .checkbox-card:hover { background: #f0f9ff; border-color: #bae6fd; }
+        .checkbox-card.checked { background: #e0f2fe; border-color: var(--primary); }
+        .checkbox-card input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--primary); }
+        .checkbox-card span { font-size: 12px; font-weight: 500; }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { font-size: 12px; font-weight: 600; display: block; margin-bottom: 6px; }
+        .form-group label .req { color: var(--danger); }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; background: #f9fafb; font-family: inherit; }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); background: #fff; }
+
+        .modal-footer { padding: 20px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; position: sticky; bottom: 0; background: var(--bg-card); border-radius: 0 0 16px 16px; }
+        .btn-cancel { background: #f3f4f6; color: var(--text-main); border: 1px solid var(--border); padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+        .btn-cancel:hover { background: #e5e7eb; }
+        .btn-submit { background: var(--success); color: white; border: none; padding: 10px 24px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-submit:hover:not(:disabled) { background: #059669; }
+        .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* EMPTY STATE */
+        .empty-row { text-align: center; padding: 40px 20px !important; color: var(--text-muted); }
+
+        /* TOAST */
+        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { padding: 14px 20px; border-radius: 8px; color: white; font-size: 13px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease; min-width: 280px; }
+        .toast.success { background: var(--success); }
+        .toast.error { background: var(--danger); }
+        .toast.warning { background: var(--warning); }
+        .toast.info { background: var(--primary); }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
@@ -74,7 +136,8 @@
             .dashboard { padding: 15px; }
             .topbar { padding: 0 15px; }
             .page-title { font-size: 20px; }
-            .page-header { flex-direction: column; align-items: flex-start; }
+            .modal-body { padding: 16px; }
+            .checkbox-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
@@ -82,27 +145,26 @@
 
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
         <div class="brand"><i class="fa-solid fa-hospital"></i> SIMRS<span style="color:var(--text-main)">Pro</span></div>
         <div class="nav-menu">
-            <a href="javascript:void(0)" onclick="navigasiKe('simrs.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('index.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
             <a href="javascript:void(0)" onclick="navigasiKe('pendaftaran.html')" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
             <a href="javascript:void(0)" onclick="navigasiKe('antrean.html')" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
             
-            <div class="nav-label">Pelayanan Medis</div>
+            <div class="nav-label">Data & Pelayanan</div>
+            <a href="javascript:void(0)" onclick="navigasiKe('pasien.html')" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
             <a href="javascript:void(0)" onclick="navigasiKe('rekam-medis.html')" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
             <a href="javascript:void(0)" onclick="navigasiKe('farmasi.html')" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
-            <!-- AKTIF DI LAB -->
             <a href="javascript:void(0)" onclick="navigasiKe('lab.html')" class="nav-item active"><i class="fa-solid fa-flask"></i> Laboratorium</a>
 
             <div class="nav-label">Keuangan & Sistem</div>
             <a href="javascript:void(0)" onclick="navigasiKe('kasir.html')" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('laporan.html')" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
             <a href="javascript:void(0)" onclick="navigasiKe('pengaturan.html')" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
         </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main class="main-content">
         <header class="topbar">
             <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
@@ -119,86 +181,117 @@
             <div class="page-header">
                 <div>
                     <h1 class="page-title">Laboratorium Klinik</h1>
-                    <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">Kelola permintaan dan hasil pemeriksaan penunjang.</p>
+                    <p class="page-subtitle">Kelola permintaan & input hasil pemeriksaan penunjang.</p>
                 </div>
             </div>
 
-            <!-- TABEL PERMINTAAN LAB -->
+            <!-- STATISTIK -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon icon-orange"><i class="fa-solid fa-hourglass-half"></i></div>
+                    <div class="stat-details"><h3 id="stat-menunggu">0</h3><p>Menunggu Sampel</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-green"><i class="fa-solid fa-check-double"></i></div>
+                    <div class="stat-details"><h3 id="stat-selesai">0</h3><p>Hasil Terkirim Hari Ini</p></div>
+                </div>
+            </div>
+
+            <!-- TABEL PERMINTAAN LAB (Menunggu Lab) -->
             <div class="card-table">
                 <div class="card-header">
-                    <h2 class="card-title">Permintaan Pemeriksaan Lab</h2>
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-hourglass-half" style="color:#ea580c"></i> 
+                        Permintaan Pemeriksaan 
+                        <span class="count-badge" id="badge-jumlah-menunggu">0</span>
+                    </h2>
                 </div>
                 <div class="table-responsive">
                     <table>
                         <thead>
-                            <tr><th>Waktu</th><th>No. RM</th><th>Nama Pasien</th><th>Jenis Pemeriksaan</th><th>Dokter Pengirim</th><th>Status</th><th>Aksi</th></tr>
+                            <tr>
+                                <th>Waktu Kirim</th>
+                                <th>No. RM</th>
+                                <th>Nama Pasien</th>
+                                <th>Poli / Dokter</th>
+                                <th>Permintaan Lab</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>09:20</td>
-                                <td><strong>RM-00122</strong></td>
-                                <td>Budi Santoso</td>
-                                <td>Darah Lengkap</td>
-                                <td>dr. Athajar</td>
-                                <td><span class="badge badge-waiting">Menunggu Sampel</span></td>
-                                <td><button class="btn-action">Input Hasil</button></td>
-                            </tr>
-                            <tr>
-                                <td>09:35</td>
-                                <td><strong>RM-00124</strong></td>
-                                <td>Dewi Lestari</td>
-                                <td>Gula Darah Sewaktu</td>
-                                <td>dr. Sarah</td>
-                                <td><span class="badge badge-done">Selesai</span></td>
-                                <td><button class="btn-outline">Lihat Hasil</button></td>
-                            </tr>
+                        <tbody id="tabel-menunggu">
+                            <tr><td colspan="7" class="empty-row">Memuat data...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- CONTOH FORM INPUT HASIL (Disembunyikan) -->
-            <div class="card-table" style="border: 2px dashed var(--primary); background: #f0f9ff;">
+            <!-- TABEL RIWAYAT (Hasil Lab Selesai) -->
+            <div class="card-table">
                 <div class="card-header">
-                    <h2 class="card-title" style="color: var(--primary);"><i class="fa-solid fa-pen-to-square"></i> Form Input Hasil Lab (Simulasi)</h2>
+                    <h2 class="card-title"><i class="fa-solid fa-clipboard-check" style="color:#16a34a"></i> Hasil Selesai</h2>
                 </div>
-                <div style="padding: 20px;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div>
-                            <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 5px;">Hemoglobin (Hb)</label>
-                            <input type="text" placeholder="14.5 g/dL" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
-                        </div>
-                        <div>
-                            <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 5px;">Leukosit (WBC)</label>
-                            <input type="text" placeholder="8.000 /uL" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
-                        </div>
-                        <div>
-                            <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 5px;">Trombosit (PLT)</label>
-                            <input type="text" placeholder="250.000 /uL" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
-                        </div>
-                    </div>
-                    <button class="btn-action" style="padding: 10px 20px;" onclick="alert('Simulasi: Hasil lab berhasil disimpan dan dikirim ke Dokter!')">
-                        <i class="fa-solid fa-floppy-disk"></i> Simpan & Validasi Hasil
-                    </button>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Waktu Selesai</th>
+                                <th>No. RM</th>
+                                <th>Nama Pasien</th>
+                                <th>Jenis Lab</th>
+                                <th>Biaya</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabel-selesai">
+                            <tr><td colspan="6" class="empty-row">Memuat data...</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-
         </div>
     </main>
 
-    <!-- SCRIPT -->
-    <script>
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('show');
-            document.getElementById('sidebarOverlay').classList.toggle('show');
-        }
-        function navigasiKe(url) {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            if (sidebar && overlay) { sidebar.classList.remove('show'); overlay.classList.remove('show'); }
-            window.scrollTo(0, 0);
-            window.location.href = url;
-        }
-    </script>
-</body>
-</html>
+    <!-- MODAL INPUT HASIL LAB -->
+    <div class="modal-overlay" id="modal-hasil" onclick="if(event.target===this) tutupModal()">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fa-solid fa-flask"></i> Input Hasil Laboratorium</h3>
+                <button class="close-btn" onclick="tutupModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                
+                <!-- Patient mini info -->
+                <div class="patient-mini">
+                    <div class="patient-mini-info">
+                        <h4 id="m-nama">-</h4>
+                        <p><i class="fa-solid fa-id-card"></i> <span id="m-norm">-</span> • NIK: <span id="m-nik">-</span></p>
+                    </div>
+                    <div class="patient-mini-meta">
+                        <span>Poli</span>
+                        <strong id="m-poli">-</strong>
+                    </div>
+                </div>
+
+                <!-- Permintaan dokter -->
+                <div class="permintaan-dokter">
+                    <i class="fa-solid fa-user-doctor"></i> <strong>Permintaan Dokter:</strong> <span id="m-permintaan">-</span>
+                </div>
+
+                <!-- Pilih jenis pemeriksaan -->
+                <div class="form-section">
+                    <h4><i class="fa-solid fa-vial"></i> Pilih Pemeriksaan yang Dilakukan</h4>
+                    <div class="checkbox-grid" id="checkbox-lab">
+                        <!-- Diisi JS -->
+                    </div>
+                </div>
+
+                <!-- Input nilai -->
+                <div class="form-section">
+                    <h4><i class="fa-solid fa-pen-to-square"></i> Nilai Hasil Pemeriksaan</h4>
+                    <div class="form-group">
+                        <label>Hasil Pemeriksaan (satu per baris, format: Nama = Nilai = Satuan (Normal))</label>
+                        <textarea id="inp-hasil" rows="6" placeholder="Contoh:&#10;Hemoglobin = 14.5 = g/dL (13.0-17.0)&#10;Leukosit = 8000 = /uL (4000-10000)&#10;Trombosit = 250000 = /uL (150000-400000)"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>C
