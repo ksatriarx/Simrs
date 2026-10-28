@@ -16,6 +16,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
+        /* SIDEBAR & TOPBAR */
         .sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000; transition: transform 0.3s ease; }
         .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
         .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
@@ -23,10 +24,8 @@
         .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; }
         .nav-item:hover, .nav-item.active { background: #e0f2fe; color: var(--primary); }
         .nav-item i { width: 20px; text-align: center; }
-
         .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
         .sidebar-overlay.show { display: block; opacity: 1; }
-
         .main-content { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - var(--sidebar-width)); transition: margin 0.3s ease; }
         .topbar { height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 90; }
         .menu-toggle { display: none; background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; }
@@ -40,17 +39,20 @@
         .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 10px; }
         .page-title { font-size: 24px; font-weight: 700; }
         
-        .card-table { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 20px; }
-        .card-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .card-table { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
+        .card-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .card-title { font-size: 16px; font-weight: 700; }
+        .search-input { padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; width: 250px; }
+        .search-input:focus { border-color: var(--primary); }
+
         .table-responsive { overflow-x: auto; width: 100%; }
-        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 600px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 700px; }
         th, td { padding: 16px 20px; font-size: 13px; border-bottom: 1px solid var(--border); }
-        th { background: #f9fafb; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 11px; white-space: nowrap; }
+        th { background: #f9fafb; color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; }
         tr:hover { background: #f9fafb; }
         
-        .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-        .btn-action { background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; }
+        .btn-action { background: #f3f4f6; color: var(--text-main); border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-action:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
@@ -60,6 +62,7 @@
             .dashboard { padding: 15px; }
             .topbar { padding: 0 15px; }
             .page-title { font-size: 20px; }
+            .search-input { width: 100%; }
         }
     </style>
 </head>
@@ -70,7 +73,7 @@
     <aside class="sidebar" id="sidebar">
         <div class="brand"><i class="fa-solid fa-hospital"></i> SIMRS<span style="color:var(--text-main)">Pro</span></div>
         <div class="nav-menu">
-            <a href="javascript:void(0)" onclick="navigasiKe('simrs.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('index.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
             <a href="javascript:void(0)" onclick="navigasiKe('pendaftaran.html')" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
             <a href="javascript:void(0)" onclick="navigasiKe('antrean.html')" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
             
@@ -82,6 +85,7 @@
 
             <div class="nav-label">Keuangan & Sistem</div>
             <a href="javascript:void(0)" onclick="navigasiKe('kasir.html')" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
+            <a href="javascript:void(0)" onclick="navigasiKe('laporan.html')" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
             <a href="javascript:void(0)" onclick="navigasiKe('pengaturan.html')" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
         </div>
     </aside>
@@ -102,43 +106,94 @@
             <div class="page-header">
                 <div>
                     <h1 class="page-title">Data Induk Pasien</h1>
-                    <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">Pencarian riwayat kunjungan pasien.</p>
+                    <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">Semua riwayat pasien yang pernah mendaftar.</p>
                 </div>
             </div>
 
             <div class="card-table">
                 <div class="card-header">
-                    <h2 class="card-title">Daftar Pasien Terdaftar</h2>
-                    <input type="text" placeholder="Cari Nama / NIK..." style="padding:8px 12px; border:1px solid var(--border); border-radius:6px; outline:none; font-size:13px;">
+                    <h2 class="card-title">Daftar Pasien</h2>
+                    <input type="text" id="input-cari" class="search-input" placeholder="Cari Nama atau NIK..." oninput="cariPasien()">
                 </div>
                 <div class="table-responsive">
                     <table>
                         <thead>
-                            <tr><th>No. RM</th><th>Nama Pasien</th><th>NIK</th><th>Tgl Lahir</th><th>Kontak</th><th>Aksi</th></tr>
+                            <tr><th>Nama Pasien</th><th>NIK</th><th>Tgl Lahir</th><th>No. HP</th><th>Alamat</th><th>Aksi</th></tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>RM-00122</strong></td>
-                                <td>Budi Santoso</td>
-                                <td>1101xxxxxxxxxxxx</td>
-                                <td>12 Mei 1990</td>
-                                <td>0812xxxxxx</td>
-                                <td><button class="btn-action">Buka Rekam Medis</button></td>
-                            </tr>
-                            <tr>
-                                <td><strong>RM-00123</strong></td>
-                                <td>Siti Aminah</td>
-                                <td>1101xxxxxxxxxxxx</td>
-                                <td>20 Agt 1985</td>
-                                <td>0852xxxxxx</td>
-                                <td><button class="btn-action">Buka Rekam Medis</button></td>
-                            </tr>
+                        <tbody id="tabel-pasien">
+                            <tr><td colspan="6" style="text-align:center;">Menarik data dari database...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- SCRIPT FIREBASE UNTUK DATA PASIEN -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB5u4UAw9JAmXA6vsuSwuexO5ASR-0Kjn0",
+            authDomain: "simrs-pro.firebaseapp.com",
+            projectId: "simrs-pro",
+            storageBucket: "simrs-pro.firebasestorage.app",
+            messagingSenderId: "745412639051",
+            appId: "1:745412639051:web:e434bc2a118ca2c67750ce"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        const pendaftaranRef = collection(db, "pendaftaran");
+        const tbody = document.getElementById('tabel-pasien');
+        let semuaPasien = []; // Menyimpan data untuk fitur pencarian
+
+        onSnapshot(pendaftaranRef, (snapshot) => {
+            semuaPasien = [];
+            snapshot.forEach((doc) => {
+                semuaPasien.push(doc.data());
+            });
+            renderTabel(semuaPasien); // Tampilkan semua data saat pertama kali load
+        });
+
+        function renderTabel(dataArray) {
+            tbody.innerHTML = '';
+            
+            if (dataArray.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Tidak ada data pasien ditemukan.</td></tr>';
+                return;
+            }
+
+            dataArray.forEach((data) => {
+                // Tampilkan maksimal 30 karakter alamat agar tidak kepanjangan
+                const alamatSingkat = data.alamat ? (data.alamat.length > 30 ? data.alamat.substring(0, 30) + '...' : data.alamat) : '-';
+                const jk = data.jk === 'L' ? 'Laki-laki' : 'Perempuan';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${data.nama}</strong><br><span style="font-size:11px; color:var(--text-muted);">${jk}</span></td>
+                        <td>${data.nik}</td>
+                        <td>${data.tglLahir}</td>
+                        <td>${data.hp || '-'}</td>
+                        <td>${alamatSingkat}</td>
+                        <td><button class="btn-action" onclick="alert('Fitur detail riwayat medis akan dibuat nanti.')">Lihat Riwayat</button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Fungsi Pencarian (Real-time)
+        window.cariPasien = () => {
+            const kataKunci = document.getElementById('input-cari').value.toLowerCase();
+            const hasilFilter = semuaPasien.filter(pasien => 
+                pasien.nama.toLowerCase().includes(kataKunci) || 
+                pasien.nik.includes(kataKunci)
+            );
+            renderTabel(hasilFilter);
+        };
+    </script>
 
     <script>
         function toggleSidebar() {
