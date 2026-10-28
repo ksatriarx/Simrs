@@ -16,6 +16,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
+        /* SIDEBAR */
         .sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000; transition: transform 0.3s ease; }
         .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
         .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
@@ -36,30 +37,77 @@
         .user-role { font-size: 11px; color: var(--text-muted); }
         .avatar { width: 40px; height: 40px; border-radius: 50%; background: #f59e0b; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
+        /* DASHBOARD */
         .dashboard { padding: 30px; display: flex; flex-direction: column; gap: 20px; flex-grow: 1; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .page-title { font-size: 24px; font-weight: 700; }
+        .page-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+        
+        .header-actions { display: flex; gap: 10px; align-items: center; }
+        .btn-tool { background: white; border: 1px solid var(--border); padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; color: var(--text-main); }
+        .btn-tool:hover { background: #f0f9ff; border-color: var(--primary); color: var(--primary); }
+        .btn-tool.active { background: var(--primary); color: white; border-color: var(--primary); }
+
         .queue-container { display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px; flex-grow: 1; }
         
+        /* ACTIVE QUEUE */
         .active-queue { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-radius: 20px; padding: 40px; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3); position: relative; overflow: hidden; }
         .active-queue::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%); animation: pulse 4s infinite linear; }
         @keyframes pulse { 0% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 0.8; } 100% { transform: scale(1); opacity: 0.5; } }
 
-        .queue-label { font-size: 18px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; opacity: 0.9; z-index: 1; }
-        .queue-number { font-size: 140px; font-weight: 800; line-height: 1; margin-bottom: 20px; text-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 1; animation: blink 1.5s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-        .queue-patient { font-size: 28px; font-weight: 700; margin-bottom: 5px; z-index: 1; }
-        .queue-room { font-size: 16px; background: rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 20px; display: inline-block; z-index: 1; }
+        .queue-label { font-size: 16px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; opacity: 0.9; z-index: 1; display: flex; align-items: center; gap: 8px; }
+        .queue-label .live-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulseDot 1.5s infinite; box-shadow: 0 0 10px #10b981; }
+        @keyframes pulseDot { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
+        .queue-number { font-size: 140px; font-weight: 800; line-height: 1; margin-bottom: 20px; text-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 1; animation: blink 1.5s infinite; letter-spacing: -2px; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.75; } }
+        .queue-patient { font-size: 28px; font-weight: 700; margin-bottom: 5px; z-index: 1; }
+        .queue-room { font-size: 16px; background: rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 20px; display: inline-block; z-index: 1; margin-top: 5px; }
+
+        /* WAITING LIST */
         .waiting-list { background: var(--bg-card); border-radius: 20px; border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
         .waiting-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .waiting-header h3 { font-size: 16px; font-weight: 700; }
         .waiting-count { background: #e0f2fe; color: var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 700; }
-        .waiting-items { padding: 15px; overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; gap: 10px; }
-        .waiting-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: #f9fafb; border-radius: 12px; border: 1px solid var(--border); }
-        .waiting-number { font-size: 20px; font-weight: 800; color: var(--primary); min-width: 60px; }
+        .waiting-items { padding: 15px; overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; gap: 10px; max-height: 500px; }
+        .waiting-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: #f9fafb; border-radius: 12px; border: 1px solid var(--border); transition: all 0.3s; }
+        .waiting-item:hover { background: #f0f9ff; border-color: #bae6fd; }
+        .waiting-item.next { background: linear-gradient(90deg, #fef3c7 0%, #ffedd5 100%); border-color: #fcd34d; animation: highlight 2s infinite; }
+        @keyframes highlight { 0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); } 50% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); } }
+        .waiting-number { font-size: 20px; font-weight: 800; color: var(--primary); min-width: 60px; font-family: monospace; }
+        .waiting-item.next .waiting-number { color: #d97706; }
         .waiting-info { flex-grow: 1; }
         .waiting-name { font-size: 14px; font-weight: 600; }
         .waiting-poli { font-size: 12px; color: var(--text-muted); }
         .waiting-status { font-size: 11px; font-weight: 600; color: #d97706; background: #fef3c7; padding: 4px 10px; border-radius: 20px; }
+        .waiting-item.next .waiting-status { background: #fbbf24; color: white; }
+
+        /* EMPTY STATE */
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); }
+        .empty-state i { font-size: 50px; color: #d1d5db; margin-bottom: 12px; }
+
+        /* TOAST */
+        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { padding: 14px 20px; border-radius: 8px; color: white; font-size: 13px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease; min-width: 280px; }
+        .toast.success { background: #10b981; }
+        .toast.error { background: #ef4444; }
+        .toast.warning { background: #f59e0b; }
+        .toast.info { background: #0ea5e9; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* FULLSCREEN MODE */
+        body.fullscreen-mode .sidebar,
+        body.fullscreen-mode .topbar,
+        body.fullscreen-mode .page-header { display: none; }
+        body.fullscreen-mode .main-content { margin-left: 0; width: 100%; }
+        body.fullscreen-mode .dashboard { padding: 20px; }
+        body.fullscreen-mode .queue-container { grid-template-columns: 2fr 1fr; gap: 30px; }
+        body.fullscreen-mode .queue-number { font-size: 220px; }
+        body.fullscreen-mode .queue-patient { font-size: 36px; }
+        body.fullscreen-mode .queue-label { font-size: 22px; }
+        body.fullscreen-mode .waiting-item { padding: 18px; }
+        body.fullscreen-mode .waiting-number { font-size: 26px; }
+        body.fullscreen-mode .waiting-name { font-size: 16px; }
 
         @media (max-width: 900px) {
             .sidebar { transform: translateX(-100%); }
@@ -70,6 +118,7 @@
             .topbar { padding: 0 15px; }
             .queue-container { grid-template-columns: 1fr; }
             .queue-number { font-size: 100px; }
+            .queue-patient { font-size: 22px; }
         }
     </style>
 </head>
@@ -110,36 +159,55 @@
         </header>
 
         <div class="dashboard">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h1 style="font-size: 24px; font-weight: 700;">Panggilan Antrean</h1>
-                <div style="font-size: 16px; font-weight: 600; color: var(--text-muted);" id="jam-sekarang"></div>
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Panggilan Antrean</h1>
+                    <p class="page-subtitle">Display realtime ruang tunggu pasien.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-tool" id="btn-sound" onclick="toggleSound()" title="Aktifkan suara panggilan">
+                        <i class="fa-solid fa-volume-xmark"></i> <span>Suara: OFF</span>
+                    </button>
+                    <button class="btn-tool" onclick="toggleFullscreen()" title="Mode layar penuh untuk TV">
+                        <i class="fa-solid fa-expand"></i> Fullscreen
+                    </button>
+                </div>
             </div>
 
+            <div style="text-align:right; font-size: 14px; font-weight: 600; color: var(--text-muted); margin-bottom:-10px;" id="jam-sekarang"></div>
+
             <div class="queue-container">
-                <!-- KIRI: SEDANG DIPANGGIL (Akan berubah otomatis) -->
+                <!-- KIRI: SEDANG DIPANGGIL -->
                 <div class="active-queue">
-                    <div class="queue-label">Sedang Dipanggil</div>
+                    <div class="queue-label">
+                        <span class="live-dot"></span>
+                        Sedang Dipanggil
+                    </div>
                     <div class="queue-number" id="panggil-nomor">-</div>
                     <div class="queue-patient" id="panggil-nama">Menunggu pasien...</div>
                     <div class="queue-room" id="panggil-poli"><i class="fa-solid fa-door-open"></i> -</div>
                 </div>
 
-                <!-- KANAN: DAFTAR TUNGGU (Real-time dari database) -->
+                <!-- KANAN: DAFTAR TUNGGU -->
                 <div class="waiting-list">
                     <div class="waiting-header">
                         <h3>Antrean Berikutnya</h3>
                         <span class="waiting-count" id="jumlah-antrean">0 Menunggu</span>
                     </div>
                     <div class="waiting-items" id="daftar-tunggu">
-                        <!-- Diisi oleh JavaScript -->
-                        <div style="text-align:center; color:var(--text-muted); padding:20px;">Memuat data...</div>
+                        <div class="empty-state">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                            <p>Memuat data...</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- SCRIPT FIREBASE UNTUK ANTREAN -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- SCRIPT FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -155,69 +223,212 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        
-        // Ambil pasien dengan status "Menunggu"
-        const q = query(collection(db, "pendaftaran"), where("status", "==", "Menunggu"));
-        
-        const daftarTunggu = document.getElementById('daftar-tunggu');
-        const jumlahAntrean = document.getElementById('jumlah-antrean');
 
-        onSnapshot(q, (snapshot) => {
-            daftarTunggu.innerHTML = '';
-            
-            if (snapshot.empty) {
-                daftarTunggu.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:20px;">Tidak ada antrean saat ini.</div>';
-                jumlahAntrean.innerText = `0 Menunggu`;
-                document.getElementById('panggil-nama').innerText = "Menunggu pasien...";
-                document.getElementById('panggil-nomor').innerText = "-";
-                document.getElementById('panggil-poli').innerHTML = '<i class="fa-solid fa-door-open"></i> -';
+        // ============ STATE ============
+        let listPasien = [];
+        let lastCalledId = null;    // track pasien yang sedang dipanggil agar tidak spam suara
+        let soundEnabled = false;
+        let voices = [];
+
+        // ============ TOAST ============
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', warning: 'fa-triangle-exclamation', info: 'fa-circle-info' };
+            toast.innerHTML = `<i class="fa-solid ${icons[type]}"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.transition = 'opacity 0.3s, transform 0.3s';
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // ============ SOUND (Text-to-Speech) ============
+        function loadVoices() {
+            voices = window.speechSynthesis.getVoices();
+            // Prefer Indonesian voice
+            const idVoice = voices.find(v => v.lang === 'id-ID' || v.lang.startsWith('id'));
+            return idVoice || voices[0];
+        }
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+
+        function panggilSuara(nomor, nama, poli) {
+            if (!soundEnabled) return;
+            if (!('speechSynthesis' in window)) {
+                showToast('Browser tidak mendukung text-to-speech', 'warning');
                 return;
             }
+            
+            const text = `Nomor antrean ${nomor.split('').join(' ')}, ${nama}, silakan menuju ${poli}`;
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.lang = 'id-ID';
+            utter.rate = 0.9;
+            utter.pitch = 1;
+            utter.volume = 1;
+            const voice = loadVoices();
+            if (voice) utter.voice = voice;
 
-            let listPasien = [];
-            snapshot.forEach((doc) => {
-                listPasien.push(doc.data());
-            });
+            // Stop utterance sebelumnya
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.speak(utter);
+        }
 
-            // Urutkan berdasarkan waktu daftar (terlama di atas)
-            listPasien.sort((a, b) => new Date(a.waktu) - new Date(b.waktu));
-
-            // Tampilkan pasien pertama sebagai "Sedang Dipanggil"
-            const pasienAktif = listPasien[0];
-            document.getElementById('panggil-nama').innerText = pasienAktif.nama;
-            document.getElementById('panggil-nomor').innerText = "A-01"; // Simulasi nomor antrean
-            document.getElementById('panggil-poli').innerHTML = `<i class="fa-solid fa-door-open"></i> ${pasienAktif.poli}`;
-
-            // Tampilkan sisanya di daftar tunggu
-            let sisaPasien = listPasien.slice(1);
-            jumlahAntrean.innerText = `${sisaPasien.length} Menunggu`;
-
-            if (sisaPasien.length === 0) {
-                daftarTunggu.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:20px;">Tidak ada antrean berikutnya.</div>';
+        window.toggleSound = () => {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('btn-sound');
+            if (soundEnabled) {
+                btn.classList.add('active');
+                btn.innerHTML = '<i class="fa-solid fa-volume-high"></i> <span>Suara: ON</span>';
+                showToast('Suara panggilan diaktifkan', 'success');
+                // Test voice
+                const u = new SpeechSynthesisUtterance('Suara panggilan aktif');
+                u.lang = 'id-ID';
+                window.speechSynthesis.speak(u);
+                // Repanggil pasien aktif
+                if (listPasien.length > 0) {
+                    const p = listPasien[0];
+                    panggilSuara(formatNomor(1), p.nama, p.poli);
+                }
             } else {
-                sisaPasien.forEach((pasien, index) => {
-                    daftarTunggu.innerHTML += `
-                        <div class="waiting-item">
-                            <div class="waiting-number">A-0${index + 2}</div>
-                            <div class="waiting-info">
-                                <div class="waiting-name">${pasien.nama}</div>
-                                <div class="waiting-poli">${pasien.poli}</div>
-                            </div>
-                            <div class="waiting-status">Menunggu</div>
-                        </div>
-                    `;
+                btn.classList.remove('active');
+                btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> <span>Suara: OFF</span>';
+                window.speechSynthesis.cancel();
+                showToast('Suara panggilan dimatikan', 'info');
+            }
+        };
+
+        // ============ FULLSCREEN ============
+        window.toggleFullscreen = () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().then(() => {
+                    document.body.classList.add('fullscreen-mode');
+                }).catch(err => showToast('Gagal fullscreen: ' + err.message, 'error'));
+            } else {
+                document.exitFullscreen().then(() => {
+                    document.body.classList.remove('fullscreen-mode');
                 });
+            }
+        };
+
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                document.body.classList.remove('fullscreen-mode');
             }
         });
 
-        // Jam Real-time
+        // ============ FORMAT NOMOR A-XX ============
+        function formatNomor(index) {
+            return `A-${String(index).padStart(2, '0')}`;
+        }
+
+        // ============ TARIK PASIEN MENUNGGU ============
+        const q = query(collection(db, "pendaftaran"), where("status", "==", "Menunggu"));
+        
+        onSnapshot(q, (snapshot) => {
+            listPasien = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+            // Sort by waktu daftar (terlama dulu = nomor terkecil)
+            listPasien.sort((a, b) => new Date(a.waktu) - new Date(b.waktu));
+            renderAntrean();
+        });
+
+        // ============ RENDER ============
+        function renderAntrean() {
+            const elNomor = document.getElementById('panggil-nomor');
+            const elNama = document.getElementById('panggil-nama');
+            const elPoli = document.getElementById('panggil-poli');
+            const elList = document.getElementById('daftar-tunggu');
+            const elCount = document.getElementById('jumlah-antrean');
+
+            if (listPasien.length === 0) {
+                elNomor.innerText = '-';
+                elNama.innerText = 'Belum ada antrean';
+                elPoli.innerHTML = '<i class="fa-solid fa-door-open"></i> -';
+                elCount.innerText = '0 Menunggu';
+                elList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-check-circle" style="color:#10b981;"></i>
+                        <p>Tidak ada antrean menunggu.</p>
+                    </div>
+                `;
+                lastCalledId = null;
+                return;
+            }
+
+            // Pasien pertama = sedang dipanggil
+            const pasienAktif = listPasien[0];
+            elNomor.innerText = formatNomor(1);
+            elNama.innerText = pasienAktif.nama;
+            elPoli.innerHTML = `<i class="fa-solid fa-door-open"></i> ${pasienAktif.poli}`;
+
+            // Panggil suara jika pasien berubah (bukan spam)
+            if (lastCalledId !== pasienAktif.id) {
+                lastCalledId = pasienAktif.id;
+                if (soundEnabled) {
+                    panggilSuara(formatNomor(1), pasienAktif.nama, pasienAktif.poli);
+                }
+            }
+
+            // Sisa pasien
+            const sisa = listPasien.slice(1);
+            elCount.innerText = `${sisa.length} Menunggu`;
+
+            if (sisa.length === 0) {
+                elList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-user-clock"></i>
+                        <p>Tidak ada antrean berikutnya.</p>
+                        <p style="font-size:12px; margin-top:8px;">Pasien berikutnya akan muncul di sini.</p>
+                    </div>
+                `;
+            } else {
+                elList.innerHTML = sisa.slice(0, 10).map((p, i) => {
+                    const nomor = formatNomor(i + 2); // +2 karena index 0 = no 2 (no 1 sedang dipanggil)
+                    const isNext = i === 0;
+                    return `
+                        <div class="waiting-item ${isNext ? 'next' : ''}">
+                            <div class="waiting-number">${nomor}</div>
+                            <div class="waiting-info">
+                                <div class="waiting-name">${p.nama}</div>
+                                <div class="waiting-poli">${p.poli} • ${p.penjamin || 'Umum'}</div>
+                            </div>
+                            <div class="waiting-status">${isNext ? 'Berikutnya' : 'Menunggu'}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        // ============ JAM REALTIME ============
         function updateJam() {
             const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
             document.getElementById('jam-sekarang').innerText = now.toLocaleDateString('id-ID', options);
         }
         setInterval(updateJam, 1000);
         updateJam();
+
+        // ============ KEYBOARD SHORTCUT ============
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'f' || e.key === 'F') {
+                if (e.ctrlKey || e.metaKey) {
+                    e.preventDefault();
+                    toggleFullscreen();
+                }
+            }
+            if (e.key === 's' || e.key === 'S') {
+                if (!e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT') {
+                    toggleSound();
+                }
+            }
+        });
+
+        // ============ INITIAL VOICE LOAD ============
+        if ('speechSynthesis' in window) {
+            loadVoices();
+        }
     </script>
 
     <script>
