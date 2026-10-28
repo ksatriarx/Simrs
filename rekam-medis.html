@@ -20,14 +20,17 @@
 
         /* SIDEBAR & TOPBAR */
         .sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000; transition: transform 0.3s ease; }
-        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
-        .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
-        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; }
-        .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; }
+        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; flex-shrink: 0; }
+        .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; position: relative; z-index: 10; }
+        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; pointer-events: none; }
+        .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; position: relative; z-index: 11; pointer-events: auto; }
         .nav-item:hover, .nav-item.active { background: #e0f2fe; color: var(--primary); }
         .nav-item i { width: 20px; text-align: center; }
-        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
-        .sidebar-overlay.show { display: block; opacity: 1; }
+
+        /* FIX: Overlay hanya intersep saat .show */
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .sidebar-overlay.show { display: block; opacity: 1; pointer-events: auto; }
+
         .main-content { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - var(--sidebar-width)); transition: margin 0.3s ease; }
         .topbar { height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 90; }
         .menu-toggle { display: none; background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; }
@@ -123,20 +126,20 @@
     <aside class="sidebar" id="sidebar">
         <div class="brand"><i class="fa-solid fa-hospital"></i> SIMRS<span style="color:var(--text-main)">Pro</span></div>
         <div class="nav-menu">
-            <a href="javascript:void(0)" onclick="navigasiKe('index.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('pendaftaran.html')" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('antrean.html')" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('index.html');" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('pendaftaran.html');" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('antrean.html');" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
             
             <div class="nav-label">Data & Pelayanan</div>
-            <a href="javascript:void(0)" onclick="navigasiKe('pasien.html')" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('rekam-medis.html')" class="nav-item active"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('farmasi.html')" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('lab.html')" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('pasien.html');" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('rekam-medis.html');" class="nav-item active"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('farmasi.html');" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('lab.html');" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
 
             <div class="nav-label">Keuangan & Sistem</div>
-            <a href="javascript:void(0)" onclick="navigasiKe('kasir.html')" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('laporan.html')" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('pengaturan.html')" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('kasir.html');" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('laporan.html');" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
+            <a href="#" onclick="event.preventDefault(); navigasiKe('pengaturan.html');" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
         </div>
     </aside>
 
@@ -175,10 +178,10 @@
                 <p>Pilih pasien untuk memulai pemeriksaan.</p>
             </div>
 
-            <!-- KONTEN PEMERIKSAAN (disembunyikan default) -->
+            <!-- KONTEN PEMERIKSAAN -->
             <div id="konten-pemeriksaan" style="display:none;">
                 
-                <!-- STATUS BANNER (dinamis) -->
+                <!-- STATUS BANNER -->
                 <div id="status-banner" class="status-banner"></div>
 
                 <!-- DATA DIRI PASIEN -->
@@ -234,9 +237,7 @@
 
                     <div class="card">
                         <h3 class="card-title"><i class="fa-solid fa-bolt"></i> Aksi Pemeriksaan</h3>
-                        <div class="btn-group" id="btn-group">
-                            <!-- Tombol akan diisi dinamis berdasarkan mode -->
-                        </div>
+                        <div class="btn-group" id="btn-group"></div>
                         <div style="margin-top:15px; padding:12px; background:#f9fafb; border:1px dashed #ccc; border-radius:8px; font-size:11px; color:var(--text-muted); line-height:1.6;">
                             <i class="fa-solid fa-circle-info"></i> <strong>Alur:</strong><br>
                             • <strong>Selesaikan</strong> → Pasien ke Farmasi<br>
@@ -284,17 +285,261 @@
         }
 
         // ============ STATE ============
-        let pasienMap = {}; // id -> data
+        let pasienMap = {};
         let idPasienAktif = null;
-        let modeAktif = null; // 'pertama' | 'konfirmasi'
-
-        // ============ TARIK PASIEN (Menunggu + Hasil Lab Selesai) ============
-        // Karena Firestore tidak bisa OR di 1 query tanpa composite index,
-        // kita buat 2 listener terpisah dan gabungkan di state.
-        
+        let modeAktif = null;
         let listMenunggu = [];
         let listHasilLab = [];
 
+        // ============ TARIK PASIEN ============
         const qMenunggu = query(collection(db, "pendaftaran"), where("status", "==", "Menunggu"));
         onSnapshot(qMenunggu, (snap) => {
-            listMenunggu = snap.docs.map(d => ({ id: d.id, ...
+            listMenunggu = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            gabungDanRender();
+        });
+
+        const qHasilLab = query(collection(db, "pendaftaran"), where("status", "==", "Hasil Lab Selesai"));
+        onSnapshot(qHasilLab, (snap) => {
+            listHasilLab = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            gabungDanRender();
+        });
+
+        function gabungDanRender() {
+            const all = [...listMenunggu, ...listHasilLab];
+            all.sort((a, b) => new Date(a.waktu) - new Date(b.waktu));
+            
+            pasienMap = {};
+            all.forEach(p => pasienMap[p.id] = p);
+            
+            const sel = document.getElementById('pilih-pasien');
+            const currentVal = sel.value;
+            
+            sel.innerHTML = '<option value="">-- Pilih Pasien --</option>';
+            
+            if (all.length === 0) {
+                sel.innerHTML = '<option value="">Tidak ada pasien menunggu</option>';
+                resetKeEmpty();
+                return;
+            }
+
+            all.forEach(p => {
+                const tag = p.status === 'Hasil Lab Selesai' ? '🔵 [HASIL LAB]' : '🟡';
+                const noRM = p.noRM || '(lama)';
+                sel.innerHTML += `<option value="${p.id}">${tag} ${p.nama} — ${p.poli} (${noRM})</option>`;
+            });
+
+            if (currentVal && pasienMap[currentVal]) {
+                sel.value = currentVal;
+                pilihPasien();
+            }
+        }
+
+        function resetKeEmpty() {
+            document.getElementById('empty-state').style.display = 'block';
+            document.getElementById('konten-pemeriksaan').style.display = 'none';
+            idPasienAktif = null;
+            modeAktif = null;
+        }
+
+        // ============ PILIH PASIEN ============
+        window.pilihPasien = () => {
+            const id = document.getElementById('pilih-pasien').value;
+            
+            if (!id || !pasienMap[id]) {
+                resetKeEmpty();
+                return;
+            }
+
+            idPasienAktif = id;
+            const data = pasienMap[id];
+            
+            document.getElementById('empty-state').style.display = 'none';
+            document.getElementById('konten-pemeriksaan').style.display = 'block';
+
+            document.getElementById('detail-nama').innerText = data.nama;
+            document.getElementById('detail-norm').innerText = data.noRM || '(lama)';
+            document.getElementById('detail-nik').innerText = data.nik;
+            document.getElementById('detail-tgl').innerText = data.tglLahir || '-';
+            document.getElementById('detail-jk').innerText = data.jk === 'L' ? 'Laki-laki' : 'Perempuan';
+            document.getElementById('detail-poli').innerText = data.poli;
+            document.getElementById('detail-penjamin').innerText = data.penjamin || 'Umum';
+
+            if (data.status === 'Hasil Lab Selesai') {
+                modeAktif = 'konfirmasi';
+                renderModeKonfirmasi(data);
+            } else {
+                modeAktif = 'pertama';
+                renderModePertama(data);
+            }
+        };
+
+        // ============ MODE PERTAMA ============
+        function renderModePertama(data) {
+            const banner = document.getElementById('status-banner');
+            banner.className = 'status-banner mode-pertama';
+            banner.innerHTML = `<i class="fa-solid fa-hourglass-half"></i> <div><strong>Pemeriksaan Pertama</strong><br><span style="font-weight:400">Isi SOAP, lalu pilih: Selesaikan (ke Farmasi) atau Kirim ke Lab.</span></div>`;
+
+            document.getElementById('hasil-lab-card').style.display = 'none';
+
+            const fields = ['inp-subjective', 'inp-objective', 'inp-assessment', 'inp-plan'];
+            fields.forEach(f => {
+                document.getElementById(f).disabled = false;
+                document.getElementById(f).value = '';
+            });
+
+            const btnGroup = document.getElementById('btn-group');
+            btnGroup.innerHTML = `
+                <button class="btn btn-success" onclick="aksiSelesaikan()">
+                    <i class="fa-solid fa-check"></i> Selesaikan Pemeriksaan
+                </button>
+                <button class="btn btn-warning" onclick="aksiKirimLab()">
+                    <i class="fa-solid fa-flask"></i> Kirim ke Laboratorium
+                </button>
+            `;
+        }
+
+        // ============ MODE KONFIRMASI ============
+        function renderModeKonfirmasi(data) {
+            const banner = document.getElementById('status-banner');
+            banner.className = 'status-banner mode-konfirmasi';
+            banner.innerHTML = `<i class="fa-solid fa-circle-check"></i> <div><strong>Konfirmasi Akhir</strong><br><span style="font-weight:400">Hasil lab sudah keluar. Tinjau hasil, lalu selesaikan pemeriksaan.</span></div>`;
+
+            const labCard = document.getElementById('hasil-lab-card');
+            labCard.style.display = 'block';
+            document.getElementById('lab-content').textContent = data.hasilLab || '(tidak ada catatan hasil lab)';
+            
+            const labBiaya = (data.biaya && data.biaya.lab) ? data.biaya.lab : 0;
+            document.getElementById('lab-biaya').innerHTML = `<i class="fa-solid fa-money-bill"></i> Biaya Lab: <strong>Rp ${labBiaya.toLocaleString('id-ID')}</strong> (sudah ditambahkan ke tagihan)`;
+
+            const fields = ['inp-subjective', 'inp-objective', 'inp-assessment', 'inp-plan'];
+            fields.forEach(f => document.getElementById(f).disabled = false);
+            
+            document.getElementById('inp-subjective').value = data.subjective || '';
+            document.getElementById('inp-objective').value = data.objective || '';
+            document.getElementById('inp-assessment').value = data.assessment || '';
+            document.getElementById('inp-plan').value = data.plan || '';
+
+            const btnGroup = document.getElementById('btn-group');
+            btnGroup.innerHTML = `
+                <button class="btn btn-success" onclick="aksiSelesaikan()">
+                    <i class="fa-solid fa-check"></i> Selesaikan Pemeriksaan
+                </button>
+                <div style="padding:10px; background:#dbeafe; border-radius:8px; font-size:12px; color:#1e40af; text-align:center;">
+                    <i class="fa-solid fa-info-circle"></i> Pasien sudah di Lab. Lanjut ke Farmasi.
+                </div>
+            `;
+        }
+
+        // ============ AKSI: SELESAIKAN ============
+        window.aksiSelesaikan = async () => {
+            if (!idPasienAktif) return;
+            
+            const subjective = document.getElementById('inp-subjective').value.trim();
+            const objective = document.getElementById('inp-objective').value.trim();
+            const assessment = document.getElementById('inp-assessment').value;
+            const plan = document.getElementById('inp-plan').value.trim();
+
+            if (!subjective) {
+                showToast('Keluhan (S) wajib diisi!', 'warning');
+                document.getElementById('inp-subjective').focus();
+                return;
+            }
+
+            const yakin = confirm(
+                modeAktif === 'konfirmasi'
+                ? "Selesaikan pemeriksaan? Pasien akan diteruskan ke Farmasi."
+                : "Selesaikan pemeriksaan tanpa lab? Pasien akan diteruskan ke Farmasi."
+            );
+            if (!yakin) return;
+
+            try {
+                await addDoc(collection(db, "rekam_medis"), {
+                    idPendaftaran: idPasienAktif,
+                    noRM: pasienMap[idPasienAktif].noRM || '',
+                    namaPasien: pasienMap[idPasienAktif].nama,
+                    subjective, objective, assessment, plan,
+                    waktuDiperiksa: new Date().toISOString(),
+                    jenis: modeAktif === 'konfirmasi' ? 'konfirmasi_akhir' : 'pemeriksaan_pertama'
+                });
+
+                const ref = doc(db, "pendaftaran", idPasienAktif);
+                await updateDoc(ref, {
+                    subjective, objective, assessment, plan,
+                    status: "Diperiksa",
+                    waktuDiperiksa: new Date().toISOString()
+                });
+
+                showToast('✅ Pemeriksaan selesai. Pasien diteruskan ke Farmasi.', 'success');
+                
+                document.getElementById('pilih-pasien').value = '';
+                resetKeEmpty();
+            } catch (err) {
+                console.error(err);
+                showToast('Gagal menyimpan: ' + err.message, 'error');
+            }
+        };
+
+        // ============ AKSI: KIRIM KE LAB ============
+        window.aksiKirimLab = async () => {
+            if (!idPasienAktif) return;
+            
+            const subjective = document.getElementById('inp-subjective').value.trim();
+            const objective = document.getElementById('inp-objective').value.trim();
+            const assessment = document.getElementById('inp-assessment').value;
+            const plan = document.getElementById('inp-plan').value.trim();
+
+            if (!subjective) {
+                showToast('Keluhan (S) wajib diisi sebelum kirim ke lab!', 'warning');
+                document.getElementById('inp-subjective').focus();
+                return;
+            }
+
+            const jenisLab = prompt("Jenis pemeriksaan lab yang diminta (contoh: Darah Lengkap, Gula Darah, Urine Lengkap):", "Darah Lengkap");
+            if (!jenisLab || !jenisLab.trim()) {
+                showToast('Jenis pemeriksaan lab wajib diisi!', 'warning');
+                return;
+            }
+
+            const yakin = confirm(`Kirim pasien ke Laboratorium untuk: "${jenisLab}"?\n\nSetelah hasil lab keluar, pasien akan kembali ke dokter.`);
+            if (!yakin) return;
+
+            try {
+                const ref = doc(db, "pendaftaran", idPasienAktif);
+                await updateDoc(ref, {
+                    subjective, objective, assessment, plan,
+                    status: "Menunggu Lab",
+                    permintaanLab: jenisLab.trim(),
+                    waktuKirimLab: new Date().toISOString()
+                });
+
+                showToast(`✅ Pasien dikirim ke Lab: ${jenisLab}`, 'success');
+                
+                document.getElementById('pilih-pasien').value = '';
+                resetKeEmpty();
+            } catch (err) {
+                console.error(err);
+                showToast('Gagal: ' + err.message, 'error');
+            }
+        };
+    </script>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar) sidebar.classList.toggle('show');
+            if (overlay) overlay.classList.toggle('show');
+        }
+        function navigasiKe(url) {
+            try {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebarOverlay');
+                if (sidebar) sidebar.classList.remove('show');
+                if (overlay) overlay.classList.remove('show');
+            } catch (e) { console.warn(e); }
+            window.scrollTo(0, 0);
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>
