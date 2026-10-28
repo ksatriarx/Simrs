@@ -16,6 +16,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
+        /* SIDEBAR & TOPBAR (Sama seperti sebelumnya) */
         .sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000; transition: transform 0.3s ease; }
         .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
         .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
@@ -23,10 +24,8 @@
         .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; }
         .nav-item:hover, .nav-item.active { background: #e0f2fe; color: var(--primary); }
         .nav-item i { width: 20px; text-align: center; }
-
         .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
         .sidebar-overlay.show { display: block; opacity: 1; }
-
         .main-content { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - var(--sidebar-width)); transition: margin 0.3s ease; }
         .topbar { height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 90; }
         .menu-toggle { display: none; background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; }
@@ -36,9 +35,8 @@
         .user-role { font-size: 11px; color: var(--text-muted); }
         .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
+        /* AREA REKAM MEDIS */
         .dashboard { padding: 30px; }
-        
-        /* KARTU PEMILIHAN PASIEN */
         .patient-selector { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 20px; margin-bottom: 20px; }
         .patient-selector label { font-size: 13px; font-weight: 600; display: block; margin-bottom: 8px; }
         .patient-selector select { width: 100%; padding: 12px; border: 2px solid var(--primary); border-radius: 8px; font-size: 14px; outline: none; font-weight: 600; color: var(--primary); }
@@ -61,6 +59,7 @@
 
         .btn-save { background: var(--primary); color: white; border: none; padding: 14px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3); }
         .btn-save:hover { background: var(--primary-hover); }
+        .btn-save:disabled { background: #9ca3af; cursor: not-allowed; }
 
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
@@ -113,7 +112,7 @@
 
         <div class="dashboard">
             
-            <!-- PILIH PASIEN DARI ANTREAN -->
+            <!-- PEMILIH PASIEN -->
             <div class="patient-selector">
                 <label><i class="fa-solid fa-list-check"></i> Pilih Pasien dari Antrean:</label>
                 <select id="pilih-pasien" onchange="tampilkanDataPasien()">
@@ -121,7 +120,7 @@
                 </select>
             </div>
 
-            <!-- KARTU IDENTITAS PASIEN (Akan berubah sesuai pilihan) -->
+            <!-- DATA DIRI PASIEN -->
             <div class="patient-card" id="kartu-pasien" style="display: none;">
                 <div class="patient-info">
                     <h2 id="detail-nama">-</h2>
@@ -134,20 +133,21 @@
                 </div>
             </div>
 
+            <!-- FORM SOAP & RESEP -->
             <div class="emr-grid">
                 <div class="card">
                     <h3 class="card-title"><i class="fa-solid fa-notes-medical"></i> Catatan (SOAP)</h3>
                     <div class="form-group">
                         <label>S (Subjective) - Keluhan</label>
-                        <textarea rows="2" placeholder="Keluhan pasien..."></textarea>
+                        <textarea id="inp-subjective" rows="2" placeholder="Keluhan pasien..."></textarea>
                     </div>
                     <div class="form-group">
                         <label>O (Objective) - Pemeriksaan Fisik</label>
-                        <textarea rows="2" placeholder="TD, Suhu, Nadi..."></textarea>
+                        <textarea id="inp-objective" rows="2" placeholder="TD, Suhu, Nadi..."></textarea>
                     </div>
                     <div class="form-group">
                         <label>A (Assessment) - Diagnosa (ICD-10)</label>
-                        <select>
+                        <select id="inp-assessment">
                             <option value="">Pilih Diagnosa...</option>
                             <option value="A91">A91 - DBD</option>
                             <option value="J00">J00 - Common Cold</option>
@@ -156,35 +156,27 @@
                     </div>
                     <div class="form-group">
                         <label>P (Plan) - Rencana Tindakan</label>
-                        <textarea rows="2" placeholder="Terapi dan kontrol..."></textarea>
+                        <textarea id="inp-plan" rows="2" placeholder="Terapi dan kontrol..."></textarea>
                     </div>
                 </div>
 
                 <div class="card">
                     <h3 class="card-title"><i class="fa-solid fa-pills"></i> E-Resep</h3>
-                    <div class="table-responsive">
-                        <table class="resep-table" style="width:100%; border-collapse:collapse; margin-bottom:10px;">
-                            <thead>
-                                <tr><th style="padding:10px; font-size:12px; border-bottom:1px solid #eee; text-align:left;">Nama Obat</th><th style="padding:10px; font-size:12px; border-bottom:1px solid #eee; text-align:left;">Qty</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td style="padding:10px; font-size:12px;">Paracetamol 500mg</td><td style="padding:10px; font-size:12px;">10 Tab</td></tr>
-                            </tbody>
-                        </table>
+                    <div style="padding: 10px; background:#f9fafb; border:1px dashed #ccc; border-radius:8px; margin-bottom:20px; font-size:12px; color:var(--text-muted); text-align:center;">
+                        (Modul pemilihan obat akan dihubungkan ke Database Farmasi nanti)
                     </div>
-                    <button class="btn-add-obat" style="width:100%; padding:10px; border:1px dashed #ccc; background:#f9fafb; border-radius:8px; font-size:12px; font-weight:600; margin-bottom:20px; cursor:pointer;"><i class="fa-solid fa-plus"></i> Tambah Obat</button>
-                    <button class="btn-save" onclick="alert('Simulasi: Rekam Medis disimpan!')">
-                        <i class="fa-solid fa-floppy-disk"></i> Simpan Pemeriksaan
+                    <button class="btn-save" id="btn-simpan-medis" onclick="simpanRekamMedis()">
+                        <i class="fa-solid fa-floppy-disk"></i> Selesaikan Pemeriksaan
                     </button>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- SCRIPT FIREBASE UNTUK REKAM MEDIS -->
+    <!-- SCRIPT FIREBASE UNTUK REKAM MEDIS & UPDATE STATUS -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, query, where, doc, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyB5u4UAw9JAmXA6vsuSwuexO5ASR-0Kjn0",
@@ -198,14 +190,15 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         
-        // Hanya ambil pasien yang statusnya "Menunggu"
         const q = query(collection(db, "pendaftaran"), where("status", "==", "Menunggu"));
         const selectElement = document.getElementById('pilih-pasien');
         let daftarPasien = {};
+        let idPasienAktif = ""; // Menyimpan ID dokumen pasien yang sedang diperiksa
 
+        // 1. TARIK DATA PASIEN "MENUNGGU"
         onSnapshot(q, (snapshot) => {
             selectElement.innerHTML = '<option value="">-- Pilih Pasien --</option>';
-            daftarPasien = {}; // Reset data lokal
+            daftarPasien = {}; 
             
             if (snapshot.empty) {
                 selectElement.innerHTML = '<option value="">Tidak ada antrean pasien</option>';
@@ -215,18 +208,18 @@
 
             snapshot.forEach((doc) => {
                 const data = doc.data();
-                daftarPasien[doc.id] = data; // Simpan data berdasarkan ID dokumen
+                daftarPasien[doc.id] = data; 
                 selectElement.innerHTML += `<option value="${doc.id}">${data.nama} (${data.poli})</option>`;
             });
         });
 
-        // Fungsi untuk menampilkan detail pasien saat dipilih dari dropdown
+        // 2. TAMPILKAN DATA PASIEN SAAT DIPILIH
         window.tampilkanDataPasien = () => {
-            const idTerpilih = selectElement.value;
+            idPasienAktif = selectElement.value;
             const kartu = document.getElementById('kartu-pasien');
 
-            if (idTerpilih && daftarPasien[idTerpilih]) {
-                const data = daftarPasien[idTerpilih];
+            if (idPasienAktif && daftarPasien[idPasienAktif]) {
+                const data = daftarPasien[idPasienAktif];
                 kartu.style.display = 'flex';
                 document.getElementById('detail-nama').innerText = data.nama;
                 document.getElementById('detail-nik').innerText = data.nik;
@@ -234,7 +227,55 @@
                 document.getElementById('detail-jk').innerText = data.jk === 'L' ? 'Laki-laki' : 'Perempuan';
                 document.getElementById('detail-poli').innerText = data.poli;
             } else {
-                kartu.style.display = 'none'; // Sembunyikan jika tidak ada yang dipilih
+                kartu.style.display = 'none';
+            }
+        };
+
+        // 3. SIMPAN REKAM MEDIS & UBAH STATUS PASIEN
+        window.simpanRekamMedis = async () => {
+            if (!idPasienAktif) {
+                alert("Pilih pasien terlebih dahulu!");
+                return;
+            }
+
+            const btn = document.getElementById('btn-simpan-medis');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+            btn.disabled = true;
+
+            try {
+                // A. Simpan Catatan SOAP ke koleksi "rekam_medis"
+                await addDoc(collection(db, "rekam_medis"), {
+                    idPendaftaran: idPasienAktif,
+                    namaPasien: document.getElementById('detail-nama').innerText,
+                    subjective: document.getElementById('inp-subjective').value,
+                    objective: document.getElementById('inp-objective').value,
+                    assessment: document.getElementById('inp-assessment').value,
+                    plan: document.getElementById('inp-plan').value,
+                    waktuDiperiksa: new Date().toISOString()
+                });
+
+                // B. Ubah status pasien di koleksi "pendaftaran" menjadi "Diperiksa"
+                const pasienRef = doc(db, "pendaftaran", idPasienAktif);
+                await updateDoc(pasienRef, {
+                    status: "Diperiksa"
+                });
+
+                alert("✅ Berhasil! Rekam medis tersimpan dan pasien selesai diperiksa.");
+                
+                // Reset Form
+                document.getElementById('kartu-pasien').style.display = 'none';
+                document.getElementById('inp-subjective').value = '';
+                document.getElementById('inp-objective').value = '';
+                document.getElementById('inp-assessment').value = '';
+                document.getElementById('inp-plan').value = '';
+                selectElement.value = '';
+
+            } catch (error) {
+                console.error(error);
+                alert("❌ Gagal menyimpan: " + error.message);
+            } finally {
+                btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Selesaikan Pemeriksaan';
+                btn.disabled = false;
             }
         };
     </script>
