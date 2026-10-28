@@ -18,16 +18,15 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        /* SIDEBAR & TOPBAR */
         .sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000; transition: transform 0.3s ease; }
-        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
-        .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
-        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; }
-        .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; }
+        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; flex-shrink: 0; }
+        .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; position: relative; z-index: 10; }
+        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 12px 10px; pointer-events: none; }
+        .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; position: relative; z-index: 11; pointer-events: auto; }
         .nav-item:hover, .nav-item.active { background: #e0f2fe; color: var(--primary); }
         .nav-item i { width: 20px; text-align: center; }
-        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
-        .sidebar-overlay.show { display: block; opacity: 1; }
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .sidebar-overlay.show { display: block; opacity: 1; pointer-events: auto; }
         .main-content { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - var(--sidebar-width)); transition: margin 0.3s ease; }
         .topbar { height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 90; }
         .menu-toggle { display: none; background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; }
@@ -37,7 +36,6 @@
         .user-role { font-size: 11px; color: var(--text-muted); }
         .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--purple); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-        /* DASHBOARD */
         .dashboard { padding: 30px; }
         .page-header { margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .page-title { font-size: 24px; font-weight: 700; }
@@ -51,7 +49,6 @@
         .stat-details h3 { font-size: 22px; font-weight: 700; margin-bottom: 2px; }
         .stat-details p { font-size: 11px; color: var(--text-muted); font-weight: 500; }
 
-        /* TABEL */
         .card-table { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 24px; }
         .card-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .card-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
@@ -64,14 +61,12 @@
 
         .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
         .badge-waiting { background: #f3e8ff; color: #9333ea; }
-        .badge-done { background: #dcfce7; color: #16a34a; }
 
         .btn-action { background: var(--primary); color: white; border: none; padding: 7px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s; display: inline-flex; align-items: center; gap: 6px; }
         .btn-action:hover { background: var(--primary-hover); }
 
-        /* MODAL */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; overflow-y: auto; }
-        .modal-overlay.show { display: flex; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; overflow-y: auto; pointer-events: none; }
+        .modal-overlay.show { display: flex; pointer-events: auto; }
         .modal-box { background: var(--bg-card); border-radius: 16px; width: 100%; max-width: 820px; max-height: 92vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: modalIn 0.25s ease; }
         @keyframes modalIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--bg-card); z-index: 2; border-radius: 16px 16px 0 0; }
@@ -92,7 +87,6 @@
         .resep-dokter strong { color: #78350f; }
         .resep-dokter .soap-summary { font-size: 11px; color: #a16207; margin-top: 6px; line-height: 1.5; }
 
-        /* KATALOG OBAT */
         .form-section { margin-bottom: 20px; }
         .form-section h4 { font-size: 14px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
         .search-obat { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; background: #f9fafb; margin-bottom: 12px; }
@@ -108,7 +102,6 @@
         .obat-item-price { font-size: 12px; font-weight: 700; color: var(--success); white-space: nowrap; }
         .obat-item i { color: var(--primary); font-size: 14px; }
 
-        /* KERANJANG OBAT */
         .keranjang { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
         .keranjang-empty { text-align: center; padding: 30px; color: var(--text-muted); font-size: 13px; }
         .keranjang-item { display: grid; grid-template-columns: 2fr 80px 120px 90px 40px; gap: 10px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 13px; }
@@ -132,7 +125,6 @@
 
         .empty-row { text-align: center; padding: 40px 20px !important; color: var(--text-muted); }
 
-        /* TOAST */
         .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
         .toast { padding: 14px 20px; border-radius: 8px; color: white; font-size: 13px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease; min-width: 280px; }
         .toast.success { background: var(--success); }
@@ -163,20 +155,20 @@
     <aside class="sidebar" id="sidebar">
         <div class="brand"><i class="fa-solid fa-hospital"></i> SIMRS<span style="color:var(--text-main)">Pro</span></div>
         <div class="nav-menu">
-            <a href="javascript:void(0)" onclick="navigasiKe('index.html')" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('pendaftaran.html')" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('antrean.html')" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
+            <a href="#" data-page="index.html" onclick="event.preventDefault(); navigasiKe('index.html');" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="#" data-page="pendaftaran.html" onclick="event.preventDefault(); navigasiKe('pendaftaran.html');" class="nav-item"><i class="fa-solid fa-users"></i> Pendaftaran</a>
+            <a href="#" data-page="antrean.html" onclick="event.preventDefault(); navigasiKe('antrean.html');" class="nav-item"><i class="fa-solid fa-notes-medical"></i> Antrean Poli</a>
             
             <div class="nav-label">Data & Pelayanan</div>
-            <a href="javascript:void(0)" onclick="navigasiKe('pasien.html')" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('rekam-medis.html')" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('farmasi.html')" class="nav-item active"><i class="fa-solid fa-pills"></i> Farmasi</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('lab.html')" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
+            <a href="#" data-page="pasien.html" onclick="event.preventDefault(); navigasiKe('pasien.html');" class="nav-item"><i class="fa-solid fa-address-book"></i> Data Pasien</a>
+            <a href="#" data-page="rekam-medis.html" onclick="event.preventDefault(); navigasiKe('rekam-medis.html');" class="nav-item"><i class="fa-solid fa-stethoscope"></i> Rekam Medis</a>
+            <a href="#" data-page="farmasi.html" onclick="event.preventDefault(); navigasiKe('farmasi.html');" class="nav-item"><i class="fa-solid fa-pills"></i> Farmasi</a>
+            <a href="#" data-page="lab.html" onclick="event.preventDefault(); navigasiKe('lab.html');" class="nav-item"><i class="fa-solid fa-flask"></i> Laboratorium</a>
 
             <div class="nav-label">Keuangan & Sistem</div>
-            <a href="javascript:void(0)" onclick="navigasiKe('kasir.html')" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('laporan.html')" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
-            <a href="javascript:void(0)" onclick="navigasiKe('pengaturan.html')" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
+            <a href="#" data-page="kasir.html" onclick="event.preventDefault(); navigasiKe('kasir.html');" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Kasir & Billing</a>
+            <a href="#" data-page="laporan.html" onclick="event.preventDefault(); navigasiKe('laporan.html');" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan</a>
+            <a href="#" data-page="pengaturan.html" onclick="event.preventDefault(); navigasiKe('pengaturan.html');" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Modul</a>
         </div>
     </aside>
 
@@ -200,7 +192,6 @@
                 </div>
             </div>
 
-            <!-- STATISTIK -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon icon-purple"><i class="fa-solid fa-prescription-bottle-medical"></i></div>
@@ -212,7 +203,6 @@
                 </div>
             </div>
 
-            <!-- TABEL ANTREAN RESEP -->
             <div class="card-table">
                 <div class="card-header">
                     <h2 class="card-title">
@@ -243,7 +233,6 @@
         </div>
     </main>
 
-    <!-- MODAL SERAH OBAT -->
     <div class="modal-overlay" id="modal-obat" onclick="if(event.target===this) tutupModal()">
         <div class="modal-box">
             <div class="modal-header">
@@ -252,7 +241,6 @@
             </div>
             <div class="modal-body">
 
-                <!-- Patient mini info -->
                 <div class="patient-mini">
                     <div class="patient-mini-info">
                         <h4 id="m-nama">-</h4>
@@ -264,7 +252,6 @@
                     </div>
                 </div>
 
-                <!-- Ringkasan SOAP dokter -->
                 <div class="resep-dokter">
                     <i class="fa-solid fa-user-doctor"></i> <strong>Catatan Dokter:</strong>
                     <div class="soap-summary">
@@ -273,16 +260,12 @@
                     </div>
                 </div>
 
-                <!-- Katalog obat -->
                 <div class="form-section">
                     <h4><i class="fa-solid fa-capsules"></i> Pilih Obat dari Katalog</h4>
                     <input type="text" class="search-obat" id="cari-obat" placeholder="Cari nama obat... (contoh: paracetamol, amoxicillin)" oninput="filterObat()">
-                    <div class="obat-catalog" id="obat-catalog">
-                        <!-- Diisi JS -->
-                    </div>
+                    <div class="obat-catalog" id="obat-catalog"></div>
                 </div>
 
-                <!-- Keranjang -->
                 <div class="form-section">
                     <h4><i class="fa-solid fa-shopping-cart"></i> Keranjang Obat</h4>
                     <div class="keranjang">
@@ -310,24 +293,16 @@
 
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- SCRIPT FIREBASE -->
+    <!-- Firebase config terpusat -->
+    <script src="firebase-config.js"></script>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, onSnapshot, query, where, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyB5u4UAw9JAmXA6vsuSwuexO5ASR-0Kjn0",
-            authDomain: "simrs-pro.firebaseapp.com",
-            projectId: "simrs-pro",
-            storageBucket: "simrs-pro.firebasestorage.app",
-            messagingSenderId: "745412639051",
-            appId: "1:745412639051:web:e434bc2a118ca2c67750ce"
-        };
-
-        const app = initializeApp(firebaseConfig);
+        const app = initializeApp(window.FIREBASE_CONFIG);
         const db = getFirestore(app);
 
-        // ============ TOAST ============
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -344,40 +319,30 @@
         }
 
         // ============================================
-        // KATALOG OBAT STANDAR KLINIK INDONESIA
-        // Harga wajar apotek klinik (margin ~20-30% dari HET umum)
+        // KATALOG OBAT STANDAR KLINIK INDONESIA (61 item)
         // ============================================
         const KATALOG_OBAT = [
-            // ANALGESIK / ANTIPIRETIK
             { id: 'pct500', nama: 'Paracetamol 500mg', kategori: 'Analgesik', satuan: 'tablet', harga: 500 },
             { id: 'pct_strip', nama: 'Paracetamol 500mg (strip 10)', kategori: 'Analgesik', satuan: 'strip', harga: 4000 },
             { id: 'ibup400', nama: 'Ibuprofen 400mg', kategori: 'Analgesik', satuan: 'tablet', harga: 800 },
             { id: 'ponstan', nama: 'Asam Mefenamat 500mg', kategori: 'Analgesik', satuan: 'tablet', harga: 1000 },
             { id: 'novalgin', nama: 'Novalgin (Metamizole) 500mg', kategori: 'Analgesik', satuan: 'tablet', harga: 1500 },
             { id: 'tramadol', nama: 'Tramadol 50mg', kategori: 'Analgesik', satuan: 'tablet', harga: 2500 },
-
-            // ANTIBIOTIK
             { id: 'amox500', nama: 'Amoxicillin 500mg', kategori: 'Antibiotik', satuan: 'kapsul', harga: 1500 },
             { id: 'amox_strip', nama: 'Amoxicillin 500mg (strip 10)', kategori: 'Antibiotik', satuan: 'strip', harga: 15000 },
             { id: 'azithro', nama: 'Azithromycin 500mg', kategori: 'Antibiotik', satuan: 'tablet', harga: 7000 },
             { id: 'cipro500', nama: 'Ciprofloxacin 500mg', kategori: 'Antibiotik', satuan: 'tablet', harga: 2000 },
             { id: 'cefixim', nama: 'Cefixime 100mg', kategori: 'Antibiotik', satuan: 'kapsul', harga: 4500 },
             { id: 'cotrimoxazole', nama: 'Cotrimoxazole 480mg', kategori: 'Antibiotik', satuan: 'tablet', harga: 800 },
-
-            // ANTIHISTAMIN / ANTI ALERGI
             { id: 'ctm', nama: 'CTM (Chlorpheniramine) 4mg', kategori: 'Antihistamin', satuan: 'tablet', harga: 300 },
             { id: 'loratadine', nama: 'Loratadine 10mg', kategori: 'Antihistamin', satuan: 'tablet', harga: 800 },
             { id: 'cetirizine', nama: 'Cetirizine 10mg', kategori: 'Antihistamin', satuan: 'tablet', harga: 1000 },
             { id: 'diphenhydramine', nama: 'Difenihidramin 10mg', kategori: 'Antihistamin', satuan: 'tablet', harga: 600 },
-
-            // OBAT BATUK / FLU
             { id: 'obh', nama: 'OBH Combi Batuk Plus Flu 60ml', kategori: 'Batuk & Flu', satuan: 'botol', harga: 12000 },
             { id: 'bisoltussin', nama: 'Bisolvon 30ml', kategori: 'Batuk & Flu', satuan: 'botol', harga: 25000 },
             { id: 'dextromethorphan', nama: 'Dextromethorphan 15mg', kategori: 'Batuk & Flu', satuan: 'tablet', harga: 500 },
             { id: 'ambroxol', nama: 'Ambroxol 30mg', kategori: 'Batuk & Flu', satuan: 'tablet', harga: 600 },
             { id: 'pseudoephedrine', nama: 'Pseudoephedrine 60mg', kategori: 'Batuk & Flu', satuan: 'tablet', harga: 700 },
-
-            // OBAT LAMBUNG / PENCERNAAN
             { id: 'antacid', nama: 'Antasida DOEN', kategori: 'Lambung', satuan: 'tablet', harga: 300 },
             { id: 'omeprazole', nama: 'Omeprazole 20mg', kategori: 'Lambung', satuan: 'kapsul', harga: 2000 },
             { id: 'ranitidine', nama: 'Ranitidine 150mg', kategori: 'Lambung', satuan: 'tablet', harga: 800 },
@@ -386,45 +351,31 @@
             { id: 'oralit', nama: 'Oralit Sachet', kategori: 'Pencernaan', satuan: 'sachet', harga: 1000 },
             { id: 'zinc', nama: 'Zinc 20mg', kategori: 'Pencernaan', satuan: 'tablet', harga: 500 },
             { id: 'attapulgite', nama: 'Attapulgite (New Diatabs)', kategori: 'Pencernaan', satuan: 'tablet', harga: 800 },
-
-            // ANTIDIABETES
             { id: 'metformin', nama: 'Metformin 500mg', kategori: 'Antidiabetes', satuan: 'tablet', harga: 500 },
             { id: 'glibenclamide', nama: 'Glibenclamide 5mg', kategori: 'Antidiabetes', satuan: 'tablet', harga: 400 },
             { id: 'gliclazide', nama: 'Gliclazide 80mg', kategori: 'Antidiabetes', satuan: 'tablet', harga: 1000 },
-
-            // ANTIHIPERTENSI
             { id: 'amlodipine', nama: 'Amlodipine 10mg', kategori: 'Antihipertensi', satuan: 'tablet', harga: 800 },
             { id: 'captopril', nama: 'Captopril 25mg', kategori: 'Antihipertensi', satuan: 'tablet', harga: 400 },
             { id: 'lisinopril', nama: 'Lisinopril 10mg', kategori: 'Antihipertensi', satuan: 'tablet', harga: 900 },
             { id: 'hct', nama: 'Hidroklorotiazid 25mg', kategori: 'Antihipertensi', satuan: 'tablet', harga: 300 },
-
-            // VITAMIN / SUPLEMEN
             { id: 'vit_c', nama: 'Vitamin C 500mg', kategori: 'Vitamin', satuan: 'tablet', harga: 500 },
             { id: 'vit_b_complex', nama: 'Vitamin B Complex', kategori: 'Vitamin', satuan: 'tablet', harga: 700 },
             { id: 'vit_d3', nama: 'Vitamin D3 1000 IU', kategori: 'Vitamin', satuan: 'tablet', harga: 1500 },
             { id: 'sangobion', nama: 'Sangobion Kapsul', kategori: 'Vitamin', satuan: 'kapsul', harga: 2500 },
             { id: 'neurobion', nama: 'Neurobion', kategori: 'Vitamin', satuan: 'tablet', harga: 2500 },
             { id: 'becomzet', nama: 'Becom-Zet', kategori: 'Vitamin', satuan: 'kapsul', harga: 2000 },
-
-            // SALEP / TOPIKAL
             { id: 'betadine', nama: 'Betadine Solution 15ml', kategori: 'Topikal', satuan: 'botol', harga: 10000 },
             { id: 'rivanol', nama: 'Rivanol 100ml', kategori: 'Topikal', satuan: 'botol', harga: 8000 },
             { id: 'gentamicin_salep', nama: 'Gentamicin Salep 5g', kategori: 'Topikal', satuan: 'tube', harga: 6000 },
             { id: 'hct_cream', nama: 'Hydrocortisone Cream 1% 5g', kategori: 'Topikal', satuan: 'tube', harga: 7000 },
             { id: 'kaltrofen', nama: 'Kaltrofen Gel 20g', kategori: 'Topikal', satuan: 'tube', harga: 15000 },
             { id: 'counterpain', nama: 'Counterpain Cream 15g', kategori: 'Topikal', satuan: 'tube', harga: 12000 },
-
-            // OBAT TETES MATA / TELINGA
             { id: 'cendo_xitrol', nama: 'Cendo Xitrol 5ml', kategori: 'Tetes', satuan: 'botol', harga: 18000 },
             { id: 'insto', nama: 'Insto Regular 7.5ml', kategori: 'Tetes', satuan: 'botol', harga: 8000 },
-
-            // INJEKSI (untuk tindakan)
             { id: 'inj_antrain', nama: 'Injeksi Antrain 1 amp', kategori: 'Injeksi', satuan: 'ampul', harga: 8000 },
             { id: 'inj_vit_c', nama: 'Injeksi Vitamin C 1 amp', kategori: 'Injeksi', satuan: 'ampul', harga: 5000 },
             { id: 'infus_ns', nama: 'Infus NaCl 0.9% 500ml', kategori: 'Injeksi', satuan: 'bag', harga: 15000 },
             { id: 'infus_ringer', nama: 'Infus Ringer Laktat 500ml', kategori: 'Injeksi', satuan: 'bag', harga: 16000 },
-
-            // OBAT LAIN
             { id: 'methylpred', nama: 'Methylprednisolone 4mg', kategori: 'Kortikosteroid', satuan: 'tablet', harga: 1000 },
             { id: 'dexamethasone', nama: 'Dexamethasone 0.5mg', kategori: 'Kortikosteroid', satuan: 'tablet', harga: 300 },
             { id: 'prednisone', nama: 'Prednisone 5mg', kategori: 'Kortikosteroid', satuan: 'tablet', harga: 300 },
@@ -433,13 +384,11 @@
             { id: 'ambroxol_sirup', nama: 'Ambroxol Sirup 60ml', kategori: 'Batuk & Flu', satuan: 'botol', harga: 18000 }
         ];
 
-        // ============ STATE ============
         let idAktif = null;
         let pasienAktif = null;
         let semuaAntrean = [];
-        let keranjang = []; // [{obatId, nama, harga, qty, satuan}]
+        let keranjang = [];
 
-        // ============ TARIK PASIEN DIPERIKSA ============
         const q = query(collection(db, "pendaftaran"), where("status", "==", "Diperiksa"));
         onSnapshot(q, (snap) => {
             semuaAntrean = snap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -449,8 +398,6 @@
             document.getElementById('badge-jumlah').innerText = semuaAntrean.length;
         });
 
-        // ============ STATISTIK SELESAI HARI INI ============
-        // Query status "Selesai" dan "Lunas" yang diupdate hari ini
         const qSelesai = query(collection(db, "pendaftaran"), where("status", "==", "Selesai"));
         onSnapshot(qSelesai, (snap) => {
             const today = new Date().toDateString();
@@ -461,7 +408,6 @@
             document.getElementById('stat-selesai').innerText = countToday;
         });
 
-        // ============ RENDER TABEL ============
         function renderTabel() {
             const tbody = document.getElementById('tabel-farmasi');
             if (semuaAntrean.length === 0) {
@@ -485,7 +431,6 @@
             }).join('');
         }
 
-        // ============ BUKA MODAL ============
         window.bukaModal = (id) => {
             const p = semuaAntrean.find(x => x.id === id);
             if (!p) return;
@@ -515,7 +460,6 @@
             keranjang = [];
         };
 
-        // ============ RENDER KATALOG OBAT ============
         function renderKatalog(filter = '') {
             const container = document.getElementById('obat-catalog');
             const keyword = filter.toLowerCase().trim();
@@ -550,7 +494,6 @@
             renderKatalog(document.getElementById('cari-obat').value);
         };
 
-        // ============ TAMBAH OBAT KE KERANJANG ============
         window.tambahObat = (obatId) => {
             const obat = KATALOG_OBAT.find(o => o.id === obatId);
             if (!obat) return;
@@ -572,27 +515,21 @@
             showToast(`${obat.nama} ditambahkan`, 'info');
         };
 
-        // ============ HAPUS DARI KERANJANG ============
         window.hapusObat = (obatId) => {
             keranjang = keranjang.filter(k => k.obatId !== obatId);
             renderKatalog(document.getElementById('cari-obat').value);
             renderKeranjang();
         };
 
-        // ============ UBAH QTY ============
         window.ubahQty = (obatId, qty) => {
             const item = keranjang.find(k => k.obatId === obatId);
             if (!item) return;
             const q = parseInt(qty);
-            if (isNaN(q) || q < 1) {
-                item.qty = 1;
-            } else {
-                item.qty = q;
-            }
+            if (isNaN(q) || q < 1) item.qty = 1;
+            else item.qty = q;
             renderKeranjang();
         };
 
-        // ============ RENDER KERANJANG ============
         function renderKeranjang() {
             const listContainer = document.getElementById('keranjang-list');
             const totalContainer = document.getElementById('keranjang-total');
@@ -622,7 +559,6 @@
             document.getElementById('total-obat').innerText = total.toLocaleString('id-ID');
         }
 
-        // ============ SERAHKAN OBAT ============
         window.serahkanObat = async () => {
             if (!idAktif || !pasienAktif) return;
             if (keranjang.length === 0) {
@@ -631,8 +567,6 @@
             }
 
             const totalObat = keranjang.reduce((sum, k) => sum + (k.harga * k.qty), 0);
-            
-            // Daftar obat untuk disimpan
             const daftarObat = keranjang.map(k => ({
                 nama: k.nama,
                 qty: k.qty,
@@ -653,7 +587,6 @@
             btn.disabled = true;
 
             try {
-                // Gabung biaya lama dengan obat baru
                 const biayaLama = pasienAktif.biaya || { admin: 15000, dokter: 50000, tindakan: 25000, obat: 0, lab: 0 };
                 const biayaBaru = { ...biayaLama, obat: totalObat };
 
@@ -679,16 +612,28 @@
 
     <script>
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('show');
-            document.getElementById('sidebarOverlay').classList.toggle('show');
-        }
-        function navigasiKe(url) {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
-            if (sidebar && overlay) { sidebar.classList.remove('show'); overlay.classList.remove('show'); }
+            if (sidebar) sidebar.classList.toggle('show');
+            if (overlay) overlay.classList.toggle('show');
+        }
+        function navigasiKe(url) {
+            try {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebarOverlay');
+                if (sidebar) sidebar.classList.remove('show');
+                if (overlay) overlay.classList.remove('show');
+            } catch (e) { console.warn(e); }
             window.scrollTo(0, 0);
             window.location.href = url;
         }
+        (function autoActiveMenu() {
+            const current = window.getCurrentPage ? window.getCurrentPage() : (window.location.pathname.split('/').pop() || 'index.html');
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-page') === current) item.classList.add('active');
+            });
+        })();
     </script>
 </body>
 </html>
