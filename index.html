@@ -16,7 +16,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        /* CSS SIDEBAR & LAYOUT (Sama seperti sebelumnya) */
+        /* SIDEBAR & TOPBAR */
         .sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 1000; transition: transform 0.3s ease; }
         .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 20px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); gap: 10px; }
         .nav-menu { padding: 20px 12px; flex-grow: 1; overflow-y: auto; }
@@ -24,10 +24,8 @@
         .nav-item { display: flex; align-items: center; padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.2s; gap: 12px; cursor: pointer; }
         .nav-item:hover, .nav-item.active { background: #e0f2fe; color: var(--primary); }
         .nav-item i { width: 20px; text-align: center; }
-
         .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
         .sidebar-overlay.show { display: block; opacity: 1; }
-
         .main-content { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - var(--sidebar-width)); transition: margin 0.3s ease; }
         .topbar { height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 90; }
         .menu-toggle { display: none; background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; }
@@ -132,7 +130,6 @@
                 </div>
             </div>
 
-            <!-- STATISTIK DINAMIS -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon icon-blue"><i class="fa-solid fa-users"></i></div>
@@ -148,11 +145,10 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon icon-purple"><i class="fa-solid fa-chart-line"></i></div>
-                    <div class="stat-details"><h3>Rp 0</h3><p>Pendapatan</p></div>
+                    <div class="stat-details"><h3 id="total-pendapatan">Rp 0</h3><p>Pendapatan</p></div>
                 </div>
             </div>
 
-            <!-- TABEL DINAMIS -->
             <div class="card-table">
                 <div class="card-header">
                     <h2 class="card-title">Pasien Terkini (Real-time)</h2>
@@ -176,7 +172,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Konfigurasi Firebase SIMRS-Pro
         const firebaseConfig = {
             apiKey: "AIzaSyB5u4UAw9JAmXA6vsuSwuexO5ASR-0Kjn0",
             authDomain: "simrs-pro.firebaseapp.com",
@@ -189,7 +184,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         
-        // Tarik data dari koleksi "pendaftaran"
         const pendaftaranRef = collection(db, "pendaftaran");
 
         onSnapshot(pendaftaranRef, (snapshot) => {
@@ -197,36 +191,36 @@
             const elTotal = document.getElementById('total-pasien');
             const elAntrean = document.getElementById('total-antrean');
             const elDiperiksa = document.getElementById('total-diperiksa');
+            const elPendapatan = document.getElementById('total-pendapatan');
             
             tbody.innerHTML = '';
             
             if (snapshot.empty) {
                 tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Belum ada data pasien.</td></tr>';
-                elTotal.innerText = "0"; elAntrean.innerText = "0"; elDiperiksa.innerText = "0";
+                elTotal.innerText = "0"; elAntrean.innerText = "0"; elDiperiksa.innerText = "0"; elPendapatan.innerText = "Rp 0";
                 return;
             }
 
-            let total = 0, antrean = 0, diperiksa = 0;
+            let total = 0, antrean = 0, diperiksa = 0, pendapatan = 0;
             let listPasien = [];
 
             snapshot.forEach((doc) => {
                 const data = doc.data();
                 total++;
                 
-                // Hitung status untuk kartu statistik
-                if (data.status === "Menunggu") antrean++;
+                if (data.status === "Menunggu" || data.status === "Menunggu Lab") antrean++;
                 if (data.status === "Diperiksa") diperiksa++;
+                if (data.status === "Lunas") pendapatan += (data.totalBayar || 0);
 
                 listPasien.push(data);
             });
 
-            // Urutkan data dari yang terbaru
             listPasien.sort((a, b) => new Date(b.waktu) - new Date(a.waktu));
 
-            // Tampilkan maksimal 5 pasien terbaru di tabel
             listPasien.slice(0, 5).forEach(data => {
                 const jam = new Date(data.waktu).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
-                const badgeClass = data.status === "Diperiksa" ? "badge-checkup" : "badge-waiting";
+                let badgeClass = "badge-waiting";
+                if (data.status === "Diperiksa" || data.status === "Lunas") badgeClass = "badge-checkup";
                 
                 tbody.innerHTML += `
                     <tr>
@@ -238,10 +232,10 @@
                 `;
             });
 
-            // Update angka statistik
             elTotal.innerText = total;
             elAntrean.innerText = antrean;
             elDiperiksa.innerText = diperiksa;
+            elPendapatan.innerText = `Rp ${pendapatan.toLocaleString('id-ID')}`;
         });
     </script>
 
